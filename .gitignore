@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Static
+static/
+arm_calc/static/
+arm_calc/media/
+
+# IDE
+.idea
