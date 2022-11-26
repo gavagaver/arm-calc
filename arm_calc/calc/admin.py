@@ -21,6 +21,9 @@ class RodAdmin(admin.ModelAdmin):
         'title',
         'create_date',
         'element',
+        'diameter',
+        'arm_class',
+        'length',
     )
     search_fields = ('title',)
     list_filter = ('create_date',)

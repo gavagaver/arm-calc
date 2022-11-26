@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 
 from django.db import models
+from django.db.models import SmallIntegerField
 
 from account.models import Folder
 from core.models import BaseModel
@@ -29,6 +30,19 @@ class Rod(BaseModel):
         on_delete=models.CASCADE,
         related_name='rods',
         verbose_name='Элемент',
+    )
+    diameter = models.SmallIntegerField(
+        blank=True,
+        null=True,
+    )
+    arm_class = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True,
+    )
+    length = models.SmallIntegerField(
+        blank=True,
+        null=True,
     )
 
     class Meta:
