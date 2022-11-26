@@ -11,4 +11,9 @@ urlpatterns = [
         views.element,
         name='element',
     ),
+    path(
+        '<int:element_id>/result',
+        views.result,
+        name='result',
+    ),
 ]
