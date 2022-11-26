@@ -21,3 +21,8 @@ def result(request, element_id):
         element_id: element_id,
     }
     return render(request, 'calc/result.html', context)
+
+
+def create(request):
+    context = {}
+    return render(request, 'calc/create.html', context)
