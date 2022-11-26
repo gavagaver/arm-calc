@@ -14,4 +14,4 @@ def folder(request, folder_id):
         'folder': folder,
         'elements': elements,
     }
-    return render(request, 'calc/element.html', context)
+    return render(request, 'account/folder.html', context)
