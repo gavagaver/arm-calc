@@ -24,7 +24,7 @@ class Rod(BaseModel):
         Element,
         on_delete=models.CASCADE,
         related_name='rods',
-        verbose_name='Стержень',
+        verbose_name='Элемент',
     )
 
     class Meta:
