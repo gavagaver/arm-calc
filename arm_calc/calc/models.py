@@ -1,17 +1,21 @@
 from django.contrib.auth import get_user_model
 
 from django.db import models
+
+from account.models import Folder
 from core.models import BaseModel
 
 User = get_user_model()
 
 
 class Element(BaseModel):
-    engineer = models.ForeignKey(
-        User,
+    folder = models.ForeignKey(
+        Folder,
         on_delete=models.CASCADE,
-        related_name='projects',
-        verbose_name='Инженер',
+        related_name='elements',
+        verbose_name='Папка',
+        blank=True,
+        null=True,
     )
 
     class Meta:

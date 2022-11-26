@@ -7,7 +7,7 @@ class ElementAdmin(admin.ModelAdmin):
         'pk',
         'title',
         'create_date',
-        'engineer',
+        'folder',
     )
     search_fields = ('title',)
     list_filter = ('create_date',)
