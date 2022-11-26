@@ -27,7 +27,12 @@ class RodAdmin(admin.ModelAdmin):
     )
     search_fields = ('title',)
     list_filter = ('create_date',)
-    list_editable = ('title',)
+    list_editable = (
+        'title',
+        'diameter',
+        'arm_class',
+        'length',
+    )
     empty_value_display = '-пусто-',
 
 
