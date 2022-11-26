@@ -34,15 +34,18 @@ class Rod(BaseModel):
     diameter = models.SmallIntegerField(
         blank=True,
         null=True,
+        verbose_name='Диаметр',
     )
     arm_class = models.CharField(
         max_length=150,
         blank=True,
         null=True,
+        verbose_name='Класс арматуры',
     )
     length = models.SmallIntegerField(
         blank=True,
         null=True,
+        verbose_name='Длина',
     )
 
     class Meta:
