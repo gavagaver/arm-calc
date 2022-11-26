@@ -15,8 +15,12 @@
        class="btn btn-success btn-sm"
     >
       <i class="fas fa-download fa-sm text-white-50"></i>
-      Добавить стержень
+      Добавить элемент
     </a>
   </div>
+
+  {% for element in elements %}
+    {% include 'account/includes/element_card.html' %}
+  {% endfor %}
 
 {% endblock %}
