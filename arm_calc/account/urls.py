@@ -7,8 +7,8 @@ app_name = 'account'
 
 urlpatterns = [
     path(
-        '<int:folder_id>/',
+        'folder/',
         views.folder,
-        name='folder',
+        name='list_elements',
     ),
 ]
