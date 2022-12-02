@@ -47,6 +47,6 @@ class RodForm(forms.ModelForm):
 
 RodFormSet = inlineformset_factory(
     Element, Rod, form=RodForm,
-    extra=1, can_delete=True,
+    extra=1, can_delete=False,
     can_delete_extra=True
 )
