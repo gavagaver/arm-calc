@@ -32,7 +32,7 @@
     <!-- element form end  -->
 
     <!-- inline form for Rod start -->
-    {% with named_formsets.variants as formset %}
+    {% with named_formsets.rods as formset %}
         {{ formset.management_form }}
         <script type="text/html" id="rods-template">  // id="inlineformsetname-template"
             // id='inlineformsetname-__prefix__'
@@ -123,31 +123,17 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
     <script>
-        $(document).ready(function() {
-            // when user clicks add more btn of images
-          $('.add-images').click(function(ev) {
-              ev.preventDefault();
-              var count = $('#item-images').children().length;
-              var tmplMarkup = $('#images-template').html();
-              var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-              $('#item-images').append(compiledTmpl);
-
-              // update form count
-              $('#id_images-TOTAL_FORMS').attr('value', count+1);
-          });
-      });
-
       $(document).ready(function() {
-        // when user clicks add more btn of variants
-          $('.add-variants').click(function(ev) {
+        // when user clicks add more btn of rods
+          $('.add-rods').click(function(ev) {
               ev.preventDefault();
-              var count = $('#item-variants').children().length;
-              var tmplMarkup = $('#variants-template').html();
+              var count = $('#item-rods').children().length;
+              var tmplMarkup = $('#rods-template').html();
               var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-              $('#item-variants').append(compiledTmpl);
+              $('#item-rods').append(compiledTmpl);
 
               // update form count
-              $('#id_variants-TOTAL_FORMS').attr('value', count+1);
+              $('#id_rods-TOTAL_FORMS').attr('value', count+1);
           });
       });
     </script>
