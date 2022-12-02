@@ -10,10 +10,10 @@
     <!-- element form start -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h4 class="m-0 font-weight-bold text-primary">Добавить элемент</h4>
+            <h1 class="m-0 font-weight-bold text-primary">Элемент</h1>
         </div>
         {% for field in form %}
-            <div class="form-group card-body border-0 small">
+            <div class="form-group card-body border-0">
                 <label>{{field.label}}</label>
                 {% if field.field.required %}
                     <span style="color: red;" class="required">*</span>
@@ -48,7 +48,7 @@
         </script>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h4 class="m-0 font-weight-bold text-primary">Добавить стержни</h4>
+                <h4 class="m-0 font-weight-bold text-primary">Армирование</h4>
             </div>
             <table class="table card-header">
                 <thead class="text-secondary">
@@ -56,8 +56,6 @@
                     <th>Диаметр <span style="color: red;" class="required">*</span></th>
                     <th>Класс <span style="color: red;" class="required">*</span></th>
                     <th>Длина <span style="color: red;" class="required">*</span></th>
-
-                    <th>Кнопка удаления</th>
                 </thead>
                 <tbody id="item-rods">
                     <!-- formset non forms errors -->
