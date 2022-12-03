@@ -6,7 +6,7 @@ class BaseModel(models.Model):
     STR_CHAR_COUNT = 15
 
     title = models.CharField(
-        max_length=150,
+        max_length=70,
         verbose_name='Название'
     )
     create_date = models.DateTimeField(

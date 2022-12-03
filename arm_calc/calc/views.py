@@ -9,9 +9,9 @@ from calc.forms import ElementForm, RodFormSet
 User = get_user_model()
 
 
-def result(request, element_id):
+def result(request, pk):
     context = {
-        element_id: element_id,
+        pk: pk,
     }
     return render(request, 'calc/result.html', context)
 

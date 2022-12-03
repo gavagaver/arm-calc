@@ -24,14 +24,18 @@ class RodAdmin(admin.ModelAdmin):
         'diameter',
         'arm_class',
         'length',
+        'quantity',
+        'mass_of_single_rod',
+        'mass_of_rods',
     )
     search_fields = ('title',)
-    list_filter = ('create_date',)
+    list_filter = ('create_date', 'element',)
     list_editable = (
         'title',
         'diameter',
         'arm_class',
         'length',
+        'quantity',
     )
     empty_value_display = '-пусто-',
 

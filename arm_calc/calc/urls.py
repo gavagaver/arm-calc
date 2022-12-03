@@ -7,7 +7,7 @@ app_name = 'calc'
 
 urlpatterns = [
     path(
-        '<int:element_id>/result',
+        'result/<int:pk>/',
         views.result,
         name='result',
     ),
