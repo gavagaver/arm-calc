@@ -42,6 +42,11 @@ class RodForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'quantity': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
         }
 
 
