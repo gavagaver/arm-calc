@@ -10,7 +10,10 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a href="{% url 'calc:result' element.pk%}" class="btn btn-primary btn-lg btn-circle">
+                    <a href="{% url 'calc:result' element.pk%}"
+                       class="btn btn-primary btn-lg btn-circle"
+                       title="Посмотреть результат"
+                    >
                         <i class="fas fa-clipboard-list fa-1x text-gray-100"></i>
                     </a>
                 </div>
