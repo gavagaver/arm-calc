@@ -10,8 +10,11 @@ User = get_user_model()
 
 
 def result(request, pk):
+    element = Element.objects.get(pk=pk)
+    rods = Rod.objects.filter(element=element)
     context = {
-        pk: pk,
+        'element': element,
+        'rods': rods,
     }
     return render(request, 'calc/result.html', context)
 

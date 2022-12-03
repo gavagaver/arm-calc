@@ -1,11 +1,47 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Результат расчета
+  Результаты элемента:  {{ element.title }}
 {% endblock %}
 
 {% block content %}
-  <h1>Результат расчета</h1>
-  <p>Здесь будут результаты расчета проекта</p>
-  <a href="">Изменить исходные данные</a>
+  <div class="col-xl-6 col-md-9 mb-6">
+
+    <h5>результаты</h5>
+
+    <h1>{{ element.title }}</h1>
+    <div class="d-sm-flex align-items-center mb-2">
+      <a href="{% url 'account:list_elements' %}"
+         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+      >
+        <i class="fas fa-download fa-sm text-white-50"></i>
+        Назад
+      </a>
+    </div>
+    <div class="d-sm-flex align-items-center mb-2">
+      <a href="{% url 'calc:update_element' element.pk %}"
+         class="btn btn-success btn-sm"
+      >
+        <i class="fas fa-download fa-sm text-white-50"></i>
+        Изменить армирование
+      </a>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h3 class="m-0 font-weight-bold text-primary">Спецификация</h3>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+          {% include 'calc/includes/header_of_spec.html' %}
+
+          {% for rod in rods %}
+            {% include 'calc/includes/rod_card.html' %}
+          {% endfor %}
+      </div>
+  </div>
+
+
 {% endblock %}

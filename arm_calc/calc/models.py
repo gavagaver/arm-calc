@@ -85,3 +85,4 @@ class Rod(BaseModel):
     class Meta:
         verbose_name = 'Стержень'
         verbose_name_plural = 'Стержни'
+        ordering = ('title',)
