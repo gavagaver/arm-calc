@@ -12,9 +12,19 @@ User = get_user_model()
 def result(request, pk):
     element = Element.objects.get(pk=pk)
     rods = Rod.objects.filter(element=element)
+    """arm_classes = sorted(
+        list(set(rods.values_list('arm_class', flat=True).distinct()))
+    )"""
+    results = {
+        'А240': {'Ø16': 71.5, 'Ø12': 340.9, 'Ø8': 227.5, 'Итого': 500},
+        'А500С': {'Ø12': 77.3, 'Ø10': 320.4, 'Ø8': 257.3, 'Итого': 1500},
+    }
+    sum_element = 2000.0
     context = {
         'element': element,
         'rods': rods,
+        'results': results,
+        'sum_element': sum_element,
     }
     return render(request, 'calc/result.html', context)
 
