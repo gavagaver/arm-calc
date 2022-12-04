@@ -15,6 +15,10 @@ def result(request, pk):
     """arm_classes = sorted(
         list(set(rods.values_list('arm_class', flat=True).distinct()))
     )"""
+
+
+
+
     results = {
         'А240': {'Ø16': 71.5, 'Ø12': 340.9, 'Ø8': 227.5, 'Итого': 500},
         'А500С': {'Ø12': 77.3, 'Ø10': 320.4, 'Ø8': 257.3, 'Итого': 1500},
