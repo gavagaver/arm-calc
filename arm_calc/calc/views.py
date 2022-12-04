@@ -12,18 +12,38 @@ User = get_user_model()
 def result(request, pk):
     element = Element.objects.get(pk=pk)
     rods = Rod.objects.filter(element=element)
-    """arm_classes = sorted(
+    arm_classes = sorted(
         list(set(rods.values_list('arm_class', flat=True).distinct()))
-    )"""
+    )
+    results = {}
+    for clas in arm_classes:
+        diameters = sorted(list(set(
+            rods.filter(arm_class=clas).values_list('diameter',
+                                                    flat=True
+                                                    ).distinct()
+        )))
+        masses = []
+        for diameter in diameters:
+            all_rods_of_diameter = rods.filter(diameter=diameter)
+            masses_of_diameter = []
+            for rod in all_rods_of_diameter:
+                mass = rod.mass_of_rods()
+                masses_of_diameter.append(mass)
+            masses.append(sum(masses_of_diameter))
 
+        diameters = list(map(lambda x: '⌀' + str(x), diameters))
+        diameters.append('Итого')
+        masses.append(round(sum(masses), 2))
 
+        dictionary = dict(zip(diameters, masses))
+        results[clas] = dictionary
 
+    masses_of_rods = []
+    for rod in rods:
+        mass_of_rod = rod.mass_of_rods()
+        masses_of_rods.append(mass_of_rod)
 
-    results = {
-        'А240': {'Ø16': 71.5, 'Ø12': 340.9, 'Ø8': 227.5, 'Итого': 500},
-        'А500С': {'Ø12': 77.3, 'Ø10': 320.4, 'Ø8': 257.3, 'Итого': 1500},
-    }
-    sum_element = 2000.0
+    sum_element = sum(masses_of_rods)
     context = {
         'element': element,
         'rods': rods,

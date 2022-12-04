@@ -76,7 +76,8 @@ class Rod(BaseModel):
 
     def mass_of_single_rod(self):
         """Mass of single rod as mass of meter multiplied by length."""
-        return round(MASS_OF_METER.get(self.diameter) * self.length / MM_IN_M, 2)
+        return round(MASS_OF_METER.get(self.diameter) * self.length / MM_IN_M,
+                     2)
 
     def mass_of_rods(self):
         """Mass of rods as mass of single rod multiplied by quantity."""
