@@ -24,12 +24,12 @@ def result(request, pk):
         )))
         masses = []
         for diameter in diameters:
-            all_rods_of_diameter = rods.filter(diameter=diameter)
+            all_rods_of_diameter = rods.filter(diameter=diameter, arm_class=clas)
             masses_of_diameter = []
             for rod in all_rods_of_diameter:
                 mass = rod.mass_of_rods()
                 masses_of_diameter.append(mass)
-            masses.append(sum(masses_of_diameter))
+            masses.append(round(sum(masses_of_diameter), 2))
 
         diameters = list(map(lambda x: '⌀' + str(x), diameters))
         diameters.append('Итого')
@@ -43,7 +43,7 @@ def result(request, pk):
         mass_of_rod = rod.mass_of_rods()
         masses_of_rods.append(mass_of_rod)
 
-    sum_element = sum(masses_of_rods)
+    sum_element = round(sum(masses_of_rods), 2)
     context = {
         'element': element,
         'rods': rods,
