@@ -5,110 +5,141 @@
 {% endblock %}
 
 {% block content %}
-  <div class="col-xl-6 col-md-9 mb-6">
 
-    <h5>результаты</h5>
+  <!-- Sidebar -->
+  {% include 'includes/sidebar.html' %}
+  <!-- End of Sidebar -->
 
-    <h1>{{ element.title }}</h1>
-    <div class="d-sm-flex align-items-center mb-2">
-      <a href="{% url 'account:list_elements' %}"
-         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-      >
-        <i class="fas fa-arrow-left fa-sm text-white-50"></i>
-        Назад
-      </a>
-    </div>
-    <div class="d-sm-flex align-items-center mb-2">
-      <a href="{% url 'calc:update_element' element.pk %}"
-         class="btn btn-success btn-sm"
-      >
-        <i class="fas fa-info-circle fa-sm text-white-50"></i>
-        Изменить армирование
-      </a>
-    </div>
-  </div>
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
 
-  <div class="card shadow mb-4">
-      <!-- Card Header - Dropdown -->
-      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h3 class="m-0 font-weight-bold text-primary">Спецификация</h3>
-      </div>
-      <!-- Card Body -->
-      <div class="card-body">
-          {% include 'calc/includes/header_of_spec.html' %}
+      <!-- Main Content -->
+      <div id="content">
+          <!-- Topbar -->
+          {% include 'includes/topbar.html' %}
+          <!-- End of Topbar -->
 
-          {% for rod in rods %}
-            {% include 'calc/includes/rod_card.html' %}
-          {% endfor %}
-      </div>
-  </div>
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
 
+              <div class="col-xl-6 col-md-9 mb-6">
 
-  <div class="card shadow mb-4">
-      <!-- Card Header - Dropdown -->
-      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h3 class="m-0 font-weight-bold text-primary">Ведомость расхода стали, кг</h3>
-      </div>
-      <!-- Card Body -->
-      {% for clas, res in results.items %}
-      <div class="card-body">
-        <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
-                <div class="card  h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <h4 class="m-0 font-weight-bold text-primary">{{ clas }}</h4>
-                        </div>
-                    </div>
+                <h5>результаты</h5>
+
+                <h1>{{ element.title }}</h1>
+                <div class="d-sm-flex align-items-center mb-2">
+                  <a href="{% url 'account:list_elements' %}"
+                     class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                  >
+                    <i class="fas fa-arrow-left fa-sm text-white-50"></i>
+                    Назад
+                  </a>
                 </div>
-        </div>
+                <div class="d-sm-flex align-items-center mb-2">
+                  <a href="{% url 'calc:update_element' element.pk %}"
+                     class="btn btn-success btn-sm"
+                  >
+                    <i class="fas fa-info-circle fa-sm text-white-50"></i>
+                    Изменить армирование
+                  </a>
+                </div>
+              </div>
 
-        <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
-                <div class="card  h-100 py-2 bg-gradient-primary">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            {% for diam in res.keys %}
-                                <div class="col mr-2">
-                                    <div class="h6 font-weight-bold text-gray-100 mb-1">
-                                        {{ diam }}
+              <div class="card shadow mb-4">
+                  <!-- Card Header - Dropdown -->
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                      <h3 class="m-0 font-weight-bold text-primary">Спецификация</h3>
+                  </div>
+                  <!-- Card Body -->
+                  <div class="card-body">
+                      {% include 'calc/includes/header_of_spec.html' %}
+
+                      {% for rod in rods %}
+                        {% include 'calc/includes/rod_card.html' %}
+                      {% endfor %}
+                  </div>
+              </div>
+
+              <div class="card shadow mb-4">
+                  <!-- Card Header - Dropdown -->
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                      <h3 class="m-0 font-weight-bold text-primary">Ведомость расхода стали, кг</h3>
+                  </div>
+                  <!-- Card Body -->
+                  {% for clas, res in results.items %}
+                  <div class="card-body">
+                    <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
+                            <div class="card  h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <h4 class="m-0 font-weight-bold text-primary">{{ clas }}</h4>
                                     </div>
                                 </div>
-                            {% endfor %}
-                        </div>
+                            </div>
                     </div>
-                </div>
-        </div>
 
-
-
-        <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
-            <div class="card h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        {% for mass in res.values %}
-                            <div class="col mr-2">
-                                <div class="h5 font-weight-bold text-primary mb-1">
-                                    {{ mass }}
+                    <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
+                            <div class="card  h-100 py-2 bg-gradient-primary">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        {% for diam in res.keys %}
+                                            <div class="col mr-2">
+                                                <div class="h6 font-weight-bold text-gray-100 mb-1">
+                                                    {{ diam }}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
-                        {% endfor %}
                     </div>
-                </div>
-            </div>
-        </div>
-      </div>
-      {% endfor %}
 
-      <div class="card-body">
-          <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
-            <div class="card  h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <h4 class="m-0 font-weight-bold text-primary">Всего: {{ sum_element }}</h4>
+
+
+                    <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
+                        <div class="card h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    {% for mass in res.values %}
+                                        <div class="col mr-2">
+                                            <div class="h5 font-weight-bold text-primary mb-1">
+                                                {{ mass }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                  </div>
+                  {% endfor %}
+
+                  <div class="card-body">
+                      <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
+                        <div class="card  h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <h4 class="m-0 font-weight-bold text-primary">Всего: {{ sum_element }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+
+              </div>
+
+
           </div>
+          <!-- /.container-fluid -->
+
       </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'includes/footer.html' %}
+      <!-- End of Footer -->
 
   </div>
+  <!-- End of Content Wrapper -->
+
 {% endblock %}

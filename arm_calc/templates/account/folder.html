@@ -5,22 +5,50 @@
 {% endblock %}
 
 {% block content %}
-  <div class="col-xl-3 col-md-6 mb-4">
 
-    <h5>элемент</h5>
+  <!-- Sidebar -->
+  {% include 'includes/sidebar.html' %}
+  <!-- End of Sidebar -->
 
-    <h1>Название папки</h1>
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
 
-    <a href=""
-       class="btn btn-success btn-sm"
-    >
-      <i class="fas fa-download fa-sm text-white-50"></i>
-      Добавить элемент
-    </a>
+      <!-- Main Content -->
+      <div id="content">
+          <!-- Topbar -->
+          {% include 'includes/topbar.html' %}
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <div class="col-xl-3 col-md-6 mb-4">
+
+              <h5>элемент</h5>
+
+              <h1>Название папки</h1>
+
+              <a href=""
+                 class="btn btn-success btn-sm"
+              >
+                <i class="fas fa-download fa-sm text-white-50"></i>
+                Добавить элемент
+              </a>
+            </div>
+
+            {% for element in elements %}
+              {% include 'account/includes/element_card.html' %}
+            {% endfor %}
+          </div>
+          <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'includes/footer.html' %}
+      <!-- End of Footer -->
+
   </div>
-
-  {% for element in elements %}
-    {% include 'account/includes/element_card.html' %}
-  {% endfor %}
+  <!-- End of Content Wrapper -->
 
 {% endblock %}
