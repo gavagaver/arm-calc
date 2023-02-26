@@ -7,6 +7,11 @@ from account.models import Folder
 User = get_user_model()
 
 
+def landing(request):
+    context = {}
+    return render(request, 'account/landing.html', context)
+
+
 def folder(request, pk):
     folder = Folder.objects.get(pk=pk)
     elements = folder.elements.all()
