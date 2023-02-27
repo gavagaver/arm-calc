@@ -35,6 +35,13 @@ class Element(BaseModel):
         blank=True,
         null=True,
     )
+    engineer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='elements',
+        verbose_name='Инженер',
+        default=1,
+    )
 
     class Meta:
         verbose_name = 'Элемент'

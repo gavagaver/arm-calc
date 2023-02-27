@@ -13,6 +13,14 @@ class Folder(BaseModel):
         related_name='folders',
         verbose_name='Инженер',
     )
+    folder = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        related_name='folders',
+        verbose_name='Папка',
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name = 'Папка'

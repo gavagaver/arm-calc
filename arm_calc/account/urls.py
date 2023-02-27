@@ -12,13 +12,18 @@ urlpatterns = [
         name='landing',
     ),
     path(
-        'folder/<int:pk>/',
+        'folder/<int:folder_id>/',
         views.folder,
         name='list_elements',
     ),
     path(
-        'folder/',
-        views.folder,
-        name='folder',
+        'create_folder/',
+        views.create_folder,
+        name='create_folder',
+    ),
+    path(
+        'profile/<str:username>/',
+        views.profile,
+        name='profile',
     ),
 ]
