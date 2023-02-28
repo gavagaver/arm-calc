@@ -68,8 +68,9 @@ class ElementInline:
 
         element = form.save(commit=False)
         element.engineer = self.request.user
-        element.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
-        cache.clear()
+        if cache.get('folder_id'):
+            element.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
+            cache.clear()
         element.save()
 
         self.object = form.save()

@@ -22,27 +22,26 @@
           <!-- Begin Page Content -->
           <div class="container-fluid">
 
-              <div class="col-xl-6 col-md-9 mb-6">
+              <div class="col-xl-3 col-md-6 mb-4">
 
                 <h5>результаты</h5>
 
                 <h1>{{ element.title }}</h1>
-                <div class="d-sm-flex align-items-center mb-2">
-                  <a href="{% url 'account:list_elements' %}"
-                     class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-                  >
+
+
+                  <a href="{% url 'account:list_elements' element.folder.pk %}"
+                         class="btn btn-danger btn-sm"
+                      >
                     <i class="fas fa-arrow-left fa-sm text-white-50"></i>
                     Назад
                   </a>
-                </div>
-                <div class="d-sm-flex align-items-center mb-2">
                   <a href="{% url 'calc:update_element' element.pk %}"
                      class="btn btn-success btn-sm"
                   >
                     <i class="fas fa-info-circle fa-sm text-white-50"></i>
                     Изменить армирование
                   </a>
-                </div>
+
               </div>
 
               <div class="card shadow mb-4">
