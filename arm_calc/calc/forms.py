@@ -7,7 +7,7 @@ from calc.models import Element, Rod
 class ElementForm(forms.ModelForm):
     class Meta:
         model = Element
-        fields = '__all__'
+        exclude = ('engineer', 'folder',)
         widgets = {
             'title': forms.TextInput(
                 attrs={

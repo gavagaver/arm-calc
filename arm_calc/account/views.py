@@ -16,9 +16,11 @@ def landing(request):
 
 def folder(request, folder_id):
     folder = Folder.objects.get(pk=folder_id)
+    folders = Folder.objects.filter(folder=folder)
     elements = folder.elements.all()
     context = {
         'folder': folder,
+        'folders': folders,
         'elements': elements,
     }
     cache.set('folder_id', str(folder_id))
@@ -34,7 +36,9 @@ def create_folder(request):
         engineer = request.user
         folder = form.save(commit=False)
         folder.engineer = request.user
-        folder.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
+        if cache.get('folder_id'):
+            folder.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
+            cache.clear()
         folder.save()
         return redirect('account:list_elements', folder.pk)
     context = {

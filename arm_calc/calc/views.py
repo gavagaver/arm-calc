@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, UpdateView
 
 from calc.models import Element, Rod
 from calc.forms import ElementForm, RodFormSet
+from account.models import Folder
 
 User = get_user_model()
 
@@ -24,7 +26,8 @@ def result(request, pk):
         )))
         masses = []
         for diameter in diameters:
-            all_rods_of_diameter = rods.filter(diameter=diameter, arm_class=clas)
+            all_rods_of_diameter = rods.filter(diameter=diameter,
+                                               arm_class=clas)
             masses_of_diameter = []
             for rod in all_rods_of_diameter:
                 mass = rod.mass_of_rods()
@@ -63,6 +66,12 @@ class ElementInline:
         if not all((x.is_valid() for x in named_formsets.values())):
             return self.render_to_response(self.get_context_data(form=form))
 
+        element = form.save(commit=False)
+        element.engineer = self.request.user
+        element.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
+        cache.clear()
+        element.save()
+
         self.object = form.save()
 
         for name, formset in named_formsets.items():
@@ -71,7 +80,7 @@ class ElementInline:
                 formset_save_func(formset)
             else:
                 formset.save()
-        return redirect('account:list_elements')
+        return redirect('account:list_elements', element.folder.pk)
 
     def formset_rods_valid(self, formset):
         rods = formset.save(commit=False)
