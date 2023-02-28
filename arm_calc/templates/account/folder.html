@@ -42,6 +42,10 @@
               </a>
             </div>
 
+            {% for folder in folders %}
+              {% include 'account/includes/folder_card.html' %}
+            {% endfor %}
+
             {% for element in elements %}
               {% include 'account/includes/element_card.html' %}
             {% endfor %}
