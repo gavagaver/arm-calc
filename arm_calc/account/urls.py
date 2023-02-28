@@ -17,6 +17,11 @@ urlpatterns = [
         name='list_elements',
     ),
     path(
+        'folder/<int:folder_id>/delete',
+        views.delete_folder,
+        name='delete_folder',
+    ),
+    path(
         'create_folder/',
         views.create_folder,
         name='create_folder',
