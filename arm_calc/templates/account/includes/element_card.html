@@ -10,7 +10,6 @@
                     </div>
                 </div>
 
-
                 <div class="col-auto">
                     <a href="{% url 'calc:result' element.pk%}"
                        class="btn btn-primary btn-circle"
@@ -26,19 +25,19 @@
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal{{ element.pk }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{ element.pk }}" aria-hidden="true">
                     <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel{{ element.pk }}">Вы уверены, что хотите удалить элемент?</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel{{ element.pk }}">Вы уверены, что хотите удалить элемент?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Элемент будет удален без возможности восстановления.</div>
+                            <div class="modal-footer">
+                                <a href="{% url 'calc:delete_element' element.pk%}" type="button" class="btn btn-primary">Да, удалить</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                            </div>
                         </div>
-                        <div class="modal-body">Элемент будет удален без возможности восстановления.</div>
-                        <div class="modal-footer">
-                            <a href="{% url 'calc:delete_element' element.pk%}" type="button" class="btn btn-primary">Да, удалить</a>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>
