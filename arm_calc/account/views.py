@@ -47,9 +47,11 @@ def create_folder(request):
         engineer = request.user
         folder = form.save(commit=False)
         folder.engineer = request.user
-        if cache.get('folder_id'):
+        try:
             folder.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
             cache.clear()
+        except:
+            pass
         folder.save()
         return redirect('account:list_elements', folder.pk)
     context = {
