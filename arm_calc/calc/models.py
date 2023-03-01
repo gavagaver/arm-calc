@@ -59,26 +59,22 @@ class Rod(BaseModel):
         blank=True,
         null=True,
         verbose_name='Диаметр, мм',
-        default=0,
     )
     arm_class = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         verbose_name='Класс арматуры',
-        default='Класс арматуры'
     )
     length = models.SmallIntegerField(
         blank=True,
         null=True,
         verbose_name='Длина, мм',
-        default=0,
     )
     quantity = models.SmallIntegerField(
         blank=True,
         null=True,
         verbose_name='Кол-во, шт',
-        default=0,
     )
 
     def mass_of_single_rod(self):
