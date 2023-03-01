@@ -21,39 +21,13 @@
 
           <!-- Begin Page Content -->
           <div class="container-fluid">
-            <div class="col-xl-3 col-md-6 mb-4">
+
+
+            <div class="col-lg-5 mb-4">
 
               <h5>папка</h5>
 
               <h1>{{ folder.title }}</h1>
-
-              <a href="
-                {% if folder.folder %}
-                  {% url 'account:list_elements' folder.folder.pk %}
-                {% else %}
-                  {% url 'account:profile' request.user.username %}
-                {% endif %}
-              "
-                 class="btn btn-danger btn-sm"
-              >
-                <i class="fas fa-arrow-left fa-sm text-white-50"></i>
-                Назад
-              </a>
-
-              <a href="{% url 'account:create_folder' %}"
-                 class="btn btn-secondary btn-sm"
-              >
-                <i class="fas fa-folder fa-sm text-white-50"></i>
-                Создать папку
-              </a>
-
-
-              <a href="{% url 'calc:create_element' %}"
-                 class="btn btn-success btn-sm"
-              >
-                <i class="fas fa-file fa-sm text-white-50"></i>
-                Создать элемент
-              </a>
 
             </div>
 
@@ -64,6 +38,40 @@
             {% for element in elements %}
               {% include 'account/includes/element_card.html' %}
             {% endfor %}
+
+
+            <div class="col-lg-5 mb-4">
+
+              <a href="
+                {% if folder.folder %}
+                  {% url 'account:list_elements' folder.folder.pk %}
+                {% else %}
+                  {% url 'account:profile' request.user.username %}
+                {% endif %}
+              "
+                 class="btn btn-danger btn-lg"
+              >
+                <i class="fas fa-arrow-left fa-lg text-white-50"></i>
+                Назад
+              </a>
+
+              <a href="{% url 'account:create_folder' %}"
+                 class="btn btn-secondary btn-lg"
+              >
+                <i class="fas fa-folder fa-lg text-white-50"></i>
+                Создать папку
+              </a>
+
+
+              <a href="{% url 'calc:create_element' %}"
+                 class="btn btn-success btn-lg"
+              >
+                <i class="fas fa-file fa-lg text-white-50"></i>
+                Создать элемент
+              </a>
+
+            </div>
+
           </div>
           <!-- /.container-fluid -->
 
