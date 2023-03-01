@@ -31,4 +31,9 @@ urlpatterns = [
         views.delete_rod,
         name='delete_rod',
     ),
+    path(
+        'copy-rod/<int:pk>/',
+        views.copy_rod,
+        name='copy_rod',
+    ),
 ]

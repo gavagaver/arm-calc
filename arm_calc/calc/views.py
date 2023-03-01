@@ -147,6 +147,23 @@ def delete_rod(request, pk):
     return redirect('calc:update_element', pk=rod.element.id)
 
 
+def copy_rod(request, pk):
+    try:
+        rod = Rod.objects.get(id=pk)
+    except Rod.DoesNotExist:
+        messages.success(
+            request, 'Такого стержня нет'
+        )
+        return redirect('calc:update_element', pk=rod.element.id)
+
+    rod.pk = None
+    rod.save()
+    messages.success(
+        request, 'Стержень успешно скопирован'
+    )
+    return redirect('calc:update_element', pk=rod.element.id)
+
+
 def delete_element(request, element_id):
     element = Element.objects.get(pk=element_id)
     place_folder = element.folder
