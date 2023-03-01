@@ -136,12 +136,23 @@ def delete_rod(request, pk):
         rod = Rod.objects.get(id=pk)
     except Rod.DoesNotExist:
         messages.success(
-            request, 'Object Does not exit'
+            request, 'Такого стержня нет'
         )
         return redirect('calc:update_element', pk=rod.element.id)
 
     rod.delete()
     messages.success(
-        request, 'Rod deleted successfully'
+        request, 'Стержень успешно удален'
     )
     return redirect('calc:update_element', pk=rod.element.id)
+
+
+def delete_element(request, element_id):
+    element = Element.objects.get(pk=element_id)
+    place_folder = element.folder
+    if element:
+        element.delete()
+    if place_folder:
+        return redirect('account:list_elements', place_folder.pk)
+    else:
+        return redirect('account:profile', request.user.username)

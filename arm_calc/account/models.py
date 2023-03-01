@@ -15,7 +15,7 @@ class Folder(BaseModel):
     )
     folder = models.ForeignKey(
         'self',
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name='folders',
         verbose_name='Папка',
         blank=True,

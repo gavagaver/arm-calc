@@ -30,9 +30,6 @@ def folder(request, folder_id):
 def delete_folder(request, folder_id):
     folder = Folder.objects.get(pk=folder_id)
     place_folder = folder.folder
-    for inner_folder in folder.folders.all():
-        if inner_folder:
-            inner_folder.delete()
     if folder:
         folder.delete()
     if place_folder:

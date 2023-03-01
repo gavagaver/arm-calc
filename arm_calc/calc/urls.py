@@ -22,6 +22,11 @@ urlpatterns = [
         name='update_element',
     ),
     path(
+        'delete/<int:pk>/',
+        views.delete_element,
+        name='delete_element',
+    ),
+    path(
         'delete-rod/<int:pk>/',
         views.delete_rod,
         name='delete_rod',
