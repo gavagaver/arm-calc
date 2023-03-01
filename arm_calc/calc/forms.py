@@ -21,18 +21,44 @@ class RodForm(forms.ModelForm):
     class Meta:
         model = Rod
         fields = '__all__'
+        DIAMETERS = (
+            ('6', '6'),
+            ('8', '8'),
+            ('10', '10'),
+            ('12', '12'),
+            ('14', '14'),
+            ('16', '16'),
+            ('18', '18'),
+            ('20', '20'),
+            ('22', '22'),
+            ('25', '25'),
+            ('28', '28'),
+            ('32', '32'),
+            ('36', '36'),
+            ('40', '40'),
+        )
+        ARM_CLASSES = (
+            ('А240', 'А240'),
+            ('А400', 'А400'),
+            ('А500', 'А500'),
+            ('А600', 'А600'),
+            ('А800', 'А800'),
+            ('А1000', 'А1000'),
+        )
         widgets = {
             'title': forms.TextInput(
                 attrs={
                     'class': 'form-control'
                 }
             ),
-            'diameter': forms.NumberInput(
+            'diameter': forms.Select(
+                choices=DIAMETERS,
                 attrs={
                     'class': 'form-control'
                 }
             ),
-            'arm_class': forms.TextInput(
+            'arm_class': forms.Select(
+                choices=ARM_CLASSES,
                 attrs={
                     'class': 'form-control'
                 }
