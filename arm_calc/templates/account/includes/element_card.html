@@ -10,7 +10,19 @@
                     </div>
                 </div>
 
-                <div class="col-auto">
+
+                <div class="col-auto ml-4">
+                    <a href="{% url 'calc:copy_element' element.pk %}"
+                       class="btn btn-warning btn-circle"
+                       title="Дублировать элемент"
+                    >
+                        <i class="fas fa-copy fa-1x text-gray-100"></i>
+                    </a>
+                </div>
+
+
+
+                <div class="col-auto ml-4">
                     <a href="{% url 'calc:result' element.pk%}"
                        class="btn btn-primary btn-circle"
                        title="Посмотреть результат"

@@ -36,4 +36,9 @@ urlpatterns = [
         views.copy_rod,
         name='copy_rod',
     ),
+    path(
+        'copy-element/<int:pk>/',
+        views.copy_element,
+        name='copy_element',
+    ),
 ]

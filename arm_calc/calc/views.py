@@ -164,11 +164,43 @@ def copy_rod(request, pk):
     return redirect('calc:update_element', pk=rod.element.id)
 
 
-def delete_element(request, element_id):
-    element = Element.objects.get(pk=element_id)
+def delete_element(request, pk):
+    element = Element.objects.get(pk=pk)
     place_folder = element.folder
+    rods = Rod.objects.filter(element=element)
     if element:
         element.delete()
+    for rod in rods:
+        if rods:
+            rod.delete()
+    if place_folder:
+        return redirect('account:list_elements', place_folder.pk)
+    else:
+        return redirect('account:profile', request.user.username)
+
+
+def copy_element(request, pk):
+    try:
+        element = Element.objects.get(id=pk)
+        place_folder = element.folder
+        rods = Rod.objects.filter(element=element)
+    except Element.DoesNotExist:
+        messages.success(
+            request, 'Такого стержня и/или элемента нет'
+        )
+        return redirect('account:list_elements', pk=element.folder.pk)
+
+    element.pk = None
+    element.save()
+
+    for rod in rods:
+        rod.pk = None
+        rod.element = element
+        rod.save()
+
+    messages.success(
+        request, 'Элемент успешно скопирован'
+    )
     if place_folder:
         return redirect('account:list_elements', place_folder.pk)
     else:
