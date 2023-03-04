@@ -44,8 +44,8 @@ class Element(BaseModel):
     )
     measurement_scale = models.SmallIntegerField(
         default=1,
-        verbose_name='Масштаб измерений длины',
-        help_text='Во сколько раз вводимые значения длин больше действительных'
+        verbose_name='Масштаб измерений',
+        help_text='Во сколько раз вводимые значения больше действительных'
     )
 
     class Meta:
@@ -53,12 +53,21 @@ class Element(BaseModel):
         verbose_name_plural = 'Элементы'
 
 
-class Rod(BaseModel):
+class RodsCalc(BaseModel):
     element = models.ForeignKey(
         Element,
         on_delete=models.CASCADE,
-        related_name='rods',
+        related_name='rods_calcs',
         verbose_name='Элемент',
+    )
+
+
+class Rod(BaseModel):
+    rods_calc = models.ForeignKey(
+        RodsCalc,
+        on_delete=models.CASCADE,
+        related_name='rods',
+        verbose_name='Армирование',
     )
     diameter = models.SmallIntegerField(
         blank=True,
@@ -145,3 +154,30 @@ class Rod(BaseModel):
         verbose_name = 'Стержень'
         verbose_name_plural = 'Стержни'
         ordering = ('title',)
+
+
+class VolumesCalc(models.Model):
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name='volumes_calcs',
+        verbose_name='Элемент',
+    )
+
+
+class SquaresCalc(models.Model):
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name='squares_calcs',
+        verbose_name='Элемент',
+    )
+
+
+class UnitsCalc(models.Model):
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name='units_calcs',
+        verbose_name='Элемент',
+    )

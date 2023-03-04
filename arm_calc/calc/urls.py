@@ -12,14 +12,14 @@ urlpatterns = [
         name='result',
     ),
     path(
-        'create/',
-        views.ElementCreate.as_view(),
-        name='create_element',
+        'create_rods_calc/',
+        views.RodsCalcCreate.as_view(),
+        name='create_rods_calc',
     ),
     path(
-        'update/<int:pk>/',
-        views.ElementUpdate.as_view(),
-        name='update_element',
+        'update_rods_calc/<int:pk>/',
+        views.RodsCalcUpdate.as_view(),
+        name='update_rods_calc',
     ),
     path(
         'delete/<int:pk>/',

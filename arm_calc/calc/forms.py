@@ -1,13 +1,13 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from calc.models import Element, Rod
+from calc.models import RodsCalc, Rod
 
 
-class ElementForm(forms.ModelForm):
+class RodsCalcForm(forms.ModelForm):
     class Meta:
-        model = Element
-        exclude = ('engineer', 'folder',)
+        model = RodsCalc
+        fields = '__all__'
         widgets = {
             'title': forms.TextInput(
                 attrs={
@@ -117,7 +117,7 @@ class RodForm(forms.ModelForm):
 
 
 RodFormSet = inlineformset_factory(
-    Element, Rod, form=RodForm,
-    extra=1, can_delete=False,
+    RodsCalc, Rod, form=RodForm,
+    extra=0, can_delete=False,
     can_delete_extra=True
 )

@@ -20,7 +20,7 @@ class RodAdmin(admin.ModelAdmin):
         'pk',
         'title',
         'create_date',
-        'element',
+        'rods_calc',
         'diameter',
         'arm_class',
         'length_1',
@@ -36,7 +36,7 @@ class RodAdmin(admin.ModelAdmin):
         'mass_of_rods',
     )
     search_fields = ('title',)
-    list_filter = ('create_date', 'element',)
+    list_filter = ('create_date', 'rods_calc',)
     list_editable = (
         'title',
         'diameter',
