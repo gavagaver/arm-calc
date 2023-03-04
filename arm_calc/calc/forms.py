@@ -14,6 +14,11 @@ class ElementForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'measurement_scale': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
         }
 
 
