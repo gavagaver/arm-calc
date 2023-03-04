@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, UpdateView
 
 from calc.models import Element, Rod, RodsCalc
-from calc.forms import RodsCalcForm, RodFormSet
+from calc.forms import ElementForm, RodsCalcForm, RodFormSet
 from account.models import Folder
 
 User = get_user_model()
@@ -57,6 +57,49 @@ def result(request, pk):
     return render(request, 'calc/result.html', context)
 
 
+def create_element(request):
+    form = ElementForm(
+        request.POST or None,
+        files=request.FILES or None,
+    )
+    if form.is_valid():
+        engineer = request.user
+        if cache.get('folder_id'):
+            folder = Folder.objects.get(pk=int(cache.get('folder_id')))
+            cache.clear()
+        element = form.save(commit=False)
+        element.engineer = request.user
+        if cache.get('folder_id'):
+            element.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
+            cache.clear()
+        else:
+            element.save()
+            return redirect('account:profile', request.user.username)
+        element.save()
+        if folder:
+            return redirect('account:list_elements', folder.pk)
+    context = {
+        'form': form,
+    }
+    return render(request, 'calc/create_element.html', context)
+
+
+def update_element(request, pk):
+    updated_element = get_object_or_404(Element, pk=pk)
+    if request.user != updated_element.engineer:
+        return redirect('account:profile', request.user.username)
+    form = ElementForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=updated_element,
+    )
+    if form.is_valid():
+        form.save()
+        return redirect('account:profile', request.user.username)
+    context = {'form': form, }
+    return render(request, 'calc/create_element.html', context)
+
+
 class RodsCalcInline:
     form_class = RodsCalcForm
     model = RodsCalc
@@ -70,7 +113,8 @@ class RodsCalcInline:
         rods_calc = form.save(commit=False)
         rods_calc.element.engineer = self.request.user
         if cache.get('folder_id'):
-            rods_calc.element.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
+            rods_calc.element.folder = Folder.objects.get(
+                pk=int(cache.get('folder_id')))
             cache.clear()
         rods_calc.save()
 

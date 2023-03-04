@@ -1,7 +1,16 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from calc.models import RodsCalc, Rod
+from calc.models import Element, RodsCalc, Rod
+
+
+class ElementForm(forms.ModelForm):
+    class Meta:
+        model = Element
+        fields = ['title', ]
+        labels = {
+            'title': 'Укажите название элемента:',
+        }
 
 
 class RodsCalcForm(forms.ModelForm):

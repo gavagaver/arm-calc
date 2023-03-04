@@ -17,9 +17,19 @@ urlpatterns = [
         name='create_rods_calc',
     ),
     path(
+        'create_element/',
+        views.create_element,
+        name='create_element',
+    ),
+    path(
         'update_rods_calc/<int:pk>/',
         views.RodsCalcUpdate.as_view(),
         name='update_rods_calc',
+    ),
+    path(
+        'update_element/<int:pk>/',
+        views.update_element,
+        name='update_element',
     ),
     path(
         'delete/<int:pk>/',
