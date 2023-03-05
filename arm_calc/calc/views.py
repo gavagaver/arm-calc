@@ -4,11 +4,73 @@ from django.core.cache import cache
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, UpdateView
 
-from calc.models import Element, Rod, RodsCalc
-from calc.forms import ElementForm, RodsCalcForm, RodFormSet
-from account.models import Folder
+from calc.models import Folder, Element, Rod, RodsCalc
+from calc.forms import FolderForm, ElementForm, RodsCalcForm, RodFormSet
 
 User = get_user_model()
+
+
+def landing(request):
+    context = {}
+    return render(request, 'calc/landing.html', context)
+
+
+def folder(request, folder_id):
+    folder = Folder.objects.get(pk=folder_id)
+    folders = Folder.objects.filter(folder=folder)
+    elements = folder.elements.all()
+    context = {
+        'folder': folder,
+        'folders': folders,
+        'elements': elements,
+    }
+    cache.set('folder_id', str(folder_id))
+    return render(request, 'calc/folder.html', context)
+
+
+def delete_folder(request, folder_id):
+    folder = Folder.objects.get(pk=folder_id)
+    place_folder = folder.folder
+    if folder:
+        folder.delete()
+    if place_folder:
+        return redirect('calc:folder', place_folder.pk)
+    else:
+        return redirect('calc:profile', request.user.username)
+
+
+def create_folder(request):
+    form = FolderForm(
+        request.POST or None,
+        files=request.FILES or None,
+    )
+    if form.is_valid():
+        engineer = request.user
+        folder = form.save(commit=False)
+        folder.engineer = request.user
+        try:
+            folder.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
+            cache.clear()
+        except:
+            pass
+        folder.save()
+        return redirect('calc:folder', folder.pk)
+    context = {
+        'form': form,
+    }
+    return render(request, 'calc/create_folder.html', context)
+
+
+def profile(request, username):
+    engineer = get_object_or_404(User, username=username)
+    folders = engineer.folders.filter(folder=None)
+    elements = engineer.elements.filter(folder=None)
+    context = {
+        'engineer': engineer,
+        'folders': folders,
+        'elements': elements,
+    }
+    return render(request, 'calc/profile.html', context)
 
 
 def result(request, pk):
@@ -74,10 +136,10 @@ def create_element(request):
             cache.clear()
         else:
             element.save()
-            return redirect('account:profile', request.user.username)
+            return redirect('calc:profile', request.user.username)
         element.save()
         if folder:
-            return redirect('account:list_elements', folder.pk)
+            return redirect('calc:folder', folder.pk)
     context = {
         'form': form,
     }
@@ -87,7 +149,7 @@ def create_element(request):
 def update_element(request, pk):
     updated_element = get_object_or_404(Element, pk=pk)
     if request.user != updated_element.engineer:
-        return redirect('account:profile', request.user.username)
+        return redirect('calc:profile', request.user.username)
     form = ElementForm(
         request.POST or None,
         files=request.FILES or None,
@@ -95,7 +157,7 @@ def update_element(request, pk):
     )
     if form.is_valid():
         form.save()
-        return redirect('account:profile', request.user.username)
+        return redirect('calc:profile', request.user.username)
     context = {'form': form, }
     return render(request, 'calc/create_element.html', context)
 
@@ -126,7 +188,7 @@ class RodsCalcInline:
                 formset_save_func(formset)
             else:
                 formset.save()
-        return redirect('account:list_elements', rods_calc.element.folder.pk)
+        return redirect('calc:folder', rods_calc.element.folder.pk)
 
     def formset_rods_valid(self, formset):
         rods = formset.save(commit=False)
@@ -221,9 +283,9 @@ def delete_element(request, pk):
             if rods:
                 rod.delete()
         if place_folder:
-            return redirect('account:list_elements', place_folder.pk)
+            return redirect('calc:folder', place_folder.pk)
         else:
-            return redirect('account:profile', request.user.username)
+            return redirect('calc:profile', request.user.username)
 
 
 def copy_element(request, pk):
@@ -235,12 +297,12 @@ def copy_element(request, pk):
         messages.error(
             request, 'Такого элемента нет'
         )
-        return redirect('account:list_elements', pk=element.folder.pk)
+        return redirect('calc:folder', pk=element.folder.pk)
     except RodsCalc.DoesNotExist:
         messages.error(
             request, 'Такого армирования нет'
         )
-        return redirect('account:list_elements', pk=element.folder.pk)
+        return redirect('calc:folder', pk=element.folder.pk)
 
     element.pk = None
     element.save()
@@ -252,7 +314,7 @@ def copy_element(request, pk):
             messages.error(
                 request, 'Такого армирования нет'
             )
-            return redirect('account:list_elements', pk=element.folder.pk)
+            return redirect('calc:folder', pk=element.folder.pk)
         rods_calc.pk = None
         rods_calc.element = element
         rods_calc.save()
@@ -266,6 +328,6 @@ def copy_element(request, pk):
         request, 'Элемент успешно скопирован'
     )
     if place_folder:
-        return redirect('account:list_elements', place_folder.pk)
+        return redirect('calc:folder', place_folder.pk)
     else:
-        return redirect('account:profile', request.user.username)
+        return redirect('calc:profile', request.user.username)

@@ -29,12 +29,12 @@
             </div>
 
             {% for folder in folders %}
-              {% include 'account/includes/folder_card.html' %}
+              {% include 'calc/includes/folder_card.html' %}
             {% endfor %}
 
             <div class="col-xl-3 col-md-6 mb-4">
 
-              <a href="{% url 'account:create_folder' %}"
+              <a href="{% url 'calc:create_folder' %}"
                  class="btn btn-success btn-lg"
               >
                 <i class="fas fa-folder fa-lg text-white-50"></i>

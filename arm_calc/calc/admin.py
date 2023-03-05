@@ -1,5 +1,25 @@
 from django.contrib import admin
-from calc.models import Element, Rod
+from calc.models import Construction, Folder, Element, RodsCalc, Rod
+
+
+class FolderAdmin(admin.ModelAdmin):
+    list_display = (
+        'pk',
+        'title',
+        'create_date',
+        'engineer',
+    )
+    search_fields = ('title',)
+    list_filter = ('create_date',)
+    list_editable = ('title',)
+    empty_value_display = '-пусто-',
+
+
+class ConstructionAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+    search_fields = ('title',)
+    list_filter = ('create_date',)
+    empty_value_display = '-пусто-',
 
 
 class ElementAdmin(admin.ModelAdmin):
@@ -7,11 +27,18 @@ class ElementAdmin(admin.ModelAdmin):
         'pk',
         'title',
         'create_date',
-        'folder',
+        'construction',
     )
     search_fields = ('title',)
     list_filter = ('create_date',)
     list_editable = ('title',)
+    empty_value_display = '-пусто-',
+
+
+class RodsCalcAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+    search_fields = ('title',)
+    list_filter = ('create_date',)
     empty_value_display = '-пусто-',
 
 
@@ -54,5 +81,8 @@ class RodAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-',
 
 
+admin.site.register(Construction, ConstructionAdmin)
+admin.site.register(Folder, FolderAdmin)
 admin.site.register(Element, ElementAdmin)
+admin.site.register(RodsCalc, RodsCalcAdmin)
 admin.site.register(Rod, RodAdmin)

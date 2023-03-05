@@ -4,7 +4,7 @@
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="h5 font-weight-bold text-primary mb-1">
-                        <a href="{% url 'account:list_elements' folder.pk%}">
+                        <a href="{% url 'calc:folder' folder.pk%}">
                             {{ folder.title }}
                         </a>
                     </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="modal-body">Все содержимое папки будет удалено без возможности восстановления.</div>
                         <div class="modal-footer">
-                            <a href="{% url 'account:delete_folder' folder.pk%}" type="button" class="btn btn-primary">Да, удалить</a>
+                            <a href="{% url 'calc:delete_folder' folder.pk%}" type="button" class="btn btn-primary">Да, удалить</a>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                         </div>
                     </div>

@@ -7,6 +7,31 @@ app_name = 'calc'
 
 urlpatterns = [
     path(
+        '',
+        views.landing,
+        name='landing',
+    ),
+    path(
+        'folder/<int:folder_id>/',
+        views.folder,
+        name='folder',
+    ),
+    path(
+        'folder/<int:folder_id>/delete',
+        views.delete_folder,
+        name='delete_folder',
+    ),
+    path(
+        'create_folder/',
+        views.create_folder,
+        name='create_folder',
+    ),
+    path(
+        'profile/<str:username>/',
+        views.profile,
+        name='profile',
+    ),
+    path(
         'result/<int:pk>/',
         views.result,
         name='result',

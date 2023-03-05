@@ -1,11 +1,7 @@
-from django.contrib.auth import get_user_model
-
 from django.db import models
 
-from account.models import Folder
-from core.models import BaseModel
-
-User = get_user_model()
+from core.models import User, BaseModel, ConstructionModel, CalcModel, \
+    PartModel
 
 MASS_OF_METER = {
     6: 0.222,
@@ -26,21 +22,72 @@ MASS_OF_METER = {
 MM_IN_M = 1000
 
 
+class Site(BaseModel):
+    engineer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='sites',
+        verbose_name='Инженер',
+    )
+
+    class Meta:
+        verbose_name = 'Объект'
+        verbose_name_plural = 'Объекты'
+
+
+class Construction(ConstructionModel):
+    site = models.ForeignKey(
+        Site,
+        on_delete=models.CASCADE,
+        related_name='constructions',
+        verbose_name='Объект',
+        default=1,
+    )
+
+    class Meta:
+        verbose_name = 'Сооружение'
+        verbose_name_plural = 'Сооружения'
+
+
+class Folder(BaseModel):
+    construction = models.ForeignKey(
+        Construction,
+        on_delete=models.CASCADE,
+        related_name='folders',
+        verbose_name='Сооружение',
+    )
+    engineer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='folders',
+        verbose_name='Инженер',
+    )
+    folder = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        related_name='folders',
+        verbose_name='Папка',
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        verbose_name = 'Папка'
+        verbose_name_plural = 'Папки'
+
+
 class Element(BaseModel):
     folder = models.ForeignKey(
         Folder,
         on_delete=models.CASCADE,
         related_name='elements',
         verbose_name='Папка',
-        blank=True,
-        null=True,
     )
     engineer = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='elements',
         verbose_name='Инженер',
-        default=1,
     )
     measurement_scale = models.SmallIntegerField(
         default=1,
@@ -53,7 +100,7 @@ class Element(BaseModel):
         verbose_name_plural = 'Элементы'
 
 
-class RodsCalc(BaseModel):
+class RodsCalc(CalcModel):
     element = models.ForeignKey(
         Element,
         on_delete=models.CASCADE,
@@ -61,8 +108,12 @@ class RodsCalc(BaseModel):
         verbose_name='Элемент',
     )
 
+    class Meta:
+        verbose_name = 'Расчет армирования'
+        verbose_name_plural = 'Расчеты армирования'
 
-class Rod(BaseModel):
+
+class Rod(PartModel):
     rods_calc = models.ForeignKey(
         RodsCalc,
         on_delete=models.CASCADE,
@@ -156,7 +207,7 @@ class Rod(BaseModel):
         ordering = ('title',)
 
 
-class VolumesCalc(models.Model):
+class VolumesCalc(CalcModel):
     element = models.ForeignKey(
         Element,
         on_delete=models.CASCADE,
@@ -164,8 +215,21 @@ class VolumesCalc(models.Model):
         verbose_name='Элемент',
     )
 
+    class Meta:
+        verbose_name = 'Расчет объема'
+        verbose_name_plural = 'Расчеты объемов'
 
-class SquaresCalc(models.Model):
+
+class Volume(PartModel):
+    volumes_calc = models.ForeignKey(
+        VolumesCalc,
+        on_delete=models.CASCADE,
+        related_name='volumes',
+        verbose_name='Расчет объема',
+    )
+
+
+class SquaresCalc(CalcModel):
     element = models.ForeignKey(
         Element,
         on_delete=models.CASCADE,
@@ -173,11 +237,59 @@ class SquaresCalc(models.Model):
         verbose_name='Элемент',
     )
 
+    class Meta:
+        verbose_name = 'Расчет площади'
+        verbose_name_plural = 'Расчеты площадей'
 
-class UnitsCalc(models.Model):
+
+class Square(PartModel):
+    squares_calc = models.ForeignKey(
+        SquaresCalc,
+        on_delete=models.CASCADE,
+        related_name='squares',
+        verbose_name='Расчет площади',
+    )
+
+
+class LengthsCalc(CalcModel):
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name='lengths_calcs',
+        verbose_name='Элемент',
+    )
+
+    class Meta:
+        verbose_name = 'Расчет длины'
+        verbose_name_plural = 'Расчеты длин'
+
+
+class Length(PartModel):
+    lengths_calc = models.ForeignKey(
+        LengthsCalc,
+        on_delete=models.CASCADE,
+        related_name='lengths',
+        verbose_name='Расчет длины',
+    )
+
+
+class UnitsCalc(CalcModel):
     element = models.ForeignKey(
         Element,
         on_delete=models.CASCADE,
         related_name='units_calcs',
         verbose_name='Элемент',
+    )
+
+    class Meta:
+        verbose_name = 'Расчет единиц'
+        verbose_name_plural = 'Расчеты единиц'
+
+
+class Unit(PartModel):
+    units_calc = models.ForeignKey(
+        UnitsCalc,
+        on_delete=models.CASCADE,
+        related_name='units',
+        verbose_name='Расчет единиц',
     )

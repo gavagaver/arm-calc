@@ -1,7 +1,16 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from calc.models import Element, RodsCalc, Rod
+from calc.models import Folder, Element, RodsCalc, Rod
+
+
+class FolderForm(forms.ModelForm):
+    class Meta:
+        model = Folder
+        fields = ['title', ]
+        labels = {
+            'title': 'Укажите название папки:',
+        }
 
 
 class ElementForm(forms.ModelForm):
