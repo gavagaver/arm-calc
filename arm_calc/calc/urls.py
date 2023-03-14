@@ -1,79 +1,359 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from calc import views
+from . import views
 
 app_name = 'calc'
 
-urlpatterns = [
+urlpatterns_objects = [
     path(
-        '',
-        views.landing,
-        name='landing',
+        'site/<int:pk>/',
+        views.site,
+        name='site',
     ),
     path(
-        'folder/<int:folder_id>/',
+        'site/create',
+        views.site_create,
+        name='site_create',
+    ),
+    path(
+        'site/<int:pk>/update',
+        views.site_update,
+        name='site_update',
+    ),
+    path(
+        'site/<int:pk>/duplicate',
+        views.site_duplicate,
+        name='site_duplicate',
+    ),
+    path(
+        'site/<int:pk>/delete',
+        views.site_delete,
+        name='site_delete',
+    ),
+
+    path(
+        'construction/<int:pk>/',
+        views.construction,
+        name='construction',
+    ),
+    path(
+        'construction/create',
+        views.construction_create,
+        name='construction_create',
+    ),
+    path(
+        'construction/<int:pk>/update',
+        views.construction_update,
+        name='construction_update',
+    ),
+    path(
+        'construction/<int:pk>/duplicate',
+        views.construction_duplicate,
+        name='construction_duplicate',
+    ),
+    path(
+        'construction/<int:pk>/delete',
+        views.construction_delete,
+        name='construction_delete',
+    ),
+
+    path(
+        'version/<int:pk>/',
+        views.version,
+        name='version',
+    ),
+    path(
+        'version/create',
+        views.version_create,
+        name='version_create',
+    ),
+    path(
+        'version/<int:pk>/update',
+        views.version_update,
+        name='version_update',
+    ),
+    path(
+        'version/<int:pk>/duplicate',
+        views.version_duplicate,
+        name='version_duplicate',
+    ),
+    path(
+        'version/<int:pk>/delete',
+        views.version_delete,
+        name='version_delete',
+    ),
+
+    path(
+        'folder/<int:pk>/',
         views.folder,
         name='folder',
     ),
     path(
-        'folder/<int:folder_id>/delete',
-        views.delete_folder,
-        name='delete_folder',
+        'folder/create',
+        views.folder_create,
+        name='folder_create',
     ),
     path(
-        'create_folder/',
-        views.create_folder,
-        name='create_folder',
+        'folder/<int:pk>/update',
+        views.folder_update,
+        name='folder_update',
     ),
     path(
-        'profile/<str:username>/',
-        views.profile,
-        name='profile',
+        'folder/<int:pk>/duplicate',
+        views.folder_duplicate,
+        name='folder_duplicate',
     ),
     path(
-        'result/<int:pk>/',
-        views.result,
-        name='result',
+        'folder/<int:pk>/delete',
+        views.folder_delete,
+        name='folder_delete',
+    ),
+
+    path(
+        'element/<int:pk>/',
+        views.element,
+        name='element',
     ),
     path(
-        'create_rods_calc/',
-        views.RodsCalcCreate.as_view(),
-        name='create_rods_calc',
+        'element/create',
+        views.element_create,
+        name='element_create',
     ),
     path(
-        'create_element/',
-        views.create_element,
-        name='create_element',
+        'element/<int:pk>/update',
+        views.element_update,
+        name='element_update',
     ),
     path(
-        'update_rods_calc/<int:pk>/',
-        views.RodsCalcUpdate.as_view(),
-        name='update_rods_calc',
+        'element/<int:pk>/duplicate',
+        views.element_duplicate,
+        name='element_duplicate',
     ),
     path(
-        'update_element/<int:pk>/',
-        views.update_element,
-        name='update_element',
-    ),
-    path(
-        'delete/<int:pk>/',
-        views.delete_element,
-        name='delete_element',
-    ),
-    path(
-        'delete-rod/<int:pk>/',
-        views.delete_rod,
-        name='delete_rod',
-    ),
-    path(
-        'copy-rod/<int:pk>/',
-        views.copy_rod,
-        name='copy_rod',
-    ),
-    path(
-        'copy-element/<int:pk>/',
-        views.copy_element,
-        name='copy_element',
+        'element/<int:pk>/delete',
+        views.element_delete,
+        name='element_delete',
     ),
 ]
+
+urlpatterns_rods_calc = [
+    path(
+        'rods_calc/<int:pk>/',
+        views.RodsCalc.as_view(),
+        name='rods_calc',
+    ),
+    path(
+        'rods_calc/create/',
+        views.RodsCalcCreate.as_view(),
+        name='rods_calc_create',
+    ),
+    path(
+        'rods_calc/<int:pk>/update/',
+        views.RodsCalcUpdate.as_view(),
+        name='rods_calc_update',
+    ),
+    path(
+        'rods_calc/<int:pk>/duplicate/',
+        views.RodsCalcDuplicate.as_view(),
+        name='rods_calc_duplicate',
+    ),
+    path(
+        'rods_calc/<int:pk>/delete/',
+        views.RodsCalcDelete.as_view(),
+        name='rods_calc_delete',
+    ),
+
+    path(
+        'rod/<int:pk>/duplicate/',
+        views.rod_duplicate,
+        name='rod_duplicate',
+    ),
+    path(
+        'rod/<int:pk>/delete/',
+        views.rod_delete,
+        name='rod_delete',
+    ),
+]
+
+urlpatterns_volumes_calc = [
+    path(
+        'volumes_calc/<int:pk>/',
+        views.RodsCalc.as_view(),
+        name='volumes_calc',
+    ),
+    path(
+        'volumes_calc/create/',
+        views.RodsCalcCreate.as_view(),
+        name='volumes_calc_create',
+    ),
+    path(
+        'volumes_calc/<int:pk>/update/',
+        views.RodsCalcUpdate.as_view(),
+        name='volumes_calc_update',
+    ),
+    path(
+        'volumes_calc/<int:pk>/duplicate/',
+        views.RodsCalcDuplicate.as_view(),
+        name='volumes_calc_duplicate',
+    ),
+    path(
+        'volumes_calc/<int:pk>/delete/',
+        views.RodsCalcDelete.as_view(),
+        name='volumes_calc_delete',
+    ),
+
+    path(
+        'volume/<int:pk>/duplicate/',
+        views.volume_duplicate,
+        name='volume_duplicate',
+    ),
+    path(
+        'volume/<int:pk>/delete/',
+        views.volume_delete,
+        name='volume_delete',
+    ),
+]
+
+urlpatterns_squares_calc = [
+    path(
+        'rods_calc/<int:pk>/',
+        views.RodsCalc.as_view(),
+        name='rods_calc',
+    ),
+    path(
+        'rods_calc/create/',
+        views.RodsCalcCreate.as_view(),
+        name='rods_calc_create',
+    ),
+    path(
+        'rods_calc/<int:pk>/update/',
+        views.RodsCalcUpdate.as_view(),
+        name='rods_calc_update',
+    ),
+    path(
+        'rods_calc/<int:pk>/duplicate/',
+        views.RodsCalcDuplicate.as_view(),
+        name='rods_calc_duplicate',
+    ),
+    path(
+        'rods_calc/<int:pk>/delete/',
+        views.RodsCalcDelete.as_view(),
+        name='rods_calc_delete',
+    ),
+
+    path(
+        'rod/<int:pk>/duplicate/',
+        views.rod_duplicate,
+        name='rod_duplicate',
+    ),
+    path(
+        'rod/<int:pk>/delete/',
+        views.rod_delete,
+        name='rod_delete',
+    ),
+]
+
+urlpatterns_lengths_calc = [
+    path(
+        'rods_calc/<int:pk>/',
+        views.RodsCalc.as_view(),
+        name='rods_calc',
+    ),
+    path(
+        'rods_calc/create/',
+        views.RodsCalcCreate.as_view(),
+        name='rods_calc_create',
+    ),
+    path(
+        'rods_calc/<int:pk>/update/',
+        views.RodsCalcUpdate.as_view(),
+        name='rods_calc_update',
+    ),
+    path(
+        'rods_calc/<int:pk>/duplicate/',
+        views.RodsCalcDuplicate.as_view(),
+        name='rods_calc_duplicate',
+    ),
+    path(
+        'rods_calc/<int:pk>/delete/',
+        views.RodsCalcDelete.as_view(),
+        name='rods_calc_delete',
+    ),
+
+    path(
+        'rod/<int:pk>/duplicate/',
+        views.rod_duplicate,
+        name='rod_duplicate',
+    ),
+    path(
+        'rod/<int:pk>/delete/',
+        views.rod_delete,
+        name='rod_delete',
+    ),
+]
+
+urlpatterns_units_calc = [
+    path(
+        'rods_calc/<int:pk>/',
+        views.RodsCalc.as_view(),
+        name='rods_calc',
+    ),
+    path(
+        'rods_calc/create/',
+        views.RodsCalcCreate.as_view(),
+        name='rods_calc_create',
+    ),
+    path(
+        'rods_calc/<int:pk>/update/',
+        views.RodsCalcUpdate.as_view(),
+        name='rods_calc_update',
+    ),
+    path(
+        'rods_calc/<int:pk>/duplicate/',
+        views.RodsCalcDuplicate.as_view(),
+        name='rods_calc_duplicate',
+    ),
+    path(
+        'rods_calc/<int:pk>/delete/',
+        views.RodsCalcDelete.as_view(),
+        name='rods_calc_delete',
+    ),
+
+    path(
+        'rod/<int:pk>/duplicate/',
+        views.rod_duplicate,
+        name='rod_duplicate',
+    ),
+    path(
+        'rod/<int:pk>/delete/',
+        views.rod_delete,
+        name='rod_delete',
+    ),
+]
+
+urlpatterns = (
+        [
+            path(
+                '',
+                views.landing,
+                name='landing',
+            ),
+            path(
+                'profile/<str:username>/',
+                views.profile,
+                name='profile',
+            ),
+            path(
+                'result/<int:pk>/',
+                views.result,
+                name='result',
+            ),
+        ]
+        + urlpatterns_objects
+        + urlpatterns_rods_calc
+        + urlpatterns_volumes_calc
+        + urlpatterns_squares_calc
+        + urlpatterns_lengths_calc
+        + urlpatterns_units_calc
+)
