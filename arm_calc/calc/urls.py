@@ -140,7 +140,7 @@ urlpatterns_objects = [
 urlpatterns_rods_calc = [
     path(
         'rods_calc/<int:pk>/',
-        views.RodsCalc.as_view(),
+        views.RodsCalcDetail.as_view(),
         name='rods_calc',
     ),
     path(
@@ -155,7 +155,7 @@ urlpatterns_rods_calc = [
     ),
     path(
         'rods_calc/<int:pk>/duplicate/',
-        views.RodsCalcDuplicate.as_view(),
+        views.rods_calc_duplicate,
         name='rods_calc_duplicate',
     ),
     path(
@@ -179,27 +179,27 @@ urlpatterns_rods_calc = [
 urlpatterns_volumes_calc = [
     path(
         'volumes_calc/<int:pk>/',
-        views.RodsCalc.as_view(),
+        views.VolumesCalcDetail.as_view(),
         name='volumes_calc',
     ),
     path(
         'volumes_calc/create/',
-        views.RodsCalcCreate.as_view(),
+        views.VolumesCalcCreate.as_view(),
         name='volumes_calc_create',
     ),
     path(
         'volumes_calc/<int:pk>/update/',
-        views.RodsCalcUpdate.as_view(),
+        views.VolumesCalcUpdate.as_view(),
         name='volumes_calc_update',
     ),
     path(
         'volumes_calc/<int:pk>/duplicate/',
-        views.RodsCalcDuplicate.as_view(),
+        views.volumes_calc_duplicate,
         name='volumes_calc_duplicate',
     ),
     path(
         'volumes_calc/<int:pk>/delete/',
-        views.RodsCalcDelete.as_view(),
+        views.VolumesCalcDelete.as_view(),
         name='volumes_calc_delete',
     ),
 
@@ -217,118 +217,118 @@ urlpatterns_volumes_calc = [
 
 urlpatterns_squares_calc = [
     path(
-        'rods_calc/<int:pk>/',
-        views.RodsCalc.as_view(),
-        name='rods_calc',
+        'squares_calc/<int:pk>/',
+        views.SquaresCalcDetail.as_view(),
+        name='squares_calc',
     ),
     path(
-        'rods_calc/create/',
-        views.RodsCalcCreate.as_view(),
-        name='rods_calc_create',
+        'squares_calc/create/',
+        views.SquaresCalcCreate.as_view(),
+        name='squares_calc_create',
     ),
     path(
-        'rods_calc/<int:pk>/update/',
-        views.RodsCalcUpdate.as_view(),
-        name='rods_calc_update',
+        'squares_calc/<int:pk>/update/',
+        views.SquaresCalcUpdate.as_view(),
+        name='squares_calc_update',
     ),
     path(
-        'rods_calc/<int:pk>/duplicate/',
-        views.RodsCalcDuplicate.as_view(),
-        name='rods_calc_duplicate',
+        'squares_calc/<int:pk>/duplicate/',
+        views.squares_calc_duplicate,
+        name='squares_calc_duplicate',
     ),
     path(
-        'rods_calc/<int:pk>/delete/',
-        views.RodsCalcDelete.as_view(),
-        name='rods_calc_delete',
+        'squares_calc/<int:pk>/delete/',
+        views.SquaresCalcDelete.as_view(),
+        name='squares_calc_delete',
     ),
 
     path(
-        'rod/<int:pk>/duplicate/',
-        views.rod_duplicate,
-        name='rod_duplicate',
+        'square/<int:pk>/duplicate/',
+        views.square_duplicate,
+        name='square_duplicate',
     ),
     path(
-        'rod/<int:pk>/delete/',
-        views.rod_delete,
-        name='rod_delete',
+        'square/<int:pk>/delete/',
+        views.square_delete,
+        name='square_delete',
     ),
 ]
 
 urlpatterns_lengths_calc = [
     path(
-        'rods_calc/<int:pk>/',
-        views.RodsCalc.as_view(),
-        name='rods_calc',
+        'lengths_calc/<int:pk>/',
+        views.LengthsCalcDetail.as_view(),
+        name='lengths_calc',
     ),
     path(
-        'rods_calc/create/',
-        views.RodsCalcCreate.as_view(),
-        name='rods_calc_create',
+        'lengths_calc/create/',
+        views.LengthsCalcCreate.as_view(),
+        name='lengths_calc_create',
     ),
     path(
-        'rods_calc/<int:pk>/update/',
-        views.RodsCalcUpdate.as_view(),
-        name='rods_calc_update',
+        'lengths_calc/<int:pk>/update/',
+        views.LengthsCalcUpdate.as_view(),
+        name='lengths_calc_update',
     ),
     path(
-        'rods_calc/<int:pk>/duplicate/',
-        views.RodsCalcDuplicate.as_view(),
-        name='rods_calc_duplicate',
+        'lengths_calc/<int:pk>/duplicate/',
+        views.lengths_calc_duplicate,
+        name='lengths_calc_duplicate',
     ),
     path(
-        'rods_calc/<int:pk>/delete/',
-        views.RodsCalcDelete.as_view(),
-        name='rods_calc_delete',
+        'lengths_calc/<int:pk>/delete/',
+        views.LengthsCalcDelete.as_view(),
+        name='lengths_calc_delete',
     ),
 
     path(
-        'rod/<int:pk>/duplicate/',
-        views.rod_duplicate,
-        name='rod_duplicate',
+        'length/<int:pk>/duplicate/',
+        views.length_duplicate,
+        name='length_duplicate',
     ),
     path(
-        'rod/<int:pk>/delete/',
-        views.rod_delete,
-        name='rod_delete',
+        'length/<int:pk>/delete/',
+        views.length_delete,
+        name='length_delete',
     ),
 ]
 
 urlpatterns_units_calc = [
     path(
-        'rods_calc/<int:pk>/',
-        views.RodsCalc.as_view(),
-        name='rods_calc',
+        'units_calc/<int:pk>/',
+        views.UnitsCalcDetail.as_view(),
+        name='units_calc',
     ),
     path(
-        'rods_calc/create/',
-        views.RodsCalcCreate.as_view(),
-        name='rods_calc_create',
+        'units_calc/create/',
+        views.UnitsCalcCreate.as_view(),
+        name='units_calc_create',
     ),
     path(
-        'rods_calc/<int:pk>/update/',
-        views.RodsCalcUpdate.as_view(),
-        name='rods_calc_update',
+        'units_calc/<int:pk>/update/',
+        views.UnitsCalcUpdate.as_view(),
+        name='units_calc_update',
     ),
     path(
-        'rods_calc/<int:pk>/duplicate/',
-        views.RodsCalcDuplicate.as_view(),
-        name='rods_calc_duplicate',
+        'units_calc/<int:pk>/duplicate/',
+        views.units_calc_duplicate,
+        name='units_calc_duplicate',
     ),
     path(
-        'rods_calc/<int:pk>/delete/',
-        views.RodsCalcDelete.as_view(),
-        name='rods_calc_delete',
+        'units_calc/<int:pk>/delete/',
+        views.UnitsCalcDelete.as_view(),
+        name='units_calc_delete',
     ),
 
     path(
-        'rod/<int:pk>/duplicate/',
-        views.rod_duplicate,
-        name='rod_duplicate',
+        'unit/<int:pk>/duplicate/',
+        views.unit_duplicate,
+        name='unit_duplicate',
     ),
     path(
-        'rod/<int:pk>/delete/',
-        views.rod_delete,
-        name='rod_delete',
+        'unit/<int:pk>/delete/',
+        views.unit_delete,
+        name='unit_delete',
     ),
 ]
 

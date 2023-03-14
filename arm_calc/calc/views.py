@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, TemplateView, \
+    DeleteView
 
 from calc.models import Folder, Element, Rod, RodsCalc
 from calc.forms import FolderForm, ElementForm, RodsCalcForm, RodFormSet
@@ -13,52 +14,6 @@ User = get_user_model()
 def landing(request):
     context = {}
     return render(request, 'calc/landing.html', context)
-
-
-def folder(request, folder_id):
-    folder = Folder.objects.get(pk=folder_id)
-    folders = Folder.objects.filter(folder=folder)
-    elements = folder.elements.all()
-    context = {
-        'folder': folder,
-        'folders': folders,
-        'elements': elements,
-    }
-    cache.set('folder_id', str(folder_id))
-    return render(request, 'calc/folder.html', context)
-
-
-def delete_folder(request, folder_id):
-    folder = Folder.objects.get(pk=folder_id)
-    place_folder = folder.folder
-    if folder:
-        folder.delete()
-    if place_folder:
-        return redirect('calc:folder', place_folder.pk)
-    else:
-        return redirect('calc:profile', request.user.username)
-
-
-def create_folder(request):
-    form = FolderForm(
-        request.POST or None,
-        files=request.FILES or None,
-    )
-    if form.is_valid():
-        engineer = request.user
-        folder = form.save(commit=False)
-        folder.engineer = request.user
-        try:
-            folder.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
-            cache.clear()
-        except:
-            pass
-        folder.save()
-        return redirect('calc:folder', folder.pk)
-    context = {
-        'form': form,
-    }
-    return render(request, 'calc/create_folder.html', context)
 
 
 def profile(request, username):
@@ -119,7 +74,125 @@ def result(request, pk):
     return render(request, 'calc/result.html', context)
 
 
-def create_element(request):
+def site(request, pk):
+    pass
+
+
+def site_create(request):
+    pass
+
+
+def site_update(request, pk):
+    pass
+
+
+def site_duplicate(request, pk):
+    pass
+
+
+def site_delete(request, pk):
+    pass
+
+
+def construction(request, pk):
+    pass
+
+
+def construction_create(request):
+    pass
+
+
+def construction_update(request, pk):
+    pass
+
+
+def construction_duplicate(request, pk):
+    pass
+
+
+def construction_delete(request, pk):
+    pass
+
+
+def version(request, pk):
+    pass
+
+
+def version_create(request):
+    pass
+
+
+def version_update(request, pk):
+    pass
+
+
+def version_duplicate(request, pk):
+    pass
+
+
+def version_delete(request, pk):
+    pass
+
+
+def folder(request, pk):
+    folder = Folder.objects.get(pk=pk)
+    folders = Folder.objects.filter(folder=folder)
+    elements = folder.elements.all()
+    context = {
+        'folder': folder,
+        'folders': folders,
+        'elements': elements,
+    }
+    cache.set('folder_id', str(pk))
+    return render(request, 'calc/folder.html', context)
+
+
+def folder_create(request):
+    form = FolderForm(
+        request.POST or None,
+        files=request.FILES or None,
+    )
+    if form.is_valid():
+        engineer = request.user
+        folder = form.save(commit=False)
+        folder.engineer = request.user
+        try:
+            folder.folder = Folder.objects.get(pk=int(cache.get('folder_id')))
+            cache.clear()
+        except:
+            pass
+        folder.save()
+        return redirect('calc:folder', folder.pk)
+    context = {
+        'form': form,
+    }
+    return render(request, 'calc/create_folder.html', context)
+
+
+def folder_update(request, pk):
+    pass
+
+
+def folder_duplicate(request, pk):
+    pass
+
+
+def folder_delete(request, pk):
+    folder = Folder.objects.get(pk=pk)
+    place_folder = folder.folder
+    if folder:
+        folder.delete()
+    if place_folder:
+        return redirect('calc:folder', place_folder.pk)
+    else:
+        return redirect('calc:profile', request.user.username)
+
+
+def element(request, pk):
+    pass
+
+
+def element_create(request):
     form = ElementForm(
         request.POST or None,
         files=request.FILES or None,
@@ -146,7 +219,7 @@ def create_element(request):
     return render(request, 'calc/create_element.html', context)
 
 
-def update_element(request, pk):
+def element_update(request, pk):
     updated_element = get_object_or_404(Element, pk=pk)
     if request.user != updated_element.engineer:
         return redirect('calc:profile', request.user.username)
@@ -160,6 +233,72 @@ def update_element(request, pk):
         return redirect('calc:profile', request.user.username)
     context = {'form': form, }
     return render(request, 'calc/create_element.html', context)
+
+
+def element_duplicate(request, pk):
+    try:
+        element = Element.objects.get(id=pk)
+        place_folder = element.folder
+        rods_calcs = RodsCalc.objects.filter(element=element)
+    except Element.DoesNotExist:
+        messages.error(
+            request, 'Такого элемента нет'
+        )
+        return redirect('calc:folder', pk=element.folder.pk)
+    except RodsCalc.DoesNotExist:
+        messages.error(
+            request, 'Такого армирования нет'
+        )
+        return redirect('calc:folder', pk=element.folder.pk)
+
+    element.pk = None
+    element.save()
+
+    for rods_calc in rods_calcs:
+        try:
+            rods = Rod.objects.filter(rods_calc=rods_calc)
+        except Rod.DoesNotExist:
+            messages.error(
+                request, 'Такого армирования нет'
+            )
+            return redirect('calc:folder', pk=element.folder.pk)
+        rods_calc.pk = None
+        rods_calc.element = element
+        rods_calc.save()
+
+        for rod in rods:
+            rod.pk = None
+            rod.rods_calc = rods_calc
+            rod.save()
+
+    messages.success(
+        request, 'Элемент успешно скопирован'
+    )
+    if place_folder:
+        return redirect('calc:folder', place_folder.pk)
+    else:
+        return redirect('calc:profile', request.user.username)
+
+
+def element_delete(request, pk):
+    element = Element.objects.get(pk=pk)
+    place_folder = element.folder
+    rods_calcs = RodsCalc.objects.filter(element=element)
+    for rods_calc in rods_calcs:
+        rods = Rod.objects.filter(rods_calc=rods_calc)
+        if element:
+            element.delete()
+        for rod in rods:
+            if rods:
+                rod.delete()
+        if place_folder:
+            return redirect('calc:folder', place_folder.pk)
+        else:
+            return redirect('calc:profile', request.user.username)
+
+
+class RodsCalcDetail(TemplateView):
+    pass
 
 
 class RodsCalcInline:
@@ -238,23 +377,15 @@ class RodsCalcUpdate(RodsCalcInline, UpdateView):
         }
 
 
-def delete_rod(request, pk):
-    try:
-        rod = Rod.objects.get(id=pk)
-    except Rod.DoesNotExist:
-        messages.success(
-            request, 'Такого стержня нет'
-        )
-        return redirect('calc:update_element', pk=rod.rods_calc.element.id)
-
-    rod.delete()
-    messages.success(
-        request, 'Стержень успешно удален'
-    )
-    return redirect('calc:update_element', pk=rod.rods_calc.element.id)
+def rods_calc_duplicate(request, pk):
+    pass
 
 
-def copy_rod(request, pk):
+class RodsCalcDelete(RodsCalcInline, DeleteView):
+    pass
+
+
+def rod_duplicate(request, pk):
     try:
         rod = Rod.objects.get(id=pk)
     except Rod.DoesNotExist:
@@ -271,63 +402,129 @@ def copy_rod(request, pk):
     return redirect('calc:update_element', pk=rod.rods_calc.element.id)
 
 
-def delete_element(request, pk):
-    element = Element.objects.get(pk=pk)
-    place_folder = element.folder
-    rods_calcs = RodsCalc.objects.filter(element=element)
-    for rods_calc in rods_calcs:
-        rods = Rod.objects.filter(rods_calc=rods_calc)
-        if element:
-            element.delete()
-        for rod in rods:
-            if rods:
-                rod.delete()
-        if place_folder:
-            return redirect('calc:folder', place_folder.pk)
-        else:
-            return redirect('calc:profile', request.user.username)
-
-
-def copy_element(request, pk):
+def rod_delete(request, pk):
     try:
-        element = Element.objects.get(id=pk)
-        place_folder = element.folder
-        rods_calcs = RodsCalc.objects.filter(element=element)
-    except Element.DoesNotExist:
-        messages.error(
-            request, 'Такого элемента нет'
+        rod = Rod.objects.get(id=pk)
+    except Rod.DoesNotExist:
+        messages.success(
+            request, 'Такого стержня нет'
         )
-        return redirect('calc:folder', pk=element.folder.pk)
-    except RodsCalc.DoesNotExist:
-        messages.error(
-            request, 'Такого армирования нет'
-        )
-        return redirect('calc:folder', pk=element.folder.pk)
+        return redirect('calc:update_element', pk=rod.rods_calc.element.id)
 
-    element.pk = None
-    element.save()
-
-    for rods_calc in rods_calcs:
-        try:
-            rods = Rod.objects.filter(rods_calc=rods_calc)
-        except Rod.DoesNotExist:
-            messages.error(
-                request, 'Такого армирования нет'
-            )
-            return redirect('calc:folder', pk=element.folder.pk)
-        rods_calc.pk = None
-        rods_calc.element = element
-        rods_calc.save()
-
-        for rod in rods:
-            rod.pk = None
-            rod.rods_calc = rods_calc
-            rod.save()
-
+    rod.delete()
     messages.success(
-        request, 'Элемент успешно скопирован'
+        request, 'Стержень успешно удален'
     )
-    if place_folder:
-        return redirect('calc:folder', place_folder.pk)
-    else:
-        return redirect('calc:profile', request.user.username)
+    return redirect('calc:update_element', pk=rod.rods_calc.element.id)
+
+
+class VolumesCalcDetail(TemplateView):
+    pass
+
+
+class VolumesCalcCreate(CreateView):
+    pass
+
+
+class VolumesCalcUpdate(RodsCalcInline, UpdateView):
+    pass
+
+
+def volumes_calc_duplicate(request, pk):
+    pass
+
+
+class VolumesCalcDelete(DeleteView):
+    pass
+
+
+def volume_duplicate(request, pk):
+    pass
+
+
+def volume_delete(request, pk):
+    pass
+
+
+class SquaresCalcDetail(TemplateView):
+    pass
+
+
+class SquaresCalcCreate(CreateView):
+    pass
+
+
+class SquaresCalcUpdate(UpdateView):
+    pass
+
+
+def squares_calc_duplicate(request, pk):
+    pass
+
+
+class SquaresCalcDelete(DeleteView):
+    pass
+
+
+def square_duplicate(request, pk):
+    pass
+
+
+def square_delete(request, pk):
+    pass
+
+
+class LengthsCalcDetail(TemplateView):
+    pass
+
+
+class LengthsCalcCreate(CreateView):
+    pass
+
+
+class LengthsCalcUpdate(UpdateView):
+    pass
+
+
+def lengths_calc_duplicate(request, pk):
+    pass
+
+
+class LengthsCalcDelete(DeleteView):
+    pass
+
+
+def length_duplicate(request, pk):
+    pass
+
+
+def length_delete(request, pk):
+    pass
+
+
+class UnitsCalcDetail(TemplateView):
+    pass
+
+
+class UnitsCalcCreate(CreateView):
+    pass
+
+
+class UnitsCalcUpdate(UpdateView):
+    pass
+
+
+def units_calc_duplicate(request, pk):
+    pass
+
+
+class UnitsCalcDelete(DeleteView):
+    pass
+
+
+def unit_duplicate(request, pk):
+    pass
+
+
+def unit_delete(request, pk):
+    pass
