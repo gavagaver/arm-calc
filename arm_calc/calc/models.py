@@ -49,12 +49,25 @@ class Construction(ConstructionModel):
         verbose_name_plural = 'Сооружения'
 
 
-class Folder(BaseModel):
+class Version(BaseModel):
     construction = models.ForeignKey(
         Construction,
         on_delete=models.CASCADE,
-        related_name='folders',
+        related_name='versions',
         verbose_name='Сооружение',
+    )
+
+    class Meta:
+        verbose_name = 'Версия'
+        verbose_name_plural = 'Версии'
+
+
+class Folder(BaseModel):
+    version = models.ForeignKey(
+        Version,
+        on_delete=models.CASCADE,
+        related_name='folders',
+        verbose_name='Версия',
     )
     engineer = models.ForeignKey(
         User,
