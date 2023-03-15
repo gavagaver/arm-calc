@@ -8,131 +8,131 @@ app_name = 'calc'
 urlpatterns_objects = [
     path(
         'site/<int:pk>/',
-        views.site,
+        views.SiteDetailView.as_view(),
         name='site',
     ),
     path(
         'site/create',
-        views.site_create,
+        views.SiteCreateView.as_view(),
         name='site_create',
     ),
     path(
         'site/<int:pk>/update',
-        views.site_update,
+        views.SiteUpdateView.as_view(),
         name='site_update',
     ),
     path(
         'site/<int:pk>/duplicate',
-        views.site_duplicate,
+        views.SiteDuplicateView.as_view(),
         name='site_duplicate',
     ),
     path(
         'site/<int:pk>/delete',
-        views.site_delete,
+        views.SiteDeleteView.as_view(),
         name='site_delete',
     ),
 
     path(
         'construction/<int:pk>/',
-        views.construction,
+        views.ConstructionDetailView.as_view(),
         name='construction',
     ),
     path(
         'construction/create',
-        views.construction_create,
+        views.ConstructionCreateView.as_view(),
         name='construction_create',
     ),
     path(
         'construction/<int:pk>/update',
-        views.construction_update,
+        views.ConstructionUpdateView.as_view(),
         name='construction_update',
     ),
     path(
         'construction/<int:pk>/duplicate',
-        views.construction_duplicate,
+        views.ConstructionDuplicateView.as_view(),
         name='construction_duplicate',
     ),
     path(
         'construction/<int:pk>/delete',
-        views.construction_delete,
+        views.ConstructionDeleteView.as_view(),
         name='construction_delete',
     ),
 
     path(
         'version/<int:pk>/',
-        views.version,
+        views.VersionDetailView.as_view(),
         name='version',
     ),
     path(
         'version/create',
-        views.version_create,
+        views.VersionCreateView.as_view(),
         name='version_create',
     ),
     path(
         'version/<int:pk>/update',
-        views.version_update,
+        views.VersionUpdateView.as_view(),
         name='version_update',
     ),
     path(
         'version/<int:pk>/duplicate',
-        views.version_duplicate,
+        views.VersionDuplicateView.as_view(),
         name='version_duplicate',
     ),
     path(
         'version/<int:pk>/delete',
-        views.version_delete,
+        views.VersionDeleteView.as_view(),
         name='version_delete',
     ),
 
     path(
         'folder/<int:pk>/',
-        views.folder,
+        views.FolderDetailView.as_view(),
         name='folder',
     ),
     path(
         'folder/create',
-        views.folder_create,
+        views.FolderCreateView.as_view(),
         name='folder_create',
     ),
     path(
         'folder/<int:pk>/update',
-        views.folder_update,
+        views.FolderUpdateView.as_view(),
         name='folder_update',
     ),
     path(
         'folder/<int:pk>/duplicate',
-        views.folder_duplicate,
+        views.FolderDuplicateView.as_view(),
         name='folder_duplicate',
     ),
     path(
         'folder/<int:pk>/delete',
-        views.folder_delete,
+        views.FolderDeleteView.as_view(),
         name='folder_delete',
     ),
 
     path(
         'element/<int:pk>/',
-        views.element,
+        views.ElementDetailView.as_view(),
         name='element',
     ),
     path(
         'element/create',
-        views.element_create,
+        views.ElementCreateView.as_view(),
         name='element_create',
     ),
     path(
         'element/<int:pk>/update',
-        views.element_update,
+        views.ElementUpdateView.as_view(),
         name='element_update',
     ),
     path(
         'element/<int:pk>/duplicate',
-        views.element_duplicate,
+        views.ElementDuplicateView.as_view(),
         name='element_duplicate',
     ),
     path(
         'element/<int:pk>/delete',
-        views.element_delete,
+        views.ElementDeleteView.as_view(),
         name='element_delete',
     ),
 ]
@@ -140,38 +140,38 @@ urlpatterns_objects = [
 urlpatterns_rods_calc = [
     path(
         'rods_calc/<int:pk>/',
-        views.RodsCalcDetail.as_view(),
+        views.RodsCalcDetailView.as_view(),
         name='rods_calc',
     ),
     path(
         'rods_calc/create/',
-        views.RodsCalcCreate.as_view(),
+        views.RodsCalcCreateView.as_view(),
         name='rods_calc_create',
     ),
     path(
         'rods_calc/<int:pk>/update/',
-        views.RodsCalcUpdate.as_view(),
+        views.RodsCalcUpdateView.as_view(),
         name='rods_calc_update',
     ),
     path(
         'rods_calc/<int:pk>/duplicate/',
-        views.rods_calc_duplicate,
+        views.RodsCalcDuplicateView.as_view(),
         name='rods_calc_duplicate',
     ),
     path(
         'rods_calc/<int:pk>/delete/',
-        views.RodsCalcDelete.as_view(),
+        views.RodsCalcDeleteView.as_view(),
         name='rods_calc_delete',
     ),
 
     path(
         'rod/<int:pk>/duplicate/',
-        views.rod_duplicate,
+        views.RodDuplicateView.as_view(),
         name='rod_duplicate',
     ),
     path(
         'rod/<int:pk>/delete/',
-        views.rod_delete,
+        views.RodDeleteView.as_view(),
         name='rod_delete',
     ),
 ]
@@ -179,38 +179,38 @@ urlpatterns_rods_calc = [
 urlpatterns_volumes_calc = [
     path(
         'volumes_calc/<int:pk>/',
-        views.VolumesCalcDetail.as_view(),
+        views.VolumesCalcDetailView.as_view(),
         name='volumes_calc',
     ),
     path(
         'volumes_calc/create/',
-        views.VolumesCalcCreate.as_view(),
+        views.VolumesCalcCreateView.as_view(),
         name='volumes_calc_create',
     ),
     path(
         'volumes_calc/<int:pk>/update/',
-        views.VolumesCalcUpdate.as_view(),
+        views.VolumesCalcUpdateView.as_view(),
         name='volumes_calc_update',
     ),
     path(
         'volumes_calc/<int:pk>/duplicate/',
-        views.volumes_calc_duplicate,
+        views.VolumesCalcDuplicateView.as_view(),
         name='volumes_calc_duplicate',
     ),
     path(
         'volumes_calc/<int:pk>/delete/',
-        views.VolumesCalcDelete.as_view(),
+        views.VolumesCalcDeleteView.as_view(),
         name='volumes_calc_delete',
     ),
 
     path(
         'volume/<int:pk>/duplicate/',
-        views.volume_duplicate,
+        views.VolumeDuplicateView.as_view(),
         name='volume_duplicate',
     ),
     path(
         'volume/<int:pk>/delete/',
-        views.volume_delete,
+        views.VolumeDeleteView.as_view(),
         name='volume_delete',
     ),
 ]
@@ -218,38 +218,38 @@ urlpatterns_volumes_calc = [
 urlpatterns_squares_calc = [
     path(
         'squares_calc/<int:pk>/',
-        views.SquaresCalcDetail.as_view(),
+        views.SquaresCalcDetailView.as_view(),
         name='squares_calc',
     ),
     path(
         'squares_calc/create/',
-        views.SquaresCalcCreate.as_view(),
+        views.SquaresCalcCreateView.as_view(),
         name='squares_calc_create',
     ),
     path(
         'squares_calc/<int:pk>/update/',
-        views.SquaresCalcUpdate.as_view(),
+        views.SquaresCalcUpdateView.as_view(),
         name='squares_calc_update',
     ),
     path(
         'squares_calc/<int:pk>/duplicate/',
-        views.squares_calc_duplicate,
+        views.SquaresCalcDuplicateView.as_view(),
         name='squares_calc_duplicate',
     ),
     path(
         'squares_calc/<int:pk>/delete/',
-        views.SquaresCalcDelete.as_view(),
+        views.SquaresCalcDeleteView.as_view(),
         name='squares_calc_delete',
     ),
 
     path(
         'square/<int:pk>/duplicate/',
-        views.square_duplicate,
+        views.SquareDuplicateView.as_view(),
         name='square_duplicate',
     ),
     path(
         'square/<int:pk>/delete/',
-        views.square_delete,
+        views.SquareDeleteView.as_view(),
         name='square_delete',
     ),
 ]
@@ -257,38 +257,38 @@ urlpatterns_squares_calc = [
 urlpatterns_lengths_calc = [
     path(
         'lengths_calc/<int:pk>/',
-        views.LengthsCalcDetail.as_view(),
+        views.LengthsCalcDetailView.as_view(),
         name='lengths_calc',
     ),
     path(
         'lengths_calc/create/',
-        views.LengthsCalcCreate.as_view(),
+        views.LengthsCalcCreateView.as_view(),
         name='lengths_calc_create',
     ),
     path(
         'lengths_calc/<int:pk>/update/',
-        views.LengthsCalcUpdate.as_view(),
+        views.LengthsCalcUpdateView.as_view(),
         name='lengths_calc_update',
     ),
     path(
         'lengths_calc/<int:pk>/duplicate/',
-        views.lengths_calc_duplicate,
+        views.LengthsCalcDuplicateView.as_view(),
         name='lengths_calc_duplicate',
     ),
     path(
         'lengths_calc/<int:pk>/delete/',
-        views.LengthsCalcDelete.as_view(),
+        views.LengthsCalcDeleteView.as_view(),
         name='lengths_calc_delete',
     ),
 
     path(
         'length/<int:pk>/duplicate/',
-        views.length_duplicate,
+        views.LengthDuplicateView.as_view(),
         name='length_duplicate',
     ),
     path(
         'length/<int:pk>/delete/',
-        views.length_delete,
+        views.LengthDeleteView.as_view(),
         name='length_delete',
     ),
 ]
@@ -296,38 +296,38 @@ urlpatterns_lengths_calc = [
 urlpatterns_units_calc = [
     path(
         'units_calc/<int:pk>/',
-        views.UnitsCalcDetail.as_view(),
+        views.UnitsCalcDetailView.as_view(),
         name='units_calc',
     ),
     path(
         'units_calc/create/',
-        views.UnitsCalcCreate.as_view(),
+        views.UnitsCalcCreateView.as_view(),
         name='units_calc_create',
     ),
     path(
         'units_calc/<int:pk>/update/',
-        views.UnitsCalcUpdate.as_view(),
+        views.UnitsCalcUpdateView.as_view(),
         name='units_calc_update',
     ),
     path(
         'units_calc/<int:pk>/duplicate/',
-        views.units_calc_duplicate,
+        views.UnitsCalcDuplicateView.as_view(),
         name='units_calc_duplicate',
     ),
     path(
         'units_calc/<int:pk>/delete/',
-        views.UnitsCalcDelete.as_view(),
+        views.UnitsCalcDeleteView.as_view(),
         name='units_calc_delete',
     ),
 
     path(
         'unit/<int:pk>/duplicate/',
-        views.unit_duplicate,
+        views.UnitDuplicateView.as_view(),
         name='unit_duplicate',
     ),
     path(
         'unit/<int:pk>/delete/',
-        views.unit_delete,
+        views.UnitDeleteView.as_view(),
         name='unit_delete',
     ),
 ]
@@ -336,17 +336,17 @@ urlpatterns = (
         [
             path(
                 '',
-                views.landing,
+                views.LandingView.as_view(),
                 name='landing',
             ),
             path(
                 'profile/<str:username>/',
-                views.profile,
+                views.ProfileView.as_view(),
                 name='profile',
             ),
             path(
                 'result/<int:pk>/',
-                views.result,
+                views.ResultView.as_view(),
                 name='result',
             ),
         ]
