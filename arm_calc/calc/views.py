@@ -194,7 +194,7 @@ class FolderCreateView(CreateView):
 #     context = {
 #         'form': form,
 #     }
-#     return render(request, 'calc/create_folder.html', context)
+#     return render(request, 'calc/folder_create.html', context)
 
 
 class FolderUpdateView(UpdateView):
@@ -262,7 +262,7 @@ class ElementCreateView(CreateView):
 #     context = {
 #         'form': form,
 #     }
-#     return render(request, 'calc/create_element.html', context)
+#     return render(request, 'calc/element_create.html', context)
 
 class ElementUpdateView(UpdateView):
     template_name = 'calc/element_update.html'
@@ -282,7 +282,7 @@ class ElementUpdateView(UpdateView):
 #         form.save()
 #         return redirect('calc:profile', request.user.username)
 #     context = {'form': form, }
-#     return render(request, 'calc/create_element.html', context)
+#     return render(request, 'calc/element_create.html', context)
 
 class ElementDuplicateView(View):
     template_name = 'calc/element_duplicate.html'
@@ -362,7 +362,7 @@ class RodsCalcDetailView(TemplateView):
 class RodsCalcInline:
     form_class = RodsCalcForm
     model = models.RodsCalc
-    template_name = 'calc/element_create_or_update.html'
+    template_name = 'calc/rods_calc_create.html'
 
     def form_valid(self, form):
         named_formsets = self.get_named_formsets()
