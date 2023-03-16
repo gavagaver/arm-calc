@@ -32,11 +32,11 @@
             </div>
 
             {% for folder in folders %}
-              {% include 'calc/includes/folder_card.html' %}
+              {% include 'calc/includes/folder/folder_card.html' %}
             {% endfor %}
 
             {% for element in elements %}
-              {% include 'calc/includes/element_card.html' %}
+              {% include 'calc/includes/element/element_card.html' %}
             {% endfor %}
 
 
@@ -44,7 +44,7 @@
 
               <a href="
                 {% if folder.folder %}
-                  {% url 'calc:folder' folder.folder.pk %}
+                  {% url 'calc:folder_detail' folder.folder.pk %}
                 {% else %}
                   {% url 'calc:profile' request.user.username %}
                 {% endif %}
@@ -55,7 +55,7 @@
                 Назад
               </a>
 
-              <a href="{% url 'calc:create_folder' %}"
+              <a href="{% url 'calc:folder_create' %}"
                  class="btn btn-secondary btn-lg"
               >
                 <i class="fas fa-folder fa-lg text-white-50"></i>
@@ -63,7 +63,7 @@
               </a>
 
 
-              <a href="{% url 'calc:create_element' %}"
+              <a href="{% url 'calc:element_create' %}"
                  class="btn btn-success btn-lg"
               >
                 <i class="fas fa-file fa-lg text-white-50"></i>

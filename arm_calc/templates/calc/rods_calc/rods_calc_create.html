@@ -105,7 +105,7 @@
                                 <td>
 
                                     <div class="col-auto">
-                                        <a href="{% url 'calc:copy_rod' formss.instance.pk %}"
+                                        <a href="{% url 'calc:rod_duplicate' formss.instance.pk %}"
                                            class="btn btn-warning btn-circle"
                                            title="Дублировать стержень"
                                         >
@@ -131,7 +131,7 @@
                                                     </button>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <a href="{% url 'calc:delete_rod' formss.instance.pk %}" type="button" class="btn btn-primary">Да, удалить</a>
+                                                        <a href="{% url 'calc:rod_delete' formss.instance.pk %}" type="button" class="btn btn-primary">Да, удалить</a>
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                                                     </div>
                                                 </div>

@@ -4,7 +4,7 @@
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="h5 font-weight-bold text-primary mb-1">
-                        <a href="{% url 'calc:update_element' element.pk%}">
+                        <a href="{% url 'calc:element_update' element.pk%}">
                             {{ element.title }}
                         </a>
                     </div>
@@ -12,7 +12,7 @@
 
 
                 <div class="col-auto ml-4">
-                    <a href="{% url 'calc:copy_element' element.pk %}"
+                    <a href="{% url 'calc:element_duplicate' element.pk %}"
                        class="btn btn-warning btn-circle"
                        title="Дублировать элемент"
                     >
@@ -46,7 +46,7 @@
                             </div>
                             <div class="modal-body">Элемент будет удален без возможности восстановления.</div>
                             <div class="modal-footer">
-                                <a href="{% url 'calc:delete_element' element.pk%}" type="button" class="btn btn-primary">Да, удалить</a>
+                                <a href="{% url 'calc:element_delete' element.pk%}" type="button" class="btn btn-primary">Да, удалить</a>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                             </div>
                         </div>

@@ -29,13 +29,13 @@
                 <h1>{{ element.title }}</h1>
 
 
-                  <a href="{% url 'calc:folder' element.folder.pk %}"
+                  <a href="{% url 'calc:folder_detail' element.folder.pk %}"
                          class="btn btn-danger btn-sm"
                       >
                     <i class="fas fa-arrow-left fa-sm text-white-50"></i>
                     Назад
                   </a>
-                  <a href="{% url 'calc:update_element' element.pk %}"
+                  <a href="{% url 'calc:element_update' element.pk %}"
                      class="btn btn-success btn-sm"
                   >
                     <i class="fas fa-info-circle fa-sm text-white-50"></i>

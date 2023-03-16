@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Личный кабинет пользователя {{ engineer.username }}
+  Создание элемента
 {% endblock %}
 
 {% block content %}
@@ -23,27 +23,11 @@
           <div class="container-fluid">
             <div class="col-xl-3 col-md-6 mb-4">
 
-              <h5>личный кабинет</h5>
-
-              <h1>Начните с создания папки</h1>
-            </div>
-
-            {% for folder in folders %}
-              {% include 'calc/includes/folder/folder_card.html' %}
-            {% endfor %}
-
-            <div class="col-xl-3 col-md-6 mb-4">
-
-              <a href="{% url 'calc:folder_create' %}"
-                 class="btn btn-success btn-lg"
-              >
-                <i class="fas fa-folder fa-lg text-white-50"></i>
-                Создать папку
-              </a>
+              <h1>Создание элемента</h1>
 
             </div>
 
-
+                {% include 'calc/includes/form.html' %}
 
           </div>
           <!-- /.container-fluid -->
