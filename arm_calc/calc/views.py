@@ -12,13 +12,17 @@ from calc.forms import FolderForm, ElementForm, RodsCalcForm, RodFormSet
 User = get_user_model()
 
 
-class LandingView(View):
+class LandingView(TemplateView):
     template_name = 'calc/landing.html'
 
 
 class ProfileView(DetailView):
     template_name = 'calc/profile.html'
-    Model = models.User
+    Model = get_user_model()
+    context_object_name = 'user'
+
+    def get_object(self, **kwargs):
+        return self.request.user
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
