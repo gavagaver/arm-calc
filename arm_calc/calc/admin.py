@@ -27,7 +27,6 @@ class ElementAdmin(admin.ModelAdmin):
         'pk',
         'title',
         'create_date',
-        'construction',
     )
     search_fields = ('title',)
     list_filter = ('create_date',)
