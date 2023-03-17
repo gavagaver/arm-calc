@@ -1,22 +1,23 @@
 from django.contrib import admin
-from calc.models import Construction, Folder, Element, RodsCalc, Rod
+from . import models
 
 
-class FolderAdmin(admin.ModelAdmin):
-    list_display = (
-        'pk',
-        'title',
-        'create_date',
-        'engineer',
-    )
+class SiteAdmin(admin.ModelAdmin):
+    list_display = ('title', 'engineer')
     search_fields = ('title',)
     list_filter = ('create_date',)
-    list_editable = ('title',)
     empty_value_display = '-пусто-',
 
 
 class ConstructionAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('title', 'site')
+    search_fields = ('title',)
+    list_filter = ('create_date',)
+    empty_value_display = '-пусто-',
+
+
+class VersionAdmin(admin.ModelAdmin):
+    list_display = ('title', 'construction')
     search_fields = ('title',)
     list_filter = ('create_date',)
     empty_value_display = '-пусто-',
@@ -27,6 +28,19 @@ class ElementAdmin(admin.ModelAdmin):
         'pk',
         'title',
         'create_date',
+    )
+    search_fields = ('title',)
+    list_filter = ('create_date',)
+    list_editable = ('title',)
+    empty_value_display = '-пусто-',
+
+
+class FolderAdmin(admin.ModelAdmin):
+    list_display = (
+        'pk',
+        'title',
+        'create_date',
+        'version',
     )
     search_fields = ('title',)
     list_filter = ('create_date',)
@@ -80,8 +94,10 @@ class RodAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-',
 
 
-admin.site.register(Construction, ConstructionAdmin)
-admin.site.register(Folder, FolderAdmin)
-admin.site.register(Element, ElementAdmin)
-admin.site.register(RodsCalc, RodsCalcAdmin)
-admin.site.register(Rod, RodAdmin)
+admin.site.register(models.Site, SiteAdmin)
+admin.site.register(models.Construction, ConstructionAdmin)
+admin.site.register(models.Version, VersionAdmin)
+admin.site.register(models.Folder, FolderAdmin)
+admin.site.register(models.Element, ElementAdmin)
+admin.site.register(models.RodsCalc, RodsCalcAdmin)
+admin.site.register(models.Rod, RodAdmin)

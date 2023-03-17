@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, \
     DeleteView, DetailView, ListView
@@ -17,21 +18,14 @@ class LandingView(TemplateView):
     template_name = 'calc/landing.html'
 
 
-class ProfileView(DetailView):
+class ProfileView(ListView):
     template_name = 'calc/profile.html'
-    Model = get_user_model()
-    context_object_name = 'user'
+    model = models.Site
+    context_object_name = 'sites'
 
-    def get_object(self, **kwargs):
-        return self.request.user
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        username = self.kwargs.get('username')
-        engineer = get_object_or_404(User, username=username)
-        context['folders'] = engineer.folders.filter(folder=None)
-        context['elements'] = engineer.elements.filter(folder=None)
-        return context
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(engineer=self.request.user)
 
 
 class ResultView(DetailView):
@@ -85,29 +79,121 @@ class ResultView(DetailView):
 #     return render(request, 'calc/result.html', context)
 
 
-class SiteDetailView(DetailView):
-    template_name = 'calc/site_detail.html'
-    Model = models.Site
-    context_object_name = 'site'
+class SiteDetailView(ListView):
+    template_name = 'calc/site/site_detail.html'
+    model = models.Construction
+    context_object_name = 'constructions'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(site=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        site_id = self.kwargs.get('pk')
+        context['site'] = models.Site.objects.get(pk=site_id)
+        return context
 
 
 class SiteCreateView(CreateView):
-    template_name = 'calc/site_create.html'
+    template_name = 'calc/site/site_create.html'
     Model = models.Site
+    form_class = forms.SiteForm
+    context_object_name = 'site'
+
+    def form_valid(self, form):
+        engineer = self.request.user
+        site = form.save(commit=False)
+        site.engineer = engineer
+        site.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('calc:site_detail', kwargs={'pk': self.object.pk})
 
 
 class SiteUpdateView(UpdateView):
-    template_name = 'calc/site_update.html'
-    Model = models.Site
+    template_name = 'calc/site/site_create.html'
+    model = models.Site
+    form_class = forms.SiteForm
+    context_object_name = 'site'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.__class__.__name__ == 'SiteCreateView':
+            context['view_name'] = 'create'
+        elif self.__class__.__name__ == 'SiteUpdateView':
+            context['view_name'] = 'update'
+        return context
+
+    def form_valid(self, form):
+        engineer = self.request.user
+        site = form.save(commit=False)
+        site.engineer = engineer
+        site.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('calc:site_detail', kwargs={'pk': self.object.pk})
 
 
-class SiteDuplicateView(View):
-    template_name = 'calc/site_duplicate.html'
-    Model = models.Site
+class SiteDuplicateView(TemplateView):
+    template_name = 'calc/site/site_create.html'
+    model = models.Site
+    form_class = forms.SiteForm
+    context_object_name = 'site'
+
+    def get_object(self):
+        return get_object_or_404(models.Site, pk=self.kwargs.get('pk'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['orig_object'] = self.get_object()
+        context['form'] = self.form_class(instance=context['orig_object'])
+        return context
+
+    def form_valid(self, form):
+        orig_object = self.get_object()
+        new_object = form.save(commit=False)
+
+        if new_object.engineer_id is None:
+            new_object.engineer_id = orig_object.engineer_id
+
+        for related in orig_object._meta.related_objects:
+            if related.one_to_many:
+                for obj in getattr(orig_object,
+                                   related.get_accessor_name()).all():
+                    obj.pk = None
+                    setattr(obj, related.field.name, new_object)
+                    obj.save()
+            elif related.one_to_one:
+                obj = getattr(orig_object, related.get_accessor_name())
+                obj.pk = None
+                setattr(obj, related.field.name, new_object)
+                obj.save()
+            else:
+                raise NotImplementedError('Unexpected related object')
+
+        new_object.save()
+        form.save_m2m()
+        return HttpResponseRedirect(
+            reverse_lazy('calc:site_detail', args=[new_object.pk]))
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class SiteDeleteView(DeleteView):
-    Model = models.Site
+    model = models.Site
+    template_name = 'calc/site/site_confirm_delete.html'
+    success_url = reverse_lazy('calc:landing')
+
+    def post(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
 
 
 class ConstructionDetailView(DetailView):

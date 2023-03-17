@@ -69,20 +69,6 @@ class Folder(BaseModel):
         related_name='folders',
         verbose_name='Версия',
     )
-    engineer = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='folders',
-        verbose_name='Инженер',
-    )
-    folder = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        related_name='folders',
-        verbose_name='Папка',
-        blank=True,
-        null=True,
-    )
 
     class Meta:
         verbose_name = 'Папка'

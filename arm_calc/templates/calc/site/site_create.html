@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Личный кабинет пользователя {{ engineer.username }}
+    {% if view_name == 'create' %}
+        Создание объекта
+    {% elif view_name == 'update' %}
+        Обновление объекта
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -23,27 +27,16 @@
           <div class="container-fluid">
             <div class="col-xl-3 col-md-6 mb-4">
 
-              <h5>личный кабинет</h5>
-
-              <h1>Здесь хранятся ваши объекты</h1>
-            </div>
-
-            {% for site in sites %}
-              {% include 'calc/includes/site/site_card.html' %}
-            {% endfor %}
-
-            <div class="col-xl-3 col-md-6 mb-4">
-
-              <a href="{% url 'calc:site_create' %}"
-                 class="btn btn-success btn-lg"
-              >
-                <i class="fas fa-folder fa-lg text-white-50"></i>
-                Создать объект
-              </a>
+              <h1>  {% if view_name == 'create' %}
+                        Создание объекта
+                    {% elif view_name == 'update' %}
+                        Обновление объекта
+                    {% endif %}
+              </h1>
 
             </div>
 
-
+              {% include 'calc/includes/form.html' %}
 
           </div>
           <!-- /.container-fluid -->

@@ -1,12 +1,21 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from calc.models import Folder, Element, RodsCalc, Rod
+from . import models
+
+
+class SiteForm(forms.ModelForm):
+    class Meta:
+        model = models.Site
+        fields = ['title', ]
+        labels = {
+            'title': 'Укажите название объекта:',
+        }
 
 
 class FolderForm(forms.ModelForm):
     class Meta:
-        model = Folder
+        model = models.Folder
         fields = ['title', ]
         labels = {
             'title': 'Укажите название папки:',
@@ -15,7 +24,7 @@ class FolderForm(forms.ModelForm):
 
 class ElementForm(forms.ModelForm):
     class Meta:
-        model = Element
+        model = models.Element
         fields = ['title', ]
         labels = {
             'title': 'Укажите название элемента:',
@@ -24,7 +33,7 @@ class ElementForm(forms.ModelForm):
 
 class RodsCalcForm(forms.ModelForm):
     class Meta:
-        model = RodsCalc
+        model = models.RodsCalc
         fields = '__all__'
         widgets = {
             'title': forms.TextInput(
@@ -42,7 +51,7 @@ class RodsCalcForm(forms.ModelForm):
 
 class RodForm(forms.ModelForm):
     class Meta:
-        model = Rod
+        model = models.Rod
         fields = '__all__'
         DIAMETERS = (
             ('6', '6'),
@@ -135,7 +144,7 @@ class RodForm(forms.ModelForm):
 
 
 RodFormSet = inlineformset_factory(
-    RodsCalc, Rod, form=RodForm,
+    models.RodsCalc, models.Rod, form=RodForm,
     extra=0, can_delete=False,
     can_delete_extra=True
 )
