@@ -2,12 +2,13 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, \
     DeleteView, DetailView, ListView
 
-from calc import models
-from calc.forms import FolderForm, ElementForm, RodsCalcForm, RodFormSet
+from . import models
+from . import forms
 
 User = get_user_model()
 
@@ -87,6 +88,7 @@ class ResultView(DetailView):
 class SiteDetailView(DetailView):
     template_name = 'calc/site_detail.html'
     Model = models.Site
+    context_object_name = 'site'
 
 
 class SiteCreateView(CreateView):
@@ -111,6 +113,7 @@ class SiteDeleteView(DeleteView):
 class ConstructionDetailView(DetailView):
     template_name = 'calc/construction_detail.html'
     Model = models.Construction
+    context_object_name = 'construction'
 
 
 class ConstructionCreateView(CreateView):
@@ -135,6 +138,7 @@ class ConstructionDeleteView(DeleteView):
 class VersionDetailView(DetailView):
     template_name = 'calc/version_detail.html'
     Model = models.Version
+    context_object_name = 'version'
 
 
 class VersionCreateView(CreateView):
@@ -159,6 +163,7 @@ class VersionDeleteView(DeleteView):
 class FolderDetailView(DetailView):
     template_name = 'calc/folder_detail.html'
     Model = models.Folder
+    context_object_name = 'folder'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -173,32 +178,23 @@ class FolderDetailView(DetailView):
 class FolderCreateView(CreateView):
     template_name = 'calc/folder_create.html'
     Model = models.Folder
+    form_class = forms.FolderForm
+    context_object_name = 'folder'
 
     def form_valid(self, form):
-        pass
+        engineer = self.request.user
+        folder = form.save(commit=False)
+        folder.engineer = self.request.user
+        try:
+            folder.folder = models.Folder.objects.get(
+                pk=int(cache.get('folder_id')))
+            cache.clear()
+        except:
+            pass
+        folder.save()
 
-
-# def folder_create(request):
-#     form = FolderForm(
-#         request.POST or None,
-#         files=request.FILES or None,
-#     )
-#     if form.is_valid():
-#         engineer = request.user
-#         folder = form.save(commit=False)
-#         folder.engineer = request.user
-#         try:
-#             folder.folder = models.Folder.objects.get(
-#                 pk=int(cache.get('folder_id')))
-#             cache.clear()
-#         except:
-#             pass
-#         folder.save()
-#         return redirect('calc:folder', folder.pk)
-#     context = {
-#         'form': form,
-#     }
-#     return render(request, 'calc/folder_create.html', context)
+    def get_success_url(self):
+        return reverse('calc:folder_detail', kwargs={'pk': self.object.pk})
 
 
 class FolderUpdateView(UpdateView):
@@ -229,14 +225,32 @@ class FolderDeleteView(DeleteView):
 class ElementDetailView(DetailView):
     template_name = 'calc/element_detail.html'
     Model = models.Element
+    context_object_name = 'element'
 
 
 class ElementCreateView(CreateView):
     template_name = 'calc/element_create.html'
     Model = models.Element
+    form_class = forms.ElementForm
+    context_object_name = 'element'
 
     def form_valid(self, form):
-        pass
+        engineer = self.request.user
+        if cache.get('folder_id'):
+            element = models.Folder.objects.get(
+                pk=int(cache.get('folder_id'))
+            )
+            cache.clear()
+        element = form.save(commit=False)
+        element.engineer = self.request.user
+        if cache.get('folder_id'):
+            element.folder = models.Folder.objects.get(
+                pk=int(cache.get('folder_id')))
+            cache.clear()
+        element.save()
+
+    def get_success_url(self):
+        return reverse('calc:element_create', kwargs={'pk': self.object.pk})
 
 
 # def element_create(request):
@@ -364,7 +378,7 @@ class RodsCalcDetailView(TemplateView):
 
 
 class RodsCalcInline:
-    form_class = RodsCalcForm
+    form_class = forms.RodsCalcForm
     model = models.RodsCalc
     template_name = 'calc/rods_calc_create.html'
 
@@ -409,11 +423,11 @@ class RodsCalcCreateView(RodsCalcInline, CreateView):
     def get_named_formsets(self):
         if self.request.method == "GET":
             return {
-                'rods': RodFormSet(prefix='rods'),
+                'rods': forms.RodFormSet(prefix='rods'),
             }
         else:
             return {
-                'rods': RodFormSet(
+                'rods': forms.RodFormSet(
                     self.request.POST or None,
                     self.request.FILES or None,
                     prefix='rods'
@@ -430,7 +444,7 @@ class RodsCalcUpdateView(RodsCalcInline, UpdateView):
 
     def get_named_formsets(self):
         return {
-            'rods': RodFormSet(
+            'rods': forms.RodFormSet(
                 self.request.POST or None,
                 self.request.FILES or None,
                 instance=self.object,

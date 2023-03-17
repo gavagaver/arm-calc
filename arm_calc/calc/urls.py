@@ -9,7 +9,7 @@ urlpatterns_objects = [
     path(
         'site/<int:pk>/',
         views.SiteDetailView.as_view(),
-        name='site',
+        name='site_detail',
     ),
     path(
         'site/create/',
@@ -35,7 +35,7 @@ urlpatterns_objects = [
     path(
         'construction/<int:pk>/',
         views.ConstructionDetailView.as_view(),
-        name='construction',
+        name='construction_detail',
     ),
     path(
         'construction/create/',
@@ -61,7 +61,7 @@ urlpatterns_objects = [
     path(
         'version/<int:pk>/',
         views.VersionDetailView.as_view(),
-        name='version',
+        name='version_detail',
     ),
     path(
         'version/create/',
@@ -87,7 +87,7 @@ urlpatterns_objects = [
     path(
         'folder/<int:pk>/',
         views.FolderDetailView.as_view(),
-        name='folder',
+        name='folder_detail',
     ),
     path(
         'folder/create/',
@@ -113,7 +113,7 @@ urlpatterns_objects = [
     path(
         'element/<int:pk>/',
         views.ElementDetailView.as_view(),
-        name='element',
+        name='element_detail',
     ),
     path(
         'element/create/',
@@ -141,7 +141,7 @@ urlpatterns_rods_calc = [
     path(
         'rods_calc/<int:pk>/',
         views.RodsCalcDetailView.as_view(),
-        name='rods_calc',
+        name='rods_calc_detail',
     ),
     path(
         'rods_calc/create/',
@@ -180,7 +180,7 @@ urlpatterns_volumes_calc = [
     path(
         'volumes_calc/<int:pk>/',
         views.VolumesCalcDetailView.as_view(),
-        name='volumes_calc',
+        name='volumes_calc_detail',
     ),
     path(
         'volumes_calc/create/',
@@ -219,7 +219,7 @@ urlpatterns_squares_calc = [
     path(
         'squares_calc/<int:pk>/',
         views.SquaresCalcDetailView.as_view(),
-        name='squares_calc',
+        name='squares_calc_detail',
     ),
     path(
         'squares_calc/create/',
@@ -258,7 +258,7 @@ urlpatterns_lengths_calc = [
     path(
         'lengths_calc/<int:pk>/',
         views.LengthsCalcDetailView.as_view(),
-        name='lengths_calc',
+        name='lengths_calc_detail',
     ),
     path(
         'lengths_calc/create/',
@@ -297,7 +297,7 @@ urlpatterns_units_calc = [
     path(
         'units_calc/<int:pk>/',
         views.UnitsCalcDetailView.as_view(),
-        name='units_calc',
+        name='units_calc_detail',
     ),
     path(
         'units_calc/create/',
