@@ -38,7 +38,7 @@ urlpatterns_objects = [
         name='construction_detail',
     ),
     path(
-        'construction/create/',
+        'site/<int:site_pk>/construction-create/',
         views.ConstructionCreateView.as_view(),
         name='construction_create',
     ),

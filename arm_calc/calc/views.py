@@ -1,12 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, \
-    DeleteView, DetailView, ListView
+    DeleteView, DetailView, ListView, FormView
 
 from custom_operations import duplicate_object
 from . import models
@@ -118,9 +118,7 @@ class SiteUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.__class__.__name__ == 'SiteCreateView':
-            context['view_name'] = 'create'
-        elif self.__class__.__name__ == 'SiteUpdateView':
+        if self.__class__.__name__ == 'SiteUpdateView':
             context['view_name'] = 'update'
         return context
 
@@ -135,34 +133,31 @@ class SiteUpdateView(UpdateView):
         return reverse('calc:site_detail', kwargs={'pk': self.object.pk})
 
 
-class SiteDuplicateView(DetailView):
+class SiteDuplicateView(FormView):
     template_name = 'calc/site/site_create.html'
-    model = models.Site
     form_class = forms.SiteForm
-    context_object_name = 'site'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['orig_object'] = self.get_object()
-        context['form'] = self.form_class(instance=context['orig_object'])
-        return context
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.get_object()
+        return kwargs
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, instance=self.get_object())
-        if form.is_valid():
-            orig_object = self.get_object()
-            new_object = form.save(commit=False)
-            duplicate_object(orig_object, new_object)
-            form.save_m2m()
-            return HttpResponseRedirect(
-                reverse_lazy('calc:site_detail', args=[new_object.pk]))
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+    def get_object(self):
+        return get_object_or_404(models.Site, pk=self.kwargs['pk'])
+
+    def form_valid(self, form):
+        new_object = duplicate_object(form.instance)
+        form = self.form_class(self.request.POST, instance=new_object)
+        form.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('calc:landing')
 
 
 class SiteDeleteView(DeleteView):
     model = models.Site
-    template_name = 'calc/site/site_confirm_delete.html'
+    template_name = 'calc/includes/confirm_delete.html'
     success_url = reverse_lazy('calc:landing')
 
     def post(self, request, *args, **kwargs):
@@ -170,19 +165,57 @@ class SiteDeleteView(DeleteView):
 
 
 class ConstructionDetailView(DetailView):
-    template_name = 'calc/construction_detail.html'
-    Model = models.Construction
+    template_name = 'calc/construction/construction_detail.html'
+    model = models.Construction
     context_object_name = 'construction'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        construction_id = self.kwargs.get('pk')
+        context['versions'] = models.Version.objects.filter(
+            construction=construction_id)
+        return context
 
 
 class ConstructionCreateView(CreateView):
-    template_name = 'calc/construction_create.html'
-    Model = models.Construction
+    template_name = 'calc/construction/construction_create.html'
+    model = models.Construction
+    form_class = forms.ConstructionForm
+    context_object_name = 'construction'
+
+    def form_valid(self, form):
+        site = models.Site.objects.get(
+            pk=self.kwargs['site_pk'],
+        )
+        site.engineer = self.request.user
+        site.save()
+        construction = form.save(commit=False)
+        construction.site = site
+        construction.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('calc:construction_detail',
+                       kwargs={'pk': self.object.pk})
 
 
 class ConstructionUpdateView(UpdateView):
-    template_name = 'calc/construction_update.html'
-    Model = models.Construction
+    template_name = 'calc/construction/construction_create.html'
+    model = models.Construction
+    form_class = forms.ConstructionForm
+
+    def form_valid(self, form):
+        site = self.get_object().site
+        construction = form.save(commit=False)
+        construction.site = site
+        construction.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.__class__.__name__ == 'ConstructionUpdateView':
+            context['view_name'] = 'update'
+        return context
 
 
 class ConstructionDuplicateView(View):
@@ -195,9 +228,16 @@ class ConstructionDeleteView(DeleteView):
 
 
 class VersionDetailView(DetailView):
-    template_name = 'calc/version_detail.html'
-    Model = models.Version
+    template_name = 'calc/version/version_detail.html'
+    model = models.Version
     context_object_name = 'version'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        version_id = self.kwargs.get('pk')
+        context['folders'] = models.Folder.objects.filter(
+            version=version_id)
+        return context
 
 
 class VersionCreateView(CreateView):
@@ -282,9 +322,16 @@ class FolderDeleteView(DeleteView):
 
 
 class ElementDetailView(DetailView):
-    template_name = 'calc/element_detail.html'
-    Model = models.Element
+    template_name = 'calc/element/element_detail.html'
+    model = models.Element
     context_object_name = 'element'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        element_id = self.kwargs.get('pk')
+        context['rods_calcs'] = models.RodsCalc.objects.filter(
+            element=element_id)
+        return context
 
 
 class ElementCreateView(CreateView):

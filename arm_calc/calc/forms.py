@@ -13,6 +13,15 @@ class SiteForm(forms.ModelForm):
         }
 
 
+class ConstructionForm(forms.ModelForm):
+    class Meta:
+        model = models.Construction
+        fields = ['title', ]
+        labels = {
+            'title': 'Укажите название сооружения:',
+        }
+
+
 class FolderForm(forms.ModelForm):
     class Meta:
         model = models.Folder
