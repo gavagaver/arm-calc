@@ -8,6 +8,7 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, \
     DeleteView, DetailView, ListView
 
+from custom_operations import duplicate_object
 from . import models
 from . import forms
 
@@ -79,19 +80,16 @@ class ResultView(DetailView):
 #     return render(request, 'calc/result.html', context)
 
 
-class SiteDetailView(ListView):
+class SiteDetailView(DetailView):
     template_name = 'calc/site/site_detail.html'
-    model = models.Construction
-    context_object_name = 'constructions'
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.filter(site=self.kwargs['pk'])
+    model = models.Site
+    context_object_name = 'site'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         site_id = self.kwargs.get('pk')
-        context['site'] = models.Site.objects.get(pk=site_id)
+        context['constructions'] = models.Construction.objects.filter(
+            site=site_id)
         return context
 
 
@@ -156,25 +154,8 @@ class SiteDuplicateView(TemplateView):
         orig_object = self.get_object()
         new_object = form.save(commit=False)
 
-        if new_object.engineer_id is None:
-            new_object.engineer_id = orig_object.engineer_id
+        duplicate_object(orig_object, new_object)
 
-        for related in orig_object._meta.related_objects:
-            if related.one_to_many:
-                for obj in getattr(orig_object,
-                                   related.get_accessor_name()).all():
-                    obj.pk = None
-                    setattr(obj, related.field.name, new_object)
-                    obj.save()
-            elif related.one_to_one:
-                obj = getattr(orig_object, related.get_accessor_name())
-                obj.pk = None
-                setattr(obj, related.field.name, new_object)
-                obj.save()
-            else:
-                raise NotImplementedError('Unexpected related object')
-
-        new_object.save()
         form.save_m2m()
         return HttpResponseRedirect(
             reverse_lazy('calc:site_detail', args=[new_object.pk]))
