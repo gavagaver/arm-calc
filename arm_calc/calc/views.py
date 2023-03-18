@@ -135,14 +135,11 @@ class SiteUpdateView(UpdateView):
         return reverse('calc:site_detail', kwargs={'pk': self.object.pk})
 
 
-class SiteDuplicateView(TemplateView):
+class SiteDuplicateView(DetailView):
     template_name = 'calc/site/site_create.html'
     model = models.Site
     form_class = forms.SiteForm
     context_object_name = 'site'
-
-    def get_object(self):
-        return get_object_or_404(models.Site, pk=self.kwargs.get('pk'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -150,22 +147,17 @@ class SiteDuplicateView(TemplateView):
         context['form'] = self.form_class(instance=context['orig_object'])
         return context
 
-    def form_valid(self, form):
-        orig_object = self.get_object()
-        new_object = form.save(commit=False)
-
-        duplicate_object(orig_object, new_object)
-
-        form.save_m2m()
-        return HttpResponseRedirect(
-            reverse_lazy('calc:site_detail', args=[new_object.pk]))
-
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, instance=self.get_object())
         if form.is_valid():
-            return self.form_valid(form)
+            orig_object = self.get_object()
+            new_object = form.save(commit=False)
+            duplicate_object(orig_object, new_object)
+            form.save_m2m()
+            return HttpResponseRedirect(
+                reverse_lazy('calc:site_detail', args=[new_object.pk]))
         else:
-            return self.form_invalid(form)
+            return self.render_to_response(self.get_context_data(form=form))
 
 
 class SiteDeleteView(DeleteView):
