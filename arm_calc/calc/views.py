@@ -623,8 +623,7 @@ class VolumesCalcUpdateView(RodsCalcInline, UpdateView):
 
 
 class VolumesCalcDuplicateView(View):
-    template_name = 'calc/volumes_calc_duplicate.html'
-    Model = models.VolumesCalc
+    pass
 
 
 class VolumesCalcDeleteView(DeleteView):
@@ -652,7 +651,6 @@ class SquaresCalcUpdateView(UpdateView):
 
 
 class SquaresCalcDuplicateView(View):
-    template_name = 'calc/squares_calc_duplicate.html'
     Model = models.SquaresCalc
 
 
@@ -681,7 +679,6 @@ class LengthsCalcUpdateView(UpdateView):
 
 
 class LengthsCalcDuplicateView(View):
-    template_name = 'calc/lengths_calc_duplicate.html'
     Model = models.LengthsCalc
 
 
@@ -710,7 +707,6 @@ class UnitsCalcUpdateView(UpdateView):
 
 
 class UnitsCalcDuplicateView(View):
-    template_name = 'calc/units_calc_duplicate.html'
     Model = models.UnitsCalc
 
 
