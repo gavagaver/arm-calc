@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, \
     DeleteView, DetailView, ListView, FormView
 
-from custom_operations import duplicate_object
+from . import custom_operations
 from . import models
 from . import forms
 
@@ -146,7 +146,7 @@ class SiteDuplicateView(FormView):
         return get_object_or_404(models.Site, pk=self.kwargs['pk'])
 
     def form_valid(self, form):
-        new_object = duplicate_object(form.instance)
+        new_object = custom_operations.duplicate_object(form.instance)
         form = self.form_class(self.request.POST, instance=new_object)
         form.save()
         return super().form_valid(form)

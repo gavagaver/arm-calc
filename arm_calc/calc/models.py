@@ -106,10 +106,43 @@ class RodsCalc(CalcModel):
         related_name='rods_calcs',
         verbose_name='Элемент',
     )
+    total_mass = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Всего, кг',
+    )
 
     class Meta:
         verbose_name = 'Расчет армирования'
         verbose_name_plural = 'Расчеты армирования'
+
+
+class RodClass(BaseModel):
+    rods_calc = models.ForeignKey(
+        RodsCalc,
+        on_delete=models.CASCADE,
+        related_name='rod_classes',
+        verbose_name='Армирование',
+    )
+    total_mass = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Всего, кг',
+    )
+
+
+class RodDiameter(BaseModel):
+    rod_class = models.ForeignKey(
+        RodClass,
+        on_delete=models.CASCADE,
+        related_name='rod_diameters',
+        verbose_name='Класс арматуры',
+    )
+    total_mass = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Всего, кг',
+    )
 
 
 class Rod(PartModel):
@@ -119,15 +152,16 @@ class Rod(PartModel):
         related_name='rods',
         verbose_name='Армирование',
     )
-    diameter = models.SmallIntegerField(
-        blank=True,
-        null=True,
+    diameter = models.ForeignKey(
+        RodDiameter,
+        on_delete=models.CASCADE,
+        related_name='rods',
         verbose_name='Диаметр, мм',
     )
-    arm_class = models.CharField(
-        max_length=30,
-        blank=True,
-        null=True,
+    rod_class = models.ForeignKey(
+        RodClass,
+        on_delete=models.CASCADE,
+        related_name='rods',
         verbose_name='Класс арматуры',
     )
     length_1 = models.SmallIntegerField(
@@ -175,30 +209,45 @@ class Rod(PartModel):
         null=True,
         verbose_name='Кол-во, шт',
     )
+    length = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Длина, м',
+    )
+    mass_of_single_rod = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Масса стержня, кг',
+    )
+    mass_of_rods = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Масса позиции, м',
+    )
 
-    @property
-    def length(self):
-        element_of_rod = Element.objects.get(pk=self.element.pk)
-        lenght = self.quantity_1 * self.length_1 / element_of_rod.measurement_scale
-        if self.length_2:
-            lenght += self.quantity_2 * self.length_2 / element_of_rod.measurement_scale
-        if self.length_3:
-            lenght += self.quantity_3 * self.length_3 / element_of_rod.measurement_scale
-        if self.length_4:
-            lenght += self.quantity_4 * self.length_4 / element_of_rod.measurement_scale
+    # @property
+    # def length(self):
+    #     element_of_rod = Element.objects.get(pk=self.element.pk)
+    #     length = self.quantity_1 * self.length_1 / element_of_rod.measurement_scale
+    #     if self.length_2:
+    #         length += self.quantity_2 * self.length_2 / element_of_rod.measurement_scale
+    #     if self.length_3:
+    #         length += self.quantity_3 * self.length_3 / element_of_rod.measurement_scale
+    #     if self.length_4:
+    #         length += self.quantity_4 * self.length_4 / element_of_rod.measurement_scale
+    #
+    #     return round(length, 1)
 
-        return round(lenght, 1)
-
-    def mass_of_single_rod(self):
-        """Mass of single rod as mass of meter multiplied by length.
-        """
-        return round(MASS_OF_METER.get(self.diameter) * self.length / MM_IN_M,
-                     2)
-
-    def mass_of_rods(self):
-        """Mass of rods as mass of single rod multiplied by quantity.
-        """
-        return round(self.mass_of_single_rod() * self.quantity, 2)
+    # def mass_of_single_rod(self):
+    #     """Mass of single rod as mass of meter multiplied by length.
+    #     """
+    #     return round(MASS_OF_METER.get(self.diameter) * self.length / MM_IN_M,
+    #                  2)
+    #
+    # def mass_of_rods(self):
+    #     """Mass of rods as mass of single rod multiplied by quantity.
+    #     """
+    #     return round(self.mass_of_single_rod() * self.quantity, 2)
 
     class Meta:
         verbose_name = 'Стержень'

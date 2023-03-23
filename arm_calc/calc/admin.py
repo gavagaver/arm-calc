@@ -49,9 +49,19 @@ class FolderAdmin(admin.ModelAdmin):
 
 
 class RodsCalcAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('title', 'element', 'total_mass')
     search_fields = ('title',)
     list_filter = ('create_date',)
+    empty_value_display = '-пусто-',
+
+
+class RodClassAdmin(admin.ModelAdmin):
+    list_display = ('rods_calc', 'title', 'total_mass')
+    empty_value_display = '-пусто-',
+
+
+class RodDiameterAdmin(admin.ModelAdmin):
+    list_display = ('rod_class', 'title', 'total_mass')
     empty_value_display = '-пусто-',
 
 
@@ -62,7 +72,7 @@ class RodAdmin(admin.ModelAdmin):
         'create_date',
         'rods_calc',
         'diameter',
-        'arm_class',
+        'rod_class',
         'length_1',
         'quantity_1',
         'length_2',
@@ -72,6 +82,7 @@ class RodAdmin(admin.ModelAdmin):
         'length_4',
         'quantity_4',
         'quantity',
+        'length',
         'mass_of_single_rod',
         'mass_of_rods',
     )
@@ -79,8 +90,9 @@ class RodAdmin(admin.ModelAdmin):
     list_filter = ('create_date', 'rods_calc',)
     list_editable = (
         'title',
+        'rods_calc',
         'diameter',
-        'arm_class',
+        'rod_class',
         'length_1',
         'quantity_1',
         'length_2',
@@ -90,6 +102,9 @@ class RodAdmin(admin.ModelAdmin):
         'length_4',
         'quantity_4',
         'quantity',
+        'length',
+        'mass_of_single_rod',
+        'mass_of_rods',
     )
     empty_value_display = '-пусто-',
 
@@ -100,4 +115,6 @@ admin.site.register(models.Version, VersionAdmin)
 admin.site.register(models.Folder, FolderAdmin)
 admin.site.register(models.Element, ElementAdmin)
 admin.site.register(models.RodsCalc, RodsCalcAdmin)
+admin.site.register(models.RodClass, RodClassAdmin)
+admin.site.register(models.RodDiameter, RodDiameterAdmin)
 admin.site.register(models.Rod, RodAdmin)
