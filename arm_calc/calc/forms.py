@@ -22,6 +22,15 @@ class ConstructionForm(forms.ModelForm):
         }
 
 
+class VersionForm(forms.ModelForm):
+    class Meta:
+        model = models.Version
+        fields = ['title', ]
+        labels = {
+            'title': 'Укажите название версии:',
+        }
+
+
 class FolderForm(forms.ModelForm):
     class Meta:
         model = models.Folder

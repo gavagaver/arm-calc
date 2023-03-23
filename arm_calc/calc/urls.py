@@ -64,7 +64,7 @@ urlpatterns_objects = [
         name='version_detail',
     ),
     path(
-        'version/create/',
+        'construction/<int:construction_pk>/version-create/',
         views.VersionCreateView.as_view(),
         name='version_create',
     ),

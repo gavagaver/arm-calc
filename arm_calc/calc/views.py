@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, \
     DeleteView, DetailView, ListView, FormView
 
-from calculations import calculate_rod
+from . import calculations
 from . import custom_operations
 from . import models
 from . import forms
@@ -196,8 +196,24 @@ class VersionDetailView(DetailView):
 
 
 class VersionCreateView(CreateView):
-    template_name = 'calc/version_create.html'
-    Model = models.Version
+    template_name = 'calc/version/version_create.html'
+    model = models.Version
+    form_class = forms.VersionForm
+    context_object_name = 'version'
+
+    def form_valid(self, form):
+        construction = models.Construction.objects.get(
+            pk=self.kwargs['construction_pk'],
+        )
+        construction.save()
+        version = form.save(commit=False)
+        version.construction = construction
+        version.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('calc:version_detail',
+                       kwargs={'pk': self.object.pk})
 
 
 class VersionUpdateView(UpdateView):
@@ -441,7 +457,7 @@ class RodsCalcDetailView(TemplateView):
 class RodsCalcInline:
     form_class = forms.RodsCalcForm
     model = models.RodsCalc
-    template_name = 'calc/rods_calc_create.html'
+    template_name = 'calc/rods_calc/rods_calc_create.html'
 
     def form_valid(self, form):
         named_formsets = self.get_named_formsets()
@@ -513,7 +529,7 @@ class RodsCalcInline:
         # calculation of rods
         rods = rods_calc.rods
         for rod in rods:
-            calculate_rod(rod)
+            calculations.calculate_rod(rod)
 
         rod_classes = sorted(list(set(rods.values_list('rod_class', flat=True).distinct())))
 

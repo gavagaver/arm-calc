@@ -1,4 +1,4 @@
-import models
+from . import models
 
 MASS_OF_METER = {
     6: 0.222,
