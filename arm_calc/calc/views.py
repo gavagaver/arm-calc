@@ -8,7 +8,6 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, \
     DeleteView, DetailView, ListView, FormView
 
-from . import calculations
 from . import custom_operations
 from . import models
 from . import forms
@@ -527,13 +526,13 @@ class RodsCalcInline:
         #     return render(request, 'calc/result.html', context)
 
         # calculation of rods
-        rods = rods_calc.rods
-        for rod in rods:
-            calculations.calculate_rod(rod)
+        # rods = rods_calc.rods.all()
+        # for rod in rods:
+        #     calculations.calculate_rod(rod)
+        #
+        # rod_classes = sorted(list(set(rods.values_list('rod_class', flat=True).distinct())))
 
-        rod_classes = sorted(list(set(rods.values_list('rod_class', flat=True).distinct())))
-
-        return redirect('calc:folder', rods_calc.element.folder.pk)
+        return redirect('calc:landing')
 
     def formset_rods_valid(self, formset):
         rods = formset.save(commit=False)

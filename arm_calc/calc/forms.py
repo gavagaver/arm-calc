@@ -52,7 +52,7 @@ class ElementForm(forms.ModelForm):
 class RodsCalcForm(forms.ModelForm):
     class Meta:
         model = models.RodsCalc
-        fields = '__all__'
+        exclude = '__all__'
         widgets = {
             'title': forms.TextInput(
                 attrs={
@@ -70,7 +70,11 @@ class RodsCalcForm(forms.ModelForm):
 class RodForm(forms.ModelForm):
     class Meta:
         model = models.Rod
-        fields = '__all__'
+        exclude = (
+            'length',
+            'mass_of_single_rod',
+            'mass_of_rods',
+        )
         DIAMETERS = (
             ('6', '6'),
             ('8', '8'),
@@ -87,7 +91,7 @@ class RodForm(forms.ModelForm):
             ('36', '36'),
             ('40', '40'),
         )
-        ARM_CLASSES = (
+        ROD_CLASSES = (
             ('А240', 'А240'),
             ('А400', 'А400'),
             ('А500', 'А500'),
@@ -107,8 +111,8 @@ class RodForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'arm_class': forms.Select(
-                choices=ARM_CLASSES,
+            'rod_class': forms.Select(
+                choices=ROD_CLASSES,
                 attrs={
                     'class': 'form-control'
                 }

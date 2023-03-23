@@ -70,11 +70,6 @@ class Element(BaseModel):
         related_name='elements',
         verbose_name='Инженер',
     )
-    measurement_scale = models.SmallIntegerField(
-        default=1,
-        verbose_name='Масштаб измерений',
-        help_text='Во сколько раз вводимые значения больше действительных'
-    )
 
     class Meta:
         verbose_name = 'Элемент'
@@ -92,6 +87,11 @@ class RodsCalc(CalcModel):
         blank=True,
         null=True,
         verbose_name='Всего, кг',
+    )
+    measurement_scale = models.SmallIntegerField(
+        default=1,
+        verbose_name='Масштаб измерений',
+        help_text='Во сколько раз вводимые значения больше действительных'
     )
 
     class Meta:
@@ -128,22 +128,39 @@ class RodDiameter(BaseModel):
 
 
 class Rod(PartModel):
+    MASS_OF_METER = {
+        6: 0.222,
+        8: 0.395,
+        10: 0.617,
+        12: 0.888,
+        14: 1.210,
+        16: 1.580,
+        18: 2.000,
+        20: 2.470,
+        22: 2.980,
+        25: 3.850,
+        28: 4.830,
+        32: 6.310,
+        36: 7.990,
+        40: 9.870,
+    }
+    MM_IN_M = 1000
+
     rods_calc = models.ForeignKey(
         RodsCalc,
         on_delete=models.CASCADE,
         related_name='rods',
         verbose_name='Армирование',
     )
-    diameter = models.ForeignKey(
-        RodDiameter,
-        on_delete=models.CASCADE,
-        related_name='rods',
+    diameter = models.SmallIntegerField(
+        blank=True,
+        null=True,
         verbose_name='Диаметр, мм',
     )
-    rod_class = models.ForeignKey(
-        RodClass,
-        on_delete=models.CASCADE,
-        related_name='rods',
+    rod_class = models.CharField(
+        blank=True,
+        null=True,
+        max_length=30,
         verbose_name='Класс арматуры',
     )
     length_1 = models.SmallIntegerField(
@@ -194,7 +211,7 @@ class Rod(PartModel):
     length = models.SmallIntegerField(
         blank=True,
         null=True,
-        verbose_name='Длина, м',
+        verbose_name='Длина, мм',
     )
     mass_of_single_rod = models.SmallIntegerField(
         blank=True,
@@ -204,8 +221,33 @@ class Rod(PartModel):
     mass_of_rods = models.SmallIntegerField(
         blank=True,
         null=True,
-        verbose_name='Масса позиции, м',
+        verbose_name='Масса позиции, кг',
     )
+
+    def save(self, *args, **kwargs):
+        self.calculate_length()
+        self.calculate_mass_of_single_rod()
+        self.calculate_mass_of_rods()
+        super(Rod, self).save(*args, force_insert=True, **kwargs)
+
+    def calculate_length(self):
+        rods_calc = RodsCalc.objects.get(pk=self.rods_calc.pk)
+        length = self.quantity_1 * self.length_1 / rods_calc.measurement_scale
+        if self.length_2:
+            length += self.quantity_2 * self.length_2 / rods_calc.measurement_scale
+        if self.length_3:
+            length += self.quantity_3 * self.length_3 / rods_calc.measurement_scale
+        if self.length_4:
+            length += self.quantity_4 * self.length_4 / rods_calc.measurement_scale
+        self.length = round(length, 1)
+
+    def calculate_mass_of_single_rod(self):
+        self.mass_of_single_rod = round(
+            self.MASS_OF_METER.get(self.diameter) * self.length / self.MM_IN_M,
+            2)
+
+    def calculate_mass_of_rods(self):
+        self.mass_of_rods = round(self.mass_of_single_rod * self.quantity, 2)
 
     class Meta:
         verbose_name = 'Стержень'
