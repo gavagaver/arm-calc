@@ -8,6 +8,7 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, \
     DeleteView, DetailView, ListView, FormView
 
+from calculations import calculate_rod
 from . import custom_operations
 from . import models
 from . import forms
@@ -32,52 +33,6 @@ class ProfileView(ListView):
 class ResultView(DetailView):
     template_name = 'calc/result.html'
     Model = models.Element
-
-
-# def result(request, pk):
-#     element = models.Element.objects.get(pk=pk)
-#     rods_calc = models.RodsCalc.objects.get(element=element)
-#     rods = models.Rod.objects.filter(rods_calc=rods_calc)
-#     arm_classes = sorted(
-#         list(set(rods.values_list('arm_class', flat=True).distinct()))
-#     )
-#     results = {}
-#     for clas in arm_classes:
-#         diameters = sorted(list(set(
-#             rods.filter(arm_class=clas).values_list('diameter',
-#                                                     flat=True
-#                                                     ).distinct()
-#         )))
-#         masses = []
-#         for diameter in diameters:
-#             all_rods_of_diameter = rods.filter(diameter=diameter,
-#                                                arm_class=clas)
-#             masses_of_diameter = []
-#             for rod in all_rods_of_diameter:
-#                 mass = rod.mass_of_rods()
-#                 masses_of_diameter.append(mass)
-#             masses.append(round(sum(masses_of_diameter), 2))
-#
-#         diameters = list(map(lambda x: '⌀' + str(x), diameters))
-#         diameters.append('Итого')
-#         masses.append(round(sum(masses), 2))
-#
-#         dictionary = dict(zip(diameters, masses))
-#         results[clas] = dictionary
-#
-#     masses_of_rods = []
-#     for rod in rods:
-#         mass_of_rod = rod.mass_of_rods()
-#         masses_of_rods.append(mass_of_rod)
-#
-#     sum_element = round(sum(masses_of_rods), 2)
-#     context = {
-#         'element': element,
-#         'rods': rods,
-#         'results': results,
-#         'sum_element': sum_element,
-#     }
-#     return render(request, 'calc/result.html', context)
 
 
 class SiteDetailView(DetailView):
@@ -509,6 +464,59 @@ class RodsCalcInline:
                 formset_save_func(formset)
             else:
                 formset.save()
+
+        # def result(request, pk):
+        #     element = models.Element.objects.get(pk=pk)
+        #     rods_calc = models.RodsCalc.objects.get(element=element)
+        #     rods = models.Rod.objects.filter(rods_calc=rods_calc)
+        #     arm_classes = sorted(
+        #         list(set(rods.values_list('arm_class', flat=True).distinct()))
+        #     )
+        #     results = {}
+        #     for clas in arm_classes:
+        #         diameters = sorted(list(set(
+        #             rods.filter(arm_class=clas).values_list('diameter',
+        #                                                     flat=True
+        #                                                     ).distinct()
+        #         )))
+        #         masses = []
+        #         for diameter in diameters:
+        #             all_rods_of_diameter = rods.filter(diameter=diameter,
+        #                                                arm_class=clas)
+        #             masses_of_diameter = []
+        #             for rod in all_rods_of_diameter:
+        #                 mass = rod.mass_of_rods()
+        #                 masses_of_diameter.append(mass)
+        #             masses.append(round(sum(masses_of_diameter), 2))
+        #
+        #         diameters = list(map(lambda x: '⌀' + str(x), diameters))
+        #         diameters.append('Итого')
+        #         masses.append(round(sum(masses), 2))
+        #
+        #         dictionary = dict(zip(diameters, masses))
+        #         results[clas] = dictionary
+        #
+        #     masses_of_rods = []
+        #     for rod in rods:
+        #         mass_of_rod = rod.mass_of_rods()
+        #         masses_of_rods.append(mass_of_rod)
+        #
+        #     sum_element = round(sum(masses_of_rods), 2)
+        #     context = {
+        #         'element': element,
+        #         'rods': rods,
+        #         'results': results,
+        #         'sum_element': sum_element,
+        #     }
+        #     return render(request, 'calc/result.html', context)
+
+        # calculation of rods
+        rods = rods_calc.rods
+        for rod in rods:
+            calculate_rod(rod)
+
+        rod_classes = sorted(list(set(rods.values_list('rod_class', flat=True).distinct())))
+
         return redirect('calc:folder', rods_calc.element.folder.pk)
 
     def formset_rods_valid(self, formset):

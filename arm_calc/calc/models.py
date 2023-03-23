@@ -3,24 +3,6 @@ from django.db import models
 from core.models import User, BaseModel, ConstructionModel, CalcModel, \
     PartModel
 
-MASS_OF_METER = {
-    6: 0.222,
-    8: 0.395,
-    10: 0.617,
-    12: 0.888,
-    14: 1.210,
-    16: 1.580,
-    18: 2.000,
-    20: 2.470,
-    22: 2.980,
-    25: 3.850,
-    28: 4.830,
-    32: 6.310,
-    36: 7.990,
-    40: 9.870,
-}
-MM_IN_M = 1000
-
 
 class Site(BaseModel):
     engineer = models.ForeignKey(
@@ -224,30 +206,6 @@ class Rod(PartModel):
         null=True,
         verbose_name='Масса позиции, м',
     )
-
-    # @property
-    # def length(self):
-    #     element_of_rod = Element.objects.get(pk=self.element.pk)
-    #     length = self.quantity_1 * self.length_1 / element_of_rod.measurement_scale
-    #     if self.length_2:
-    #         length += self.quantity_2 * self.length_2 / element_of_rod.measurement_scale
-    #     if self.length_3:
-    #         length += self.quantity_3 * self.length_3 / element_of_rod.measurement_scale
-    #     if self.length_4:
-    #         length += self.quantity_4 * self.length_4 / element_of_rod.measurement_scale
-    #
-    #     return round(length, 1)
-
-    # def mass_of_single_rod(self):
-    #     """Mass of single rod as mass of meter multiplied by length.
-    #     """
-    #     return round(MASS_OF_METER.get(self.diameter) * self.length / MM_IN_M,
-    #                  2)
-    #
-    # def mass_of_rods(self):
-    #     """Mass of rods as mass of single rod multiplied by quantity.
-    #     """
-    #     return round(self.mass_of_single_rod() * self.quantity, 2)
 
     class Meta:
         verbose_name = 'Стержень'
