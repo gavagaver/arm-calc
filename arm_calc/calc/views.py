@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -465,10 +466,7 @@ class RodsCalcInline:
 
         rods_calc = form.save(commit=False)
         rods_calc.element.engineer = self.request.user
-        if cache.get('folder_id'):
-            rods_calc.element.folder = models.Folder.objects.get(
-                pk=int(cache.get('folder_id')))
-            cache.clear()
+
         rods_calc.save()
 
         self.object = form.save()
@@ -531,6 +529,28 @@ class RodsCalcInline:
         #     calculations.calculate_rod(rod)
         #
         # rod_classes = sorted(list(set(rods.values_list('rod_class', flat=True).distinct())))
+
+        rods = models.Rod.objects.filter(rods_calc=rods_calc)
+
+        for rod in rods:
+            rod_class, created = models.RodClass.objects.get_or_create(
+                title=rod.rod_class,
+                rods_calc=rods_calc,
+                total_mass=rod.mass_of_rods,
+            )
+
+            if not created:
+                rod_class.rods_calc = rods_calc
+                rod_class.save()
+
+            rod_diameter, created = models.RodDiameter.objects.get_or_create(
+                title=rod.diameter, rod_class=rod_class)
+
+            if not created:
+                rod_diameter = models.RodDiameter.objects.get(
+                    Q(title=rod.diameter) & Q(rod_class=rod_class))
+                rod_diameter.rods_calc = rods_calc
+                rod_diameter.save()
 
         return redirect('calc:landing')
 
