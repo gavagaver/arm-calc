@@ -30,9 +30,11 @@ class ProfileView(ListView):
         return queryset.filter(engineer=self.request.user)
 
 
-class ResultView(DetailView):
-    template_name = 'calc/result.html'
-    Model = models.Element
+class RodsCalcResultView(DetailView):
+    template_name = 'calc/rods_calc/rods_calc_result.html'
+    model = models.RodsCalc
+
+
 
 
 class SiteDetailView(DetailView):

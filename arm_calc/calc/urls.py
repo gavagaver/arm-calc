@@ -163,6 +163,11 @@ urlpatterns_rods_calc = [
         views.RodsCalcDeleteView.as_view(),
         name='rods_calc_delete',
     ),
+    path(
+        'rods_calc/<int:pk>/result/',
+        views.RodsCalcResultView.as_view(),
+        name='rods_calc_result',
+    ),
 
     path(
         'rod/<int:pk>/duplicate/',
@@ -343,11 +348,6 @@ urlpatterns = (
                 'profile/<str:username>/',
                 views.ProfileView.as_view(),
                 name='profile',
-            ),
-            path(
-                'result/<int:pk>/',
-                views.ResultView.as_view(),
-                name='result',
             ),
         ]
         + urlpatterns_objects
