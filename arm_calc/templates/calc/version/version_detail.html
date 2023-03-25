@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Сооружение {{ site.title }}
+  Версия "{{ version.title }}"
 {% endblock %}
 
 {% block content %}
@@ -25,14 +25,14 @@
 
             <div class="col-lg-5 mb-4">
 
-              <h5>сооружение</h5>
+              <h5>версия</h5>
 
-              <h1>{{ construction.title }}</h1>
+              <h1>{{ version.title }}</h1>
 
             </div>
 
-            {% for version in versions %}
-              {% include 'calc/includes/version/version_card.html' %}
+            {% for folder in folders %}
+              {% include 'calc/includes/folder/folder_card.html' %}
             {% endfor %}
 
 
@@ -51,11 +51,11 @@
 <!--                Назад-->
 <!--              </a>-->
 
-                  <a href="{% url 'calc:version_create' construction.pk %}"
+                  <a href="{% url 'calc:folder_create' version.pk %}"
                      class="btn btn-success btn-lg"
                   >
                     <i class="fas fa-folder fa-lg text-white-50"></i>
-                    Создать версию
+                    Создать папку
                   </a>
 
 

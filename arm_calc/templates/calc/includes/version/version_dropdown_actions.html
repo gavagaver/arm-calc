@@ -4,9 +4,9 @@
     </a>
     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
         <div class="dropdown-header">Выберите действие:</div>
-        <a class="dropdown-item" href="{% url 'calc:site_update' site.pk%}">Изменить</a>
-        <a class="dropdown-item" href="{% url 'calc:site_duplicate' site.pk%}">Дублировать</a>
+        <a class="dropdown-item" href="{% url 'calc:version_update' version.pk%}">Редактировать</a>
+        <a class="dropdown-item" href="{% url 'calc:version_duplicate' version.pk%}">Дублировать</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'calc:site_delete' site.pk%}" style="color: #e74a3b;">Удалить</a>
+        <a class="dropdown-item" href="{% url 'calc:version_delete' version.pk%}" style="color: #e74a3b;">Удалить</a>
     </div>
 </div>

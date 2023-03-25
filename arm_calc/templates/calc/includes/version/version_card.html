@@ -4,14 +4,14 @@
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="h5 font-weight-bold text-primary mb-1">
-                        <a href="{% url 'calc:folder_detail' folder.pk%}">
-                            {{ folder.title }}
+                        <a href="{% url 'calc:version_detail' version.pk%}">
+                            {{ version.title }}
                         </a>
                     </div>
                 </div>
 
 
-                {% include 'calc/includes/folder/folder_dropdown_actions.html' %}
+                {% include 'calc/includes/version/version_dropdown_actions.html' %}
 
 
             </div>

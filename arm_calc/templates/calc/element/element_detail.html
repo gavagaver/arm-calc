@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Папка "{{ folder.title }}"
+  Элемент "{{ element.title }}"
 {% endblock %}
 
 {% block content %}
@@ -25,26 +25,26 @@
 
             <div class="col-lg-5 mb-4">
 
-              <h5>папка</h5>
+              <h5>элемент</h5>
 
-              <h1>{{ folder.title }}</h1>
+              <h1>{{ element.title }}</h1>
 
             </div>
 
 
-            {% for element in elements %}
-              {% include 'calc/includes/element/element_card.html' %}
+            {% for rods_calc in rods_calcs %}
+              {% include 'calc/includes/rods_calc/rods_calc_card.html' %}
             {% endfor %}
 
 
             <div class="col-lg-5 mb-4">
 
 
-              <a href="{% url 'calc:element_create' %}"
+              <a href="{% url 'calc:rods_calc_create' %}"
                  class="btn btn-success btn-lg"
               >
                 <i class="fas fa-file fa-lg text-white-50"></i>
-                Создать элемент
+                Создать расчет армирования
               </a>
 
             </div>

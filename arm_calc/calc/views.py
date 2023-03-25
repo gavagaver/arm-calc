@@ -45,6 +45,11 @@ class SiteDetailView(DetailView):
         site_id = self.kwargs.get('pk')
         context['constructions'] = models.Construction.objects.filter(
             site=site_id)
+        context['dropdown_actions'] = {
+            'Редактировать': reverse('calc:site_update', args=[self.object.pk]),
+            'Дублировать': reverse('calc:site_duplicate', args=[self.object.pk]),
+            'Удалить': reverse('calc:site_delete', args=[self.object.pk]),
+        }
         return context
 
 

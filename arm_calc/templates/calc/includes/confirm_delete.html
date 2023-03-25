@@ -1,11 +1,55 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}
+  Подтверждение удаления
+{% endblock %}
 
 {% block content %}
-  <h1>Delete Site</h1>
-  <h3>Are you sure you want to delete "{{ object.name }}"?</h3>
-  <form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="next" value="{{ success_url }}">
-    <button type="submit" class="btn btn-danger">Delete</button>
-  </form>
+
+  <!-- Sidebar -->
+  {% include 'includes/sidebar.html' %}
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+          <!-- Topbar -->
+          {% include 'includes/topbar.html' %}
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+
+
+            <div class="col-lg-5 mb-4">
+
+
+
+              <h1>Удаление</h1>
+              <h3>Вы действительно хотите удалить "{{ object.title }}"?</h3>
+              <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ success_url }}">
+                <button type="submit" class="btn btn-danger">Да, удалить</button>
+                <a href="{% url 'calc:landing' %}" class="btn btn-default">Отмена</a>
+              </form>
+
+
+
+
+          </div>
+          <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'includes/footer.html' %}
+      <!-- End of Footer -->
+
+  </div>
+  <!-- End of Content Wrapper -->
+
 {% endblock %}
