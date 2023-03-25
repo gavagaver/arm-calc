@@ -90,7 +90,7 @@ urlpatterns_objects = [
         name='folder_detail',
     ),
     path(
-        'folder/create/',
+        'version/<int:version_pk>/folder-create/',
         views.FolderCreateView.as_view(),
         name='folder_create',
     ),
@@ -116,7 +116,7 @@ urlpatterns_objects = [
         name='element_detail',
     ),
     path(
-        'element/create/',
+        'folder/<int:folder_pk>/element-create/',
         views.ElementCreateView.as_view(),
         name='element_create',
     ),
@@ -144,7 +144,7 @@ urlpatterns_rods_calc = [
         name='rods_calc_detail',
     ),
     path(
-        'rods_calc/create/',
+        'element/<int:element_pk>/rods-calc-create/',
         views.RodsCalcCreateView.as_view(),
         name='rods_calc_create',
     ),

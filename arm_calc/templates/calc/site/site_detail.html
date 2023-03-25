@@ -38,18 +38,7 @@
 
             <div class="col-lg-5 mb-4">
 
-<!--              <a href="-->
-<!--                {% if folder.folder %}-->
-<!--                  {% url 'calc:folder_detail' folder.folder.pk %}-->
-<!--                {% else %}-->
-<!--                  {% url 'calc:profile' request.user.username %}-->
-<!--                {% endif %}-->
-<!--              "-->
-<!--                 class="btn btn-danger btn-lg"-->
-<!--              >-->
-<!--                <i class="fas fa-arrow-left fa-lg text-white-50"></i>-->
-<!--                Назад-->
-<!--              </a>-->
+
 
               <a href="{% url 'calc:construction_create' site.pk %}"
                  class="btn btn-success btn-lg"
@@ -59,12 +48,6 @@
               </a>
 
 
-<!--              <a href="{% url 'calc:element_create' %}"-->
-<!--                 class="btn btn-success btn-lg"-->
-<!--              >-->
-<!--                <i class="fas fa-file fa-lg text-white-50"></i>-->
-<!--                Создать элемент-->
-<!--              </a>-->
 
             </div>
 

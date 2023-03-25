@@ -46,8 +46,10 @@ class SiteDetailView(DetailView):
         context['constructions'] = models.Construction.objects.filter(
             site=site_id)
         context['dropdown_actions'] = {
-            'Редактировать': reverse('calc:site_update', args=[self.object.pk]),
-            'Дублировать': reverse('calc:site_duplicate', args=[self.object.pk]),
+            'Редактировать': reverse('calc:site_update',
+                                     args=[self.object.pk]),
+            'Дублировать': reverse('calc:site_duplicate',
+                                   args=[self.object.pk]),
             'Удалить': reverse('calc:site_delete', args=[self.object.pk]),
         }
         return context
@@ -236,40 +238,37 @@ class VersionDeleteView(DeleteView):
 
 
 class FolderDetailView(DetailView):
-    template_name = 'calc/folder_detail.html'
-    Model = models.Folder
+    template_name = 'calc/folder/folder_detail.html'
+    model = models.Folder
     context_object_name = 'folder'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        folder_id = self.kwargs.get('folder_id')
-        folder = models.Folder.objects.get(pk=folder_id)
-        context['folders'] = models.Folder.objects.filter(folder=folder)
-        context['elements'] = folder.elements.all()
-        cache.set('folder_id', str(folder.pk))
+        folder_id = self.kwargs.get('pk')
+        context['elements'] = models.Element.objects.filter(
+            folder=folder_id)
         return context
 
 
 class FolderCreateView(CreateView):
-    template_name = 'calc/folder_create.html'
-    Model = models.Folder
+    template_name = 'calc/folder/folder_create.html'
+    model = models.Folder
     form_class = forms.FolderForm
     context_object_name = 'folder'
 
     def form_valid(self, form):
-        engineer = self.request.user
+        version = models.Version.objects.get(
+            pk=self.kwargs['version_pk'],
+        )
+        version.save()
         folder = form.save(commit=False)
-        folder.engineer = self.request.user
-        try:
-            folder.folder = models.Folder.objects.get(
-                pk=int(cache.get('folder_id')))
-            cache.clear()
-        except:
-            pass
+        folder.version = version
         folder.save()
+        return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('calc:folder_detail', kwargs={'pk': self.object.pk})
+        return reverse('calc:folder_detail',
+                       kwargs={'pk': self.object.pk})
 
 
 class FolderUpdateView(UpdateView):
@@ -311,58 +310,27 @@ class ElementDetailView(DetailView):
 
 
 class ElementCreateView(CreateView):
-    template_name = 'calc/element_create.html'
-    Model = models.Element
+    template_name = 'calc/element/element_create.html'
+    model = models.Element
     form_class = forms.ElementForm
     context_object_name = 'element'
 
     def form_valid(self, form):
+        folder = models.Folder.objects.get(
+            pk=self.kwargs['folder_pk'],
+        )
         engineer = self.request.user
-        if cache.get('folder_id'):
-            element = models.Folder.objects.get(
-                pk=int(cache.get('folder_id'))
-            )
-            cache.clear()
+        folder.save()
         element = form.save(commit=False)
-        element.engineer = self.request.user
-        if cache.get('folder_id'):
-            element.folder = models.Folder.objects.get(
-                pk=int(cache.get('folder_id')))
-            cache.clear()
+        element.folder = folder
+        element.engineer = engineer
         element.save()
+        return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('calc:element_create', kwargs={'pk': self.object.pk})
+        return reverse('calc:element_detail',
+                       kwargs={'pk': self.object.pk})
 
-
-# def element_create(request):
-#     form = ElementForm(
-#         request.POST or None,
-#         files=request.FILES or None,
-#     )
-#     if form.is_valid():
-#         engineer = request.user
-#         if cache.get('folder_id'):
-#             folder = models.Folder.objects.get(
-#             pk=int(cache.get('folder_id'))
-#             )
-#             cache.clear()
-#         element = form.save(commit=False)
-#         element.engineer = request.user
-#         if cache.get('folder_id'):
-#             element.folder = models.Folder.objects.get(
-#                 pk=int(cache.get('folder_id')))
-#             cache.clear()
-#         else:
-#             element.save()
-#             return redirect('calc:profile', request.user.username)
-#         element.save()
-#         if folder:
-#             return redirect('calc:folder', folder.pk)
-#     context = {
-#         'form': form,
-#     }
-#     return render(request, 'calc/element_create.html', context)
 
 class ElementUpdateView(UpdateView):
     template_name = 'calc/element_update.html'
@@ -471,6 +439,7 @@ class RodsCalcInline:
 
         rods_calc = form.save(commit=False)
         rods_calc.element.engineer = self.request.user
+
 
         rods_calc.save()
 

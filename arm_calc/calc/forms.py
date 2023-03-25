@@ -52,7 +52,7 @@ class ElementForm(forms.ModelForm):
 class RodsCalcForm(forms.ModelForm):
     class Meta:
         model = models.RodsCalc
-        fields = ('title', 'element', 'measurement_scale')
+        fields = ('title', 'measurement_scale')
         widgets = {
             'title': forms.TextInput(
                 attrs={
