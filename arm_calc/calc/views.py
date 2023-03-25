@@ -478,79 +478,47 @@ class RodsCalcInline:
             else:
                 formset.save()
 
-        # def result(request, pk):
-        #     element = models.Element.objects.get(pk=pk)
-        #     rods_calc = models.RodsCalc.objects.get(element=element)
-        #     rods = models.Rod.objects.filter(rods_calc=rods_calc)
-        #     arm_classes = sorted(
-        #         list(set(rods.values_list('arm_class', flat=True).distinct()))
-        #     )
-        #     results = {}
-        #     for clas in arm_classes:
-        #         diameters = sorted(list(set(
-        #             rods.filter(arm_class=clas).values_list('diameter',
-        #                                                     flat=True
-        #                                                     ).distinct()
-        #         )))
-        #         masses = []
-        #         for diameter in diameters:
-        #             all_rods_of_diameter = rods.filter(diameter=diameter,
-        #                                                arm_class=clas)
-        #             masses_of_diameter = []
-        #             for rod in all_rods_of_diameter:
-        #                 mass = rod.mass_of_rods()
-        #                 masses_of_diameter.append(mass)
-        #             masses.append(round(sum(masses_of_diameter), 2))
-        #
-        #         diameters = list(map(lambda x: '⌀' + str(x), diameters))
-        #         diameters.append('Итого')
-        #         masses.append(round(sum(masses), 2))
-        #
-        #         dictionary = dict(zip(diameters, masses))
-        #         results[clas] = dictionary
-        #
-        #     masses_of_rods = []
-        #     for rod in rods:
-        #         mass_of_rod = rod.mass_of_rods()
-        #         masses_of_rods.append(mass_of_rod)
-        #
-        #     sum_element = round(sum(masses_of_rods), 2)
-        #     context = {
-        #         'element': element,
-        #         'rods': rods,
-        #         'results': results,
-        #         'sum_element': sum_element,
-        #     }
-        #     return render(request, 'calc/result.html', context)
-
-        # calculation of rods
-        # rods = rods_calc.rods.all()
-        # for rod in rods:
-        #     calculations.calculate_rod(rod)
-        #
-        # rod_classes = sorted(list(set(rods.values_list('rod_class', flat=True).distinct())))
-
         rods = models.Rod.objects.filter(rods_calc=rods_calc)
 
+        class_mass_dict = {}
+
         for rod in rods:
-            rod_class, created = models.RodClass.objects.get_or_create(
-                title=rod.rod_class,
-                rods_calc=rods_calc,
-                total_mass=rod.mass_of_rods,
-            )
+            rod_class = rod.rod_class
+            mass_of_rods = rod.mass_of_rods
 
-            if not created:
-                rod_class.rods_calc = rods_calc
-                rod_class.save()
+            if rod_class not in class_mass_dict:
+                class_mass_dict[rod_class] = mass_of_rods
+            else:
+                class_mass_dict[rod_class] += mass_of_rods
 
-            rod_diameter, created = models.RodDiameter.objects.get_or_create(
-                title=rod.diameter, rod_class=rod_class)
+        for rod_class, total_mass in class_mass_dict.items():
+            models.RodClass.objects.create(rods_calc=rods[0].rods_calc,
+                                           title=rod_class,
+                                           total_mass=total_mass)
 
-            if not created:
-                rod_diameter = models.RodDiameter.objects.get(
-                    Q(title=rod.diameter) & Q(rod_class=rod_class))
-                rod_diameter.rods_calc = rods_calc
-                rod_diameter.save()
+        diameter_class_mass_dict = {}
+
+        for rod in rods:
+            diameter = rod.diameter
+            rod_class = rod.rod_class
+            mass_of_rods = rod.mass_of_rods
+
+            if (diameter, rod_class) not in diameter_class_mass_dict:
+                diameter_class_mass_dict[(diameter, rod_class)] = mass_of_rods
+
+            else:
+                diameter_class_mass_dict[(diameter, rod_class)] += mass_of_rods
+
+        for key, value in diameter_class_mass_dict.items():
+            diameter, rod_class = key
+            models.RodDiameter.objects.create(
+                rod_class=models.RodClass.objects.get(title=rod_class,
+                                                      rods_calc=rods_calc),
+                title=diameter, total_mass=value)
+
+        rod_classes = rods_calc.rod_classes.all()
+        rods_calc.total_mass = sum([rc.total_mass for rc in rod_classes])
+        rods_calc.save()
 
         return redirect('calc:landing')
 
