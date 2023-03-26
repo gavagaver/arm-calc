@@ -33,8 +33,20 @@ class ProfileView(ListView):
 class RodsCalcResultView(DetailView):
     template_name = 'calc/rods_calc/rods_calc_result.html'
     model = models.RodsCalc
+    context_object_name = 'rods_calc'
 
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        rods_calc_id = self.kwargs.get('pk')
+        rod_classes = models.RodClass.objects.filter(
+            rods_calc=rods_calc_id)
+        context['rod_classes'] = rod_classes
+        rod_diameters = models.RodDiameter.objects.filter(rod_class__in=rod_classes)
+        print(rod_diameters)
+        context['rod_diameters'] = rod_diameters
+        context['rods'] = models.Rod.objects.filter(
+            rods_calc=rods_calc_id)
+        return context
 
 
 class SiteDetailView(DetailView):
