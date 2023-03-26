@@ -71,14 +71,10 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="card h-100 py-2">
                     <div class="card-body">
                       <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                          <div class="h5 font-weight-bold text-primary mb-1">
+                          <div class="h5 font-weight-bold text-gray-100 text-primary mb-1">
                             {{ rod_diameter.total_mass }}
                           </div>
                         </div>
@@ -86,21 +82,22 @@
                     </div>
                   </div>
                 </div>
+
                 {% endif %}
               {% endfor %}
             </div>
           </div>
-          <div class="card-body">
-            <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
-              <div class="card  h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <h4 class="m-0 font-weight-bold text-primary">Всего: {{ rod_class.total_mass }}</h4>
-                  </div>
+
+          <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
+            <div class="card  h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <h4 class="m-0 font-weight-bold text-primary">Всего: {{ rod_class.total_mass }}</h4>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
         {% endfor %}
       </div>

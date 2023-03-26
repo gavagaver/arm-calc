@@ -500,8 +500,10 @@ class RodsCalcInline:
         for key, value in diameter_class_mass_dict.items():
             diameter, rod_class = key
             models.RodDiameter.objects.create(
-                rod_class=models.RodClass.objects.get(title=rod_class,
-                                                      rods_calc=rods_calc),
+                rod_class=models.RodClass.objects.get(
+                    title=rod_class,
+                    rods_calc=rods_calc,
+                ),
                 title=diameter, total_mass=value)
 
         rod_classes = rods_calc.rod_classes.all()

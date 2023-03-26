@@ -239,7 +239,7 @@ class Rod(PartModel):
             length += self.quantity_3 * self.length_3 / rods_calc.measurement_scale
         if self.length_4:
             length += self.quantity_4 * self.length_4 / rods_calc.measurement_scale
-        self.length = round(length, 1)
+        self.length = round(length, 3)
 
     def calculate_mass_of_single_rod(self):
         self.mass_of_single_rod = round(
@@ -247,7 +247,7 @@ class Rod(PartModel):
             2)
 
     def calculate_mass_of_rods(self):
-        self.mass_of_rods = round(self.mass_of_single_rod * self.quantity, 2)
+        self.mass_of_rods = round(self.mass_of_single_rod * self.quantity, 3)
 
     class Meta:
         verbose_name = 'Стержень'
