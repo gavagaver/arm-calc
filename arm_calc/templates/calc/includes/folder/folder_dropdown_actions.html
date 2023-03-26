@@ -7,6 +7,25 @@
         <a class="dropdown-item" href="{% url 'calc:folder_update' folder.pk%}">Редактировать</a>
         <a class="dropdown-item" href="{% url 'calc:folder_duplicate' folder.pk%}">Дублировать</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'calc:folder_delete' folder.pk%}" style="color: #e74a3b;">Удалить</a>
+        <a class="dropdown-item" href="#" style="color: #e74a3b;" data-toggle="modal" data-target="#exampleModal{{ folder.pk }}" >Удалить</a>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal{{ folder.pk }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{ folder.pk }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel{{ folder.pk }}">Вы уверены, что хотите удалить этот элемент?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'calc:folder_delete' folder.pk%}" type="button" class="btn btn-primary">Да, удалить</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
     </div>
 </div>

@@ -7,6 +7,25 @@
         <a class="dropdown-item" href="{% url 'calc:site_update' site.pk%}">Редактировать</a>
         <a class="dropdown-item" href="{% url 'calc:site_duplicate' site.pk%}">Дублировать</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'calc:site_delete' site.pk%}" style="color: #e74a3b;">Удалить</a>
+        <a class="dropdown-item" href="#" style="color: #e74a3b;" data-toggle="modal" data-target="#exampleModal{{ site.pk }}" >Удалить</a>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal{{ site.pk }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{ site.pk }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel{{ site.pk }}">Вы уверены, что хотите удалить этот элемент?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'calc:site_delete' site.pk%}" type="button" class="btn btn-primary">Да, удалить</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
     </div>
 </div>

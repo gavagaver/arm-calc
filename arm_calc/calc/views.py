@@ -41,7 +41,8 @@ class RodsCalcResultView(DetailView):
         rod_classes = models.RodClass.objects.filter(
             rods_calc=rods_calc_id)
         context['rod_classes'] = rod_classes
-        rod_diameters = models.RodDiameter.objects.filter(rod_class__in=rod_classes)
+        rod_diameters = models.RodDiameter.objects.filter(
+            rod_class__in=rod_classes)
         print(rod_diameters)
         context['rod_diameters'] = rod_diameters
         context['rods'] = models.Rod.objects.filter(
@@ -131,13 +132,10 @@ class SiteDuplicateView(FormView):
         return reverse('calc:landing')
 
 
-class SiteDeleteView(DeleteView):
-    model = models.Site
-    template_name = 'calc/includes/confirm_delete.html'
-    success_url = reverse_lazy('calc:landing')
-
-    def post(self, request, *args, **kwargs):
-        return self.delete(request, *args, **kwargs)
+def site_delete(request, pk):
+    site = models.Site.objects.get(id=pk)
+    site.delete()
+    return redirect('calc:profile', username=site.engineer.username)
 
 
 class ConstructionDetailView(DetailView):
@@ -199,8 +197,10 @@ class ConstructionDuplicateView(View):
     Model = models.Construction
 
 
-class ConstructionDeleteView(DeleteView):
-    Model = models.Construction
+def construction_delete(request, pk):
+    construction = models.Construction.objects.get(id=pk)
+    construction.delete()
+    return redirect('calc:site_detail', pk=construction.site.pk)
 
 
 class VersionDetailView(DetailView):
@@ -247,8 +247,10 @@ class VersionDuplicateView(View):
     Model = models.Version
 
 
-class VersionDeleteView(DeleteView):
-    Model = models.Version
+def version_delete(request, pk):
+    version = models.Folder.objects.get(id=pk)
+    version.delete()
+    return redirect('calc:construction_detail', pk=version.construction.pk)
 
 
 class FolderDetailView(DetailView):
@@ -295,8 +297,10 @@ class FolderDuplicateView(View):
     Model = models.Folder
 
 
-class FolderDeleteView(DeleteView):
-    Model = models.Folder
+def folder_delete(request, pk):
+    folder = models.Folder.objects.get(id=pk)
+    folder.delete()
+    return redirect('calc:version_detail', pk=folder.version.pk)
 
 
 # def folder_delete(request, pk):
@@ -416,8 +420,10 @@ class ElementDuplicateView(View):
 #         return redirect('calc:profile', request.user.username)
 
 
-class ElementDeleteView(DeleteView):
-    Model = models.Element
+def element_delete(request, pk):
+    element = models.Element.objects.get(id=pk)
+    element.delete()
+    return redirect('calc:folder_detail', pk=element.folder.pk)
 
 
 # def element_delete(request, pk):
@@ -437,9 +443,6 @@ class ElementDeleteView(DeleteView):
 #             return redirect('calc:profile', request.user.username)
 
 
-class RodsCalcDetailView(TemplateView):
-    pass
-
 
 class RodsCalcInline:
     form_class = forms.RodsCalcForm
@@ -453,7 +456,6 @@ class RodsCalcInline:
 
         rods_calc = form.save(commit=False)
         rods_calc.element.engineer = self.request.user
-
 
         rods_calc.save()
 
@@ -565,8 +567,10 @@ class RodsCalcDuplicateView(View):
     Model = models.RodsCalc
 
 
-class RodsCalcDeleteView(RodsCalcInline, DeleteView):
-    pass
+def rods_calc_delete(request, pk):
+    rods_calc = models.RodsCalc.objects.get(id=pk)
+    rods_calc.delete()
+    return redirect('calc:element_detail', pk=rods_calc.element.pk)
 
 
 class RodDuplicateView(View):
@@ -591,24 +595,10 @@ class RodDuplicateView(View):
 #     return redirect('calc:update_element', pk=rod.rods_calc.element.id)
 
 
-class RodDeleteView(DeleteView):
-    Model = models.Rod
-
-
-# def rod_delete(request, pk):
-#     try:
-#         rod = models.Rod.objects.get(id=pk)
-#     except models.Rod.DoesNotExist:
-#         messages.success(
-#             request, 'Такого стержня нет'
-#         )
-#         return redirect('calc:update_element', pk=rod.rods_calc.element.id)
-#
-#     rod.delete()
-#     messages.success(
-#         request, 'Стержень успешно удален'
-#     )
-#     return redirect('calc:update_element', pk=rod.rods_calc.element.id)
+def rod_delete(request, pk):
+    rod = models.Rod.objects.get(id=pk)
+    rod.delete()
+    return redirect('calc:rods_calc_update', pk=rod.rods_calc.pk)
 
 
 class VolumesCalcDetailView(TemplateView):

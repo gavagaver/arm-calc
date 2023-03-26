@@ -28,7 +28,7 @@ urlpatterns_objects = [
     ),
     path(
         'site/<int:pk>/delete/',
-        views.SiteDeleteView.as_view(),
+        views.site_delete,
         name='site_delete',
     ),
 
@@ -54,7 +54,7 @@ urlpatterns_objects = [
     ),
     path(
         'construction/<int:pk>/delete/',
-        views.ConstructionDeleteView.as_view(),
+        views.construction_delete,
         name='construction_delete',
     ),
 
@@ -80,7 +80,7 @@ urlpatterns_objects = [
     ),
     path(
         'version/<int:pk>/delete/',
-        views.VersionDeleteView.as_view(),
+        views.version_delete,
         name='version_delete',
     ),
 
@@ -106,7 +106,7 @@ urlpatterns_objects = [
     ),
     path(
         'folder/<int:pk>/delete/',
-        views.FolderDeleteView.as_view(),
+        views.folder_delete,
         name='folder_delete',
     ),
 
@@ -132,17 +132,12 @@ urlpatterns_objects = [
     ),
     path(
         'element/<int:pk>/delete/',
-        views.ElementDeleteView.as_view(),
+        views.element_delete,
         name='element_delete',
     ),
 ]
 
 urlpatterns_rods_calc = [
-    path(
-        'rods_calc/<int:pk>/',
-        views.RodsCalcDetailView.as_view(),
-        name='rods_calc_detail',
-    ),
     path(
         'element/<int:element_pk>/rods-calc-create/',
         views.RodsCalcCreateView.as_view(),
@@ -160,7 +155,7 @@ urlpatterns_rods_calc = [
     ),
     path(
         'rods_calc/<int:pk>/delete/',
-        views.RodsCalcDeleteView.as_view(),
+        views.rods_calc_delete,
         name='rods_calc_delete',
     ),
     path(
@@ -176,7 +171,7 @@ urlpatterns_rods_calc = [
     ),
     path(
         'rod/<int:pk>/delete/',
-        views.RodDeleteView.as_view(),
+        views.rod_delete,
         name='rod_delete',
     ),
 ]
