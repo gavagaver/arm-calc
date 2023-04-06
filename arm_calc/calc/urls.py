@@ -23,7 +23,7 @@ urlpatterns_objects = [
     ),
     path(
         'site/<int:pk>/duplicate/',
-        views.SiteDuplicateView.as_view(),
+        views.site_duplicate,
         name='site_duplicate',
     ),
     path(
@@ -49,7 +49,7 @@ urlpatterns_objects = [
     ),
     path(
         'construction/<int:pk>/duplicate/',
-        views.ConstructionDuplicateView.as_view(),
+        views.construction_duplicate,
         name='construction_duplicate',
     ),
     path(
@@ -75,7 +75,7 @@ urlpatterns_objects = [
     ),
     path(
         'version/<int:pk>/duplicate/',
-        views.VersionDuplicateView.as_view(),
+        views.version_duplicate,
         name='version_duplicate',
     ),
     path(
@@ -101,7 +101,7 @@ urlpatterns_objects = [
     ),
     path(
         'folder/<int:pk>/duplicate/',
-        views.FolderDuplicateView.as_view(),
+        views.folder_duplicate,
         name='folder_duplicate',
     ),
     path(
@@ -127,7 +127,7 @@ urlpatterns_objects = [
     ),
     path(
         'element/<int:pk>/duplicate/',
-        views.ElementDuplicateView.as_view(),
+        views.element_duplicate,
         name='element_duplicate',
     ),
     path(
@@ -150,7 +150,7 @@ urlpatterns_rods_calc = [
     ),
     path(
         'rods_calc/<int:pk>/duplicate/',
-        views.RodsCalcDuplicateView.as_view(),
+        views.rods_calc_duplicate,
         name='rods_calc_duplicate',
     ),
     path(
@@ -166,7 +166,7 @@ urlpatterns_rods_calc = [
 
     path(
         'rod/<int:pk>/duplicate/',
-        views.RodDuplicateView.as_view(),
+        views.rod_duplicate,
         name='rod_duplicate',
     ),
     path(

@@ -9,7 +9,6 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView, \
     DeleteView, DetailView, ListView, FormView
 
-from . import custom_operations
 from . import models
 from . import forms
 
@@ -63,8 +62,6 @@ class SiteDetailView(DetailView):
         context['dropdown_actions'] = {
             'Редактировать': reverse('calc:site_update',
                                      args=[self.object.pk]),
-            'Дублировать': reverse('calc:site_duplicate',
-                                   args=[self.object.pk]),
             'Удалить': reverse('calc:site_delete', args=[self.object.pk]),
         }
         return context
@@ -110,26 +107,56 @@ class SiteUpdateView(UpdateView):
         return reverse('calc:site_detail', kwargs={'pk': self.object.pk})
 
 
-class SiteDuplicateView(FormView):
-    template_name = 'calc/site/site_create.html'
-    form_class = forms.SiteForm
+def site_duplicate(request, pk):
+    site = models.Site.objects.get(pk=pk)
+    engineer = site.engineer
+    constructions = models.Construction.objects.filter(site=site)
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['instance'] = self.get_object()
-        return kwargs
+    site.pk = None
+    site.save()
 
-    def get_object(self):
-        return get_object_or_404(models.Site, pk=self.kwargs['pk'])
+    for construction in constructions:
+        versions = models.Version.objects.filter(construction=construction)
 
-    def form_valid(self, form):
-        new_object = custom_operations.duplicate_object(form.instance)
-        form = self.form_class(self.request.POST, instance=new_object)
-        form.save()
-        return super().form_valid(form)
+        construction.pk = None
+        construction.site = site
+        construction.save()
 
-    def get_success_url(self):
-        return reverse('calc:landing')
+        for version in versions:
+            folders = models.Folder.objects.filter(version=version)
+
+            version.pk = None
+            version.construction = construction
+            version.save()
+
+            for folder in folders:
+                elements = models.Element.objects.filter(folder=folder)
+
+                folder.pk = None
+                folder.version = version
+                folder.save()
+
+                for element in elements:
+                    rods_calcs = models.RodsCalc.objects.filter(
+                        element=element)
+
+                    element.pk = None
+                    element.folder = folder
+                    element.save()
+
+                    for rods_calc in rods_calcs:
+                        rods = models.Rod.objects.filter(rods_calc=rods_calc)
+
+                        rods_calc.pk = None
+                        rods_calc.element = element
+                        rods_calc.save()
+
+                        for rod in rods:
+                            rod.pk = None
+                            rod.rods_calc = rods_calc
+                            rod.save()
+
+    return redirect('calc:profile', username=engineer.username)
 
 
 def site_delete(request, pk):
@@ -192,9 +219,48 @@ class ConstructionUpdateView(UpdateView):
         return context
 
 
-class ConstructionDuplicateView(View):
-    template_name = 'calc/construction_duplicate.html'
-    Model = models.Construction
+def construction_duplicate(request, pk):
+    construction = models.Construction.objects.get(pk=pk)
+    site = construction.site
+    versions = models.Version.objects.filter(construction=construction)
+
+    construction.pk = None
+    construction.save()
+
+    for version in versions:
+        folders = models.Folder.objects.filter(version=version)
+
+        version.pk = None
+        version.construction = construction
+        version.save()
+
+        for folder in folders:
+            elements = models.Element.objects.filter(folder=folder)
+
+            folder.pk = None
+            folder.version = version
+            folder.save()
+
+            for element in elements:
+                rods_calcs = models.RodsCalc.objects.filter(element=element)
+
+                element.pk = None
+                element.folder = folder
+                element.save()
+
+                for rods_calc in rods_calcs:
+                    rods = models.Rod.objects.filter(rods_calc=rods_calc)
+
+                    rods_calc.pk = None
+                    rods_calc.element = element
+                    rods_calc.save()
+
+                    for rod in rods:
+                        rod.pk = None
+                        rod.rods_calc = rods_calc
+                        rod.save()
+
+    return redirect('calc:site_detail', site.pk)
 
 
 def construction_delete(request, pk):
@@ -242,9 +308,41 @@ class VersionUpdateView(UpdateView):
     Model = models.Version
 
 
-class VersionDuplicateView(View):
-    template_name = 'calc/version_duplicate.html'
-    Model = models.Version
+def version_duplicate(request, pk):
+    version = models.Version.objects.get(pk=pk)
+    construction = version.construction
+    folders = models.Folder.objects.filter(version=version)
+
+    version.pk = None
+    version.save()
+
+    for folder in folders:
+        elements = models.Element.objects.filter(folder=folder)
+
+        folder.pk = None
+        folder.version = version
+        folder.save()
+
+        for element in elements:
+            rods_calcs = models.RodsCalc.objects.filter(element=element)
+
+            element.pk = None
+            element.folder = folder
+            element.save()
+
+            for rods_calc in rods_calcs:
+                rods = models.Rod.objects.filter(rods_calc=rods_calc)
+
+                rods_calc.pk = None
+                rods_calc.element = element
+                rods_calc.save()
+
+                for rod in rods:
+                    rod.pk = None
+                    rod.rods_calc = rods_calc
+                    rod.save()
+
+    return redirect('calc:construction_detail', construction.pk)
 
 
 def version_delete(request, pk):
@@ -292,26 +390,40 @@ class FolderUpdateView(UpdateView):
     Model = models.Folder
 
 
-class FolderDuplicateView(View):
-    template_name = 'calc/folder_duplicate.html'
-    Model = models.Folder
+def folder_duplicate(request, pk):
+    folder = models.Folder.objects.get(pk=pk)
+    version = folder.version
+    elements = models.Element.objects.filter(folder=folder)
+
+    folder.pk = None
+    folder.save()
+
+    for element in elements:
+        rods_calcs = models.RodsCalc.objects.filter(element=element)
+
+        element.pk = None
+        element.folder = folder
+        element.save()
+
+        for rods_calc in rods_calcs:
+            rods = models.Rod.objects.filter(rods_calc=rods_calc)
+
+            rods_calc.pk = None
+            rods_calc.element = element
+            rods_calc.save()
+
+            for rod in rods:
+                rod.pk = None
+                rod.rods_calc = rods_calc
+                rod.save()
+
+    return redirect('calc:version_detail', version.pk)
 
 
 def folder_delete(request, pk):
     folder = models.Folder.objects.get(id=pk)
     folder.delete()
     return redirect('calc:version_detail', pk=folder.version.pk)
-
-
-# def folder_delete(request, pk):
-#     folder = models.Folder.objects.get(pk=pk)
-#     place_folder = folder.folder
-#     if folder:
-#         folder.delete()
-#     if place_folder:
-#         return redirect('calc:folder', place_folder.pk)
-#     else:
-#         return redirect('calc:profile', request.user.username)
 
 
 class ElementDetailView(DetailView):
@@ -370,78 +482,38 @@ class ElementUpdateView(UpdateView):
 #     context = {'form': form, }
 #     return render(request, 'calc/element_create.html', context)
 
-class ElementDuplicateView(View):
-    template_name = 'calc/element_duplicate.html'
-    Model = models.Element
+# class ElementDuplicateView(View):
+#     template_name = 'calc/element_duplicate.html'
+#     Model = models.Element
 
 
-# def element_duplicate(request, pk):
-#     try:
-#         element = models.Element.objects.get(id=pk)
-#         place_folder = element.folder
-#         rods_calcs = models.RodsCalc.objects.filter(element=element)
-#     except models.Element.DoesNotExist:
-#         messages.error(
-#             request, 'Такого элемента нет'
-#         )
-#         return redirect('calc:folder', pk=element.folder.pk)
-#     except models.RodsCalc.DoesNotExist:
-#         messages.error(
-#             request, 'Такого армирования нет'
-#         )
-#         return redirect('calc:folder', pk=element.folder.pk)
-#
-#     element.pk = None
-#     element.save()
-#
-#     for rods_calc in rods_calcs:
-#         try:
-#             rods = models.Rod.objects.filter(rods_calc=rods_calc)
-#         except models.Rod.DoesNotExist:
-#             messages.error(
-#                 request, 'Такого армирования нет'
-#             )
-#             return redirect('calc:folder', pk=element.folder.pk)
-#         rods_calc.pk = None
-#         rods_calc.element = element
-#         rods_calc.save()
-#
-#         for rod in rods:
-#             rod.pk = None
-#             rod.rods_calc = rods_calc
-#             rod.save()
-#
-#     messages.success(
-#         request, 'Элемент успешно скопирован'
-#     )
-#     if place_folder:
-#         return redirect('calc:folder', place_folder.pk)
-#     else:
-#         return redirect('calc:profile', request.user.username)
+def element_duplicate(request, pk):
+    element = models.Element.objects.get(id=pk)
+    place_folder = element.folder
+    rods_calcs = models.RodsCalc.objects.filter(element=element)
+
+    element.pk = None
+    element.save()
+
+    for rods_calc in rods_calcs:
+        rods = models.Rod.objects.filter(rods_calc=rods_calc)
+
+        rods_calc.pk = None
+        rods_calc.element = element
+        rods_calc.save()
+
+        for rod in rods:
+            rod.pk = None
+            rod.rods_calc = rods_calc
+            rod.save()
+
+    return redirect('calc:folder_detail', place_folder.pk)
 
 
 def element_delete(request, pk):
     element = models.Element.objects.get(id=pk)
     element.delete()
     return redirect('calc:folder_detail', pk=element.folder.pk)
-
-
-# def element_delete(request, pk):
-#     element = models.Element.objects.get(pk=pk)
-#     place_folder = element.folder
-#     rods_calcs = models.RodsCalc.objects.filter(element=element)
-#     for rods_calc in rods_calcs:
-#         rods = models.Rod.objects.filter(rods_calc=rods_calc)
-#         if element:
-#             element.delete()
-#         for rod in rods:
-#             if rods:
-#                 rod.delete()
-#         if place_folder:
-#             return redirect('calc:folder', place_folder.pk)
-#         else:
-#             return redirect('calc:profile', request.user.username)
-
 
 
 class RodsCalcInline:
@@ -562,9 +634,20 @@ class RodsCalcUpdateView(RodsCalcInline, UpdateView):
         }
 
 
-class RodsCalcDuplicateView(View):
-    template_name = 'calc/rods_calc_duplicate.html'
-    Model = models.RodsCalc
+def rods_calc_duplicate(request, pk):
+    rods_calc = models.RodsCalc.objects.get(pk=pk)
+    element = rods_calc.element
+    rods = models.Rod.objects.filter(rods_calc=rods_calc)
+
+    rods_calc.pk = None
+    rods_calc.save()
+
+    for rod in rods:
+        rod.pk = None
+        rod.rods_calc = rods_calc
+        rod.save()
+
+    return redirect('calc:element_detail', element.pk)
 
 
 def rods_calc_delete(request, pk):
@@ -573,26 +656,13 @@ def rods_calc_delete(request, pk):
     return redirect('calc:element_detail', pk=rods_calc.element.pk)
 
 
-class RodDuplicateView(View):
-    template_name = 'calc/rod_duplicate.html'
-    Model = models.Rod
+def rod_duplicate(request, pk):
+    rod = models.Rod.objects.get(pk=pk)
 
+    rod.pk = None
+    rod.save()
 
-# def rod_duplicate(request, pk):
-#     try:
-#         rod = models.Rod.objects.get(id=pk)
-#     except models.Rod.DoesNotExist:
-#         messages.success(
-#             request, 'Такого стержня нет'
-#         )
-#         return redirect('calc:update_element', pk=rod.rods_calc.element.id)
-#
-#     rod.pk = None
-#     rod.save()
-#     messages.success(
-#         request, 'Стержень успешно скопирован'
-#     )
-#     return redirect('calc:update_element', pk=rod.rods_calc.element.id)
+    return redirect('calc:rods_calc_update', pk=rod.rods_calc.pk)
 
 
 def rod_delete(request, pk):
