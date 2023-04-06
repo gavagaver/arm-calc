@@ -218,6 +218,10 @@ class ConstructionUpdateView(UpdateView):
             context['view_name'] = 'update'
         return context
 
+    def get_success_url(self):
+        site = self.get_object().site
+        return reverse('calc:site_detail', args=[site.pk])
+
 
 def construction_duplicate(request, pk):
     construction = models.Construction.objects.get(pk=pk)
@@ -304,8 +308,26 @@ class VersionCreateView(CreateView):
 
 
 class VersionUpdateView(UpdateView):
-    template_name = 'calc/version_update.html'
-    Model = models.Version
+    template_name = 'calc/version/version_create.html'
+    model = models.Version
+    form_class = forms.VersionForm
+
+    def form_valid(self, form):
+        construction = self.get_object().construction
+        version = form.save(commit=False)
+        version.construction = construction
+        version.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.__class__.__name__ == 'VersionUpdateView':
+            context['view_name'] = 'update'
+        return context
+
+    def get_success_url(self):
+        construction = self.get_object().construction
+        return reverse('calc:construction_detail', args=[construction.pk])
 
 
 def version_duplicate(request, pk):
@@ -386,8 +408,26 @@ class FolderCreateView(CreateView):
 
 
 class FolderUpdateView(UpdateView):
-    template_name = 'calc/folder_update.html'
-    Model = models.Folder
+    template_name = 'calc/folder/folder_create.html'
+    model = models.Folder
+    form_class = forms.FolderForm
+
+    def form_valid(self, form):
+        version = self.get_object().version
+        folder = form.save(commit=False)
+        folder.version = version
+        folder.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.__class__.__name__ == 'FolderUpdateView':
+            context['view_name'] = 'update'
+        return context
+
+    def get_success_url(self):
+        version = self.get_object().version
+        return reverse('calc:version_detail', args=[version.pk])
 
 
 def folder_duplicate(request, pk):
@@ -463,28 +503,26 @@ class ElementCreateView(CreateView):
 
 
 class ElementUpdateView(UpdateView):
-    template_name = 'calc/element_update.html'
-    Model = models.Element
+    template_name = 'calc/element/element_create.html'
+    model = models.Element
+    form_class = forms.ElementForm
 
+    def form_valid(self, form):
+        folder = self.get_object().folder
+        element = form.save(commit=False)
+        element.folder = folder
+        element.save()
+        return super().form_valid(form)
 
-# def element_update(request, pk):
-#     updated_element = get_object_or_404(models.Element, pk=pk)
-#     if request.user != updated_element.engineer:
-#         return redirect('calc:profile', request.user.username)
-#     form = ElementForm(
-#         request.POST or None,
-#         files=request.FILES or None,
-#         instance=updated_element,
-#     )
-#     if form.is_valid():
-#         form.save()
-#         return redirect('calc:profile', request.user.username)
-#     context = {'form': form, }
-#     return render(request, 'calc/element_create.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.__class__.__name__ == 'ElementUpdateView':
+            context['view_name'] = 'update'
+        return context
 
-# class ElementDuplicateView(View):
-#     template_name = 'calc/element_duplicate.html'
-#     Model = models.Element
+    def get_success_url(self):
+        folder = self.get_object().folder
+        return reverse('calc:folder_detail', args=[folder.pk])
 
 
 def element_duplicate(request, pk):
@@ -527,8 +565,9 @@ class RodsCalcInline:
             return self.render_to_response(self.get_context_data(form=form))
 
         rods_calc = form.save(commit=False)
-        rods_calc.element.engineer = self.request.user
-
+        element_pk = self.kwargs['element_pk']
+        element = models.Element.objects.get(pk=element_pk)
+        rods_calc.element = element
         rods_calc.save()
 
         self.object = form.save()
@@ -584,7 +623,7 @@ class RodsCalcInline:
         rods_calc.total_mass = sum([rc.total_mass for rc in rod_classes])
         rods_calc.save()
 
-        return redirect('calc:landing')
+        return redirect('calc:element_detail', element.pk)
 
     def formset_rods_valid(self, formset):
         rods = formset.save(commit=False)
