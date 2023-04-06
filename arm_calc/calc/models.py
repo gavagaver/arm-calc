@@ -228,7 +228,7 @@ class Rod(PartModel):
         self.calculate_length()
         self.calculate_mass_of_single_rod()
         self.calculate_mass_of_rods()
-        super(Rod, self).save(*args, force_insert=True, **kwargs)
+        super(Rod, self).save(*args, **kwargs)
 
     def calculate_length(self):
         rods_calc = RodsCalc.objects.get(pk=self.rods_calc.pk)

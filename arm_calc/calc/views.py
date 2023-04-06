@@ -565,11 +565,13 @@ class RodsCalcInline:
             return self.render_to_response(self.get_context_data(form=form))
 
         rods_calc = form.save(commit=False)
-        element_pk = self.kwargs['element_pk']
+        try:
+            element_pk = self.kwargs['element_pk']
+        except KeyError:
+            element_pk = rods_calc.element.pk
         element = models.Element.objects.get(pk=element_pk)
         rods_calc.element = element
         rods_calc.save()
-
         self.object = form.save()
 
         for name, formset in named_formsets.items():
@@ -611,13 +613,16 @@ class RodsCalcInline:
                 diameter_class_mass_dict[(diameter, rod_class)] += mass_of_rods
 
         for key, value in diameter_class_mass_dict.items():
-            diameter, rod_class = key
+            diameter, rod_class_title = key
+            rod_class = models.RodClass.objects.filter(
+                title=rod_class_title,
+                rods_calc=rods_calc,
+            ).order_by('-create_date').first()
             models.RodDiameter.objects.create(
-                rod_class=models.RodClass.objects.get(
-                    title=rod_class,
-                    rods_calc=rods_calc,
-                ),
-                title=diameter, total_mass=value)
+                rod_class=rod_class,
+                title=diameter,
+                total_mass=value
+            )
 
         rod_classes = rods_calc.rod_classes.all()
         rods_calc.total_mass = sum([rc.total_mass for rc in rod_classes])
