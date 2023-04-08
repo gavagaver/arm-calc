@@ -1,6 +1,6 @@
 <div class="card h-md-100">
   <div class="card-header d-flex flex-between-center pb-0">
-    <a href="{% url 'calc:site_detail' site.pk%}">
+    <a href="{% url 'calc:site_detail' site.pk %}">
       <h3 class="text-primary mb-1">{{ site.title }}</h3>
     </a>
     {% include 'calc/includes/site/site_dropdown_actions.html' %}
@@ -8,7 +8,7 @@
   <div class="card-body pt-2">
     <div class="row g-0 h-100 align-items-center">
       <div class="col">
-
+        <p class="text-600 fs--1">объект</p>
       </div>
       <div class="col-auto text-center ps-2">
 
