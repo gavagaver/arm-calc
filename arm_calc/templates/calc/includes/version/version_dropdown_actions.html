@@ -1,32 +1,8 @@
-<div class="dropdown no-arrow">
-    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-    </a>
-    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
-        <div class="dropdown-header">Выберите действие:</div>
-        <a class="dropdown-item" href="{% url 'calc:version_update' version.pk%}">Редактировать</a>
-        <a class="dropdown-item" href="{% url 'calc:version_duplicate' version.pk%}">Дублировать</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#" style="color: #e74a3b;" data-toggle="modal" data-target="#exampleModal{{ version.pk }}" >Удалить</a>
-    </div>
-</div>
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal{{ version.pk }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{ version.pk }}" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel{{ version.pk }}">Вы уверены, что хотите удалить этот элемент?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-footer">
-                <a href="{% url 'calc:version_delete' version.pk%}" type="button" class="btn btn-primary">Да, удалить</a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-            </div>
-        </div>
-    </div>
+<div class="dropdown font-sans-serif btn-reveal-trigger"><button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-weather-update" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><svg class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"></path></svg><!-- <span class="fas fa-ellipsis-h fs--2"></span> Font Awesome fontawesome.com --></button>
+  <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-weather-update">
+    <a class="dropdown-item" href="{% url 'calc:version_update' version.pk%}">Редактировать</a>
+    <a class="dropdown-item" href="{% url 'calc:version_duplicate' version.pk%}">Дублировать</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item text-danger" href="{% url 'calc:version_delete' version.pk%}">Удалить</a>
+  </div>
 </div>

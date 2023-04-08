@@ -1,0 +1,11 @@
+{% load static %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'calc:profile' user.username %}">Личный кабинет</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'calc:folder_detail' element.folder.version.construction.site.pk %}" title="объект">{{ element.folder.version.construction.site.title }}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'calc:folder_detail' element.folder.version.construction.pk %}" title="сооружение">{{ element.folder.version.construction.title }}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'calc:folder_detail' element.folder.version.pk %}" title="стадия">{{ element.folder.version.title }}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'calc:folder_detail' element.folder.pk %}" title="папка">{{ element.folder.title }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ element.title }}</li>
+  </ol>
+</nav>

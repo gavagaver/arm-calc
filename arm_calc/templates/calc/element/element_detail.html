@@ -5,61 +5,50 @@
 {% endblock %}
 
 {% block content %}
-
-  <!-- Sidebar -->
-  {% include 'includes/sidebar.html' %}
-  <!-- End of Sidebar -->
-
-  <!-- Content Wrapper -->
-  <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-          <!-- Topbar -->
-          {% include 'includes/topbar.html' %}
-          <!-- End of Topbar -->
-
-          <!-- Begin Page Content -->
-          <div class="container-fluid">
-
-
-            <div class="col-lg-5 mb-4">
-
-              <h5>элемент</h5>
-
-              <h1>{{ element.title }}</h1>
-
+  <div class="container" data-layout="container">
+    <script>
+      var isFluid = JSON.parse(localStorage.getItem('isFluid'));
+      if (isFluid) {
+        var container = document.querySelector('[data-layout]');
+        container.classList.remove('container');
+        container.classList.add('container-fluid');
+      }
+    </script>
+    <div class="content">
+      {% include 'includes/topbar.html' %}
+      <div class="row g-3 mb-3">
+        {% include 'includes/breadcrumb.html' %}
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col-xxl-6 col-lg-12">
+          <div class="card mb-3">
+            <div class="card-body d-flex flex-wrap flex-between-center">
+              <div>
+                <h6 class="text-primary">элемент</h6>
+                <h5 class="mb-0">{{ element.title }}</h5>
+              </div>
+              <div>
+                <a class="btn btn-primary" href="{% url 'calc:rods_calc_create' element.pk %}" role="button">Создать расчет армирования</a>
+              </div>
             </div>
-
-
-            {% for rods_calc in rods_calcs %}
-              {% include 'calc/includes/rods_calc/rods_calc_card.html' %}
-            {% endfor %}
-
-
-            <div class="col-lg-5 mb-4">
-
-
-              <a href="{% url 'calc:rods_calc_create' element.pk %}"
-                 class="btn btn-success btn-lg"
-              >
-                <i class="fas fa-file fa-lg text-white-50"></i>
-                Создать расчет армирования
-              </a>
-
-            </div>
-
           </div>
-          <!-- /.container-fluid -->
+        </div>
+        <div class="col-xxl-3 col-md-6">
+
+        </div>
+        <div class="col-xxl-3 col-md-6">
+
+        </div>
+      </div>
+      <div class="row g-3 mb-3">
+        {% for rods_calc in rods_calcs %}
+          <div class="col-xxl-6 col-lg-12">
+            {% include 'calc/includes/rods_calc/rods_calc_card.html' %}
+          </div>
+        {% endfor %}
 
       </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
       {% include 'includes/footer.html' %}
-      <!-- End of Footer -->
-
+    </div>
   </div>
-  <!-- End of Content Wrapper -->
-
 {% endblock %}
