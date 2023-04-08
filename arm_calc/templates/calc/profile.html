@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-  Личный кабинет пользователя {{ engineer.username }}
+  Личный кабинет пользователя {{ user.get_full_name | title }}
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
           {% include 'includes/topbar.html' %}
           <div class="row g-3 mb-3">
             <div class="col-xxl-6 col-lg-12">
-              {% include 'includes/welcome-card.html' %}
+              {% include 'includes/welcome_card.html' %}
             </div>
             <div class="col-xxl-3 col-md-6">
               <div class="card h-100">
@@ -202,67 +202,4 @@
         </div>
       </div>
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- Content Wrapper -->
-  <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-          <!-- Topbar -->
-          {% include 'includes/topbar.html' %}
-          <!-- End of Topbar -->
-
-          <!-- Begin Page Content -->
-          <div class="container-fluid">
-            <div class="col-xl-3 col-md-6 mb-4">
-
-              <h5>личный кабинет</h5>
-
-              <h1>Здесь хранятся ваши объекты</h1>
-            </div>
-
-            {% for site in sites %}
-              {% include 'calc/includes/site/site_card.html' %}
-            {% endfor %}
-
-            <div class="col-xl-3 col-md-6 mb-4">
-
-              <a href="{% url 'calc:site_create' %}"
-                 class="btn btn-success btn-lg"
-              >
-                <i class="fas fa-folder fa-lg text-white-50"></i>
-                Создать объект
-              </a>
-
-            </div>
-
-
-
-          </div>
-          <!-- /.container-fluid -->
-
-      </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      {% include 'includes/footer.html' %}
-      <!-- End of Footer -->
-
-  </div>
-  <!-- End of Content Wrapper -->
 
