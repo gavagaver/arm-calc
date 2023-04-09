@@ -368,7 +368,7 @@ def version_duplicate(request, pk):
 
 
 def version_delete(request, pk):
-    version = models.Folder.objects.get(id=pk)
+    version = models.Version.objects.get(id=pk)
     version.delete()
     return redirect('calc:construction_detail', pk=version.construction.pk)
 
@@ -626,7 +626,7 @@ class RodsCalcInline:
         rods_calc.total_mass = sum([rc.total_mass for rc in rod_classes])
         rods_calc.save()
 
-        return redirect('calc:element_detail', element.pk)
+        return redirect('calc:rods_calc_update', rods_calc.pk)
 
     def formset_rods_valid(self, formset):
         rods = formset.save(commit=False)
@@ -667,6 +667,7 @@ class RodsCalcUpdateView(RodsCalcInline, UpdateView):
         context['named_formsets'] = self.get_named_formsets()
         rods_calc_pk = self.kwargs['pk']
         rods_calc = models.RodsCalc.objects.get(pk=rods_calc_pk)
+        context['rods_calc'] = rods_calc
         context['element'] = rods_calc.element
         if self.__class__.__name__ == 'RodsCalcUpdateView':
             context['view_name'] = 'update'

@@ -2,7 +2,7 @@
 
 {% block title %}
     {% if view_name == 'update' %}
-        Обновление расчета армирования {{ rods_calc.title }}
+        Обновление расчета армирования "{{ rods_calc.title }}"
     {% else %}
         Создание расчета армирования
     {% endif %}
@@ -24,11 +24,14 @@
             <div class="card-body z-index-1">
               <h3>
                 {% if view_name == 'update' %}
-                    Обновление расчета армирования {{ rods_calc.title }}
+                    {{ rods_calc.title }}
                 {% else %}
                     Создание расчета армирования
                 {% endif %}
               </h3>
+              <p class="mb-0">
+                Обновление расчета армирования.
+              </p>
               <p class="mb-0">
                 На этой странице вы можете создать и настроить стержни армирования.
               </p>
@@ -67,18 +70,52 @@
               </div>
               <div class="card-body bg-light">
                 <ul class="list-unstyled fs--1 mb-0">
-                  <li class="mb-2 hover-actions-trigger"><span class="ms-1">Элемент: </span><span class="text-800 fw-medium me-2">{{ element.title }}</span></li>
-                  <li class="mb-2 hover-actions-trigger"><span class="ms-1">Папка: </span><span class="text-800 fw-medium me-2">{{ element.folder.title }}</span></li>
-                  <li class="mb-2 hover-actions-trigger"><span class="ms-1">Стадия: </span><span class="text-800 fw-medium me-2">{{ element.folder.version.title }}</span></li>
-                  <li class="mb-2 hover-actions-trigger"><span class="ms-1">Сооружение: </span><span class="text-800 fw-medium me-2">{{ element.folder.version.construction.title }}</span></li>
-                  <li class="hover-actions-trigger"><span class="ms-1">Объект: </span><span class="text-800 fw-medium me-2">{{ element.folder.version.construction.site.title }}</span></li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Объект: </span>
+                    <a class="link-primary" href="{% url 'calc:site_detail' element.folder.version.construction.site.pk %}">
+                      <span class="fw-medium me-2">{{ element.folder.version.construction.site.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Сооружение: </span>
+                    <a class="link-primary" href="{% url 'calc:construction_detail' element.folder.version.construction.pk %}">
+                      <span class="fw-medium me-2">{{ element.folder.version.construction.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Стадия: </span>
+                    <a class="link-primary" href="{% url 'calc:version_detail' element.folder.version.pk %}">
+                      <span class="fw-medium me-2">{{ element.folder.version.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Папка: </span>
+                    <a class="link-primary" href="{% url 'calc:folder_detail' element.folder.pk %}">
+                      <span class="fw-medium me-2">{{ element.folder.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Элемент: </span>
+                    <a class="link-primary" href="{% url 'calc:element_detail' element.pk %}">
+                      <span class="fw-medium me-2">{{ element.title }}</span>
+                    </a>
+                  </li>
                 </ul>
               </div>
               <div class="card-footer py-2" id="course-publish-btn">
                 <div class="row flex-between-center g-0">
-                  <div class="col-auto"><a class="btn btn-link btn-sm text-secondary fw-medium px-0" href="#!"></a></div>
+
                   <div class="col-auto">
-                    <button class="btn btn-primary btn-md px-xxl-5 px-4 fw-medium" type="submit">Сохранить</button>
+                    <button class="btn btn-primary me-1 mb-1" type="submit">
+                      <span class="fas fa-sync-alt me-1" data-fa-transform="shrink-3"></span>Сохранить изменения
+                    </button>
+                  </div>
+                  <div class="col-auto">
+                    {% if rods_calc.pk %}
+                      <a class="btn btn-link btn-sm text-primary fw-medium px-0" href="{% url 'calc:rods_calc_result' rods_calc.pk %}">
+                        <span class="far fa-list-alt me-1" data-fa-transform="shrink-3"></span>Посмотреть результат
+                      </a>
+                    {% endif %}
                   </div>
                 </div>
               </div>
