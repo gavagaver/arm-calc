@@ -516,8 +516,6 @@ class ElementUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.__class__.__name__ == 'ElementUpdateView':
-            context['view_name'] = 'update'
         return context
 
     def get_success_url(self):
@@ -643,6 +641,8 @@ class RodsCalcCreateView(RodsCalcInline, CreateView):
     def get_context_data(self, **kwargs):
         context = super(RodsCalcCreateView, self).get_context_data(**kwargs)
         context['named_formsets'] = self.get_named_formsets()
+        element_pk = self.kwargs['element_pk']
+        context['element'] = models.Element.objects.get(pk=element_pk)
         return context
 
     def get_named_formsets(self):
@@ -665,6 +665,11 @@ class RodsCalcUpdateView(RodsCalcInline, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(RodsCalcUpdateView, self).get_context_data(**kwargs)
         context['named_formsets'] = self.get_named_formsets()
+        rods_calc_pk = self.kwargs['pk']
+        rods_calc = models.RodsCalc.objects.get(pk=rods_calc_pk)
+        context['element'] = rods_calc.element
+        if self.__class__.__name__ == 'RodsCalcUpdateView':
+            context['view_name'] = 'update'
         return context
 
     def get_named_formsets(self):
