@@ -1,117 +1,143 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Результаты расчета армирования: {{ rods_calc.title }}
+  Результаты расчета армирования "{{ rods_calc.title }}"
 {% endblock %}
 
 {% block content %}
+  <div class="container" data-layout="container">
+    <div class="content">
+      {% include 'includes/topbar.html' %}
 
-<!-- Sidebar -->
-{% include 'includes/sidebar.html' %}
-<!-- End of Sidebar -->
+        {% csrf_token %}
+        <div class="row g-lg-3 font-sans-serif">
+        <div class="col-lg-8">
+          <div class="card mb-3">
+            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../../../assets/img/icons/spot-illustrations/corner-4.png);">
+            </div>
+            <!--/.bg-holder-->
 
-<!-- Content Wrapper -->
-<div id="content-wrapper" class="d-flex flex-column">
-
-  <!-- Main Content -->
-  <div id="content">
-
-    <!-- Topbar -->
-    {% include 'includes/topbar.html' %}
-    <!-- End of Topbar -->
-
-    <!-- Begin Page Content -->
-    <div class="container-fluid">
-      <div class="col-xl-3 col-md-6 mb-4">
-        <h5>результаты</h5>
-        <h1>{{ rods_calc.title }}</h1>
-      </div>
-      <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h3 class="m-0 font-weight-bold text-primary">Спецификация</h3>
-        </div>
-        <!-- Card Body -->
-        <div class="card-body">
-          {% include 'calc/includes/header_of_spec.html' %}
-          {% for rod in rods %}
-            {% include 'calc/includes/rods_calc/rod_card.html' %}
-          {% endfor %}
-        </div>
-      </div>
-      <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h3 class="m-0 font-weight-bold text-primary">Ведомость расхода стали, кг</h3>
-        </div>
-        <!-- Card Body -->
-        {% for rod_class in rod_classes %}
-        <div class="card-body">
-          <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
-            <div class="card  h-100 py-2">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <h4 class="m-0 font-weight-bold text-primary">{{ rod_class.title }}</h4>
-                </div>
-              </div>
+            <div class="card-body z-index-1">
+              <h3>
+                {{ rods_calc.title }}
+              </h3>
+              <p class="mb-0">
+                Результаты расчета армирования.
+              </p>
+              <p class="mb-0">
+                На этой странице представлена спецификация арматурных стержней и ведомость расхода стали.
+              </p>
             </div>
           </div>
-          <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
-            <div class="row">
-              {% for rod_diameter in rod_diameters %}
-                {% if rod_diameter.rod_class == rod_class %}
-                <div class="col-md-2">
-                  <div class="card h-100 py-2 bg-gradient-primary">
-                    <div class="card-body">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="h6 font-weight-bold text-gray-100 mb-1">
-                            Ø{{ rod_diameter.title }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="h5 font-weight-bold text-gray-100 text-primary mb-1">
-                            {{ rod_diameter.total_mass }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
+        </div>
+        <div class="col-lg-4">
+          <div class="sticky-sidebar top-navbar-height d-flex flex-column">
+            <div class="card mb-lg-3 order-lg-0 order-1">
+              <div class="card-header py-2 d-flex flex-between-center">
+                <h5 class="mb-0">Результаты расчета армирования</h5>
+              </div>
+              <div class="card-body bg-light">
+                <ul class="list-unstyled fs--1 mb-0">
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Объект: </span>
+                    <a class="link-primary" href="{% url 'calc:site_detail' rods_calc.element.folder.version.construction.site.pk %}">
+                      <span class="fw-medium me-2">{{ rods_calc.element.folder.version.construction.site.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Сооружение: </span>
+                    <a class="link-primary" href="{% url 'calc:construction_detail' rods_calc.element.folder.version.construction.pk %}">
+                      <span class="fw-medium me-2">{{ rods_calc.element.folder.version.construction.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Стадия: </span>
+                    <a class="link-primary" href="{% url 'calc:version_detail' rods_calc.element.folder.version.pk %}">
+                      <span class="fw-medium me-2">{{ rods_calc.element.folder.version.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Папка: </span>
+                    <a class="link-primary" href="{% url 'calc:folder_detail' rods_calc.element.folder.pk %}">
+                      <span class="fw-medium me-2">{{ rods_calc.element.folder.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Элемент: </span>
+                    <a class="link-primary" href="{% url 'calc:element_detail' rods_calc.element.pk %}">
+                      <span class="fw-medium me-2">{{ rods_calc.element.title }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer py-2" id="course-publish-btn">
+                <div class="row flex-between-center g-0">
+                  <div class="col-auto">
+                    {% if rods_calc.pk %}
+                      <a class="btn btn-link btn-sm text-primary fw-medium px-0" href="{% url 'calc:rods_calc_update' rods_calc.pk %}">
+                        <span class="fas fa-sync-alt me-1" data-fa-transform="shrink-3"></span>Редактировать армирование
+                      </a>
+                    {% endif %}
                   </div>
                 </div>
-
-                {% endif %}
-              {% endfor %}
-            </div>
-          </div>
-
-          <div class="col-xl-12 col-md-12 mb-12" xmlns="http://www.w3.org/1999/html">
-            <div class="card  h-100 py-2">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <h4 class="m-0 font-weight-bold text-primary">Всего: {{ rod_class.total_mass }}</h4>
-                </div>
               </div>
             </div>
           </div>
-
         </div>
-        {% endfor %}
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header py-3 d-flex flex-between-center">
+              <h5 class="mb-0">Спецификация</h5>
+            </div>
+            <div class="table-responsive scrollbar">
+              <table class="table table-hover table-striped overflow-hidden">
+                <thead>
+                  <tr>
+                    <th scope="col">Название</th>
+                    <th scope="col">Диаметр, мм</th>
+                    <th scope="col">Класс арматуры</th>
+                    <th scope="col">Длина, мм</th>
+                    <th scope="col">Кол-во, шт</th>
+                    <th scope="col">Масса стержня, кг</th>
+                    <th scope="col">Масса позиции, кг</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for rod in rods %}
+                    <tr class="align-middle">
+                      <td class="text-nowrap">{{ rod.title }}</td>
+                      <td class="text-nowrap">⌀{{ rod.diameter }}</td>
+                      <td class="text-nowrap">{{ rod.rod_class }}</td>
+                      <td class="text-nowrap">{{ rod.length }}</td>
+                      <td class="text-nowrap">{{ rod.quantity }}</td>
+                      <td class="text-nowrap">{{ rod.mass_of_single_rod }}</td>
+                      <td class="text-nowrap">{{ rod.mass_of_rods }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header py-3 d-flex flex-between-center">
+              <h5 class="mb-0">Ведомость расхода стали</h5>
+            </div>
+            {% for rod_class in rod_classes %}
+              <div class="card">
+                <div class="card-header py-3 d-flex flex-between-center">
+                <h6 class="mb-0">{{ rod_class.title }}</h6>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
       </div>
+
+
+      {% include 'includes/footer.html' %}
     </div>
-    <!-- /.container-fluid -->
-
   </div>
-  <!-- End of Main Content -->
-
-  <!-- Footer -->
-  {% include 'includes/footer.html' %}
-  <!-- End of Footer -->
-
-</div>
-<!-- End of Content Wrapper -->
-
 {% endblock %}

@@ -29,26 +29,6 @@ class ProfileView(ListView):
         return queryset.filter(engineer=self.request.user)
 
 
-class RodsCalcResultView(DetailView):
-    template_name = 'calc/rods_calc/rods_calc_result.html'
-    model = models.RodsCalc
-    context_object_name = 'rods_calc'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        rods_calc_id = self.kwargs.get('pk')
-        rod_classes = models.RodClass.objects.filter(
-            rods_calc=rods_calc_id)
-        context['rod_classes'] = rod_classes
-        rod_diameters = models.RodDiameter.objects.filter(
-            rod_class__in=rod_classes)
-        print(rod_diameters)
-        context['rod_diameters'] = rod_diameters
-        context['rods'] = models.Rod.objects.filter(
-            rods_calc=rods_calc_id)
-        return context
-
-
 class SiteDetailView(DetailView):
     template_name = 'calc/site/site_detail.html'
     model = models.Site
@@ -719,6 +699,26 @@ def rod_delete(request, pk):
     rod = models.Rod.objects.get(id=pk)
     rod.delete()
     return redirect('calc:rods_calc_update', pk=rod.rods_calc.pk)
+
+
+class RodsCalcResultView(DetailView):
+    template_name = 'calc/rods_calc/rods_calc_result.html'
+    model = models.RodsCalc
+    context_object_name = 'rods_calc'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        rods_calc_id = self.kwargs.get('pk')
+        rod_classes = models.RodClass.objects.filter(
+            rods_calc=rods_calc_id)
+        context['rod_classes'] = rod_classes
+        rod_diameters = models.RodDiameter.objects.filter(
+            rod_class__in=rod_classes)
+        print(rod_diameters)
+        context['rod_diameters'] = rod_diameters
+        context['rods'] = models.Rod.objects.filter(
+            rods_calc=rods_calc_id)
+        return context
 
 
 class VolumesCalcDetailView(TemplateView):
