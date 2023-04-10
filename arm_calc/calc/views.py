@@ -573,9 +573,14 @@ class RodsCalcInline:
                 class_mass_dict[rod_class] += mass_of_rods
 
         for rod_class, total_mass in class_mass_dict.items():
-            models.RodClass.objects.create(rods_calc=rods[0].rods_calc,
-                                           title=rod_class,
-                                           total_mass=total_mass)
+            try:
+                rod_class_object = models.RodClass.objects.get(rods_calc=rods[0].rods_calc, title=rod_class)
+                rod_class_object.total_mass = total_mass
+                rod_class_object.save()
+            except Exception:
+                models.RodClass.objects.create(rods_calc=rods[0].rods_calc,
+                                               title=rod_class,
+                                               total_mass=total_mass)
 
         diameter_class_mass_dict = {}
 
@@ -596,11 +601,17 @@ class RodsCalcInline:
                 title=rod_class_title,
                 rods_calc=rods_calc,
             ).order_by('-create_date').first()
-            models.RodDiameter.objects.create(
-                rod_class=rod_class,
-                title=diameter,
-                total_mass=value
-            )
+
+            try:
+                rod_diameter_object = models.RodDiameter.objects.get(rod_class=rod_class, title=diameter)
+                rod_diameter_object.total_mass = value
+                rod_diameter_object.save()
+            except Exception:
+                models.RodDiameter.objects.create(
+                    rod_class=rod_class,
+                    title=diameter,
+                    total_mass=value
+                )
 
         rod_classes = rods_calc.rod_classes.all()
         rods_calc.total_mass = sum([rc.total_mass for rc in rod_classes])
