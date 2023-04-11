@@ -63,7 +63,42 @@ class RodForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'length': forms.NumberInput(
+            'length_1': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'quantity_1': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'length_2': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'quantity_2': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'length_3': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'quantity_3': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'length_4': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'quantity_4': forms.NumberInput(
                 attrs={
                     'class': 'form-control'
                 }
