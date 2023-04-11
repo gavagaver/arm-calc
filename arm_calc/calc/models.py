@@ -61,15 +61,50 @@ class Rod(BaseModel):
         verbose_name='Диаметр, мм',
     )
     arm_class = models.CharField(
-        max_length=50,
+        max_length=30,
         blank=True,
         null=True,
         verbose_name='Класс арматуры',
     )
-    length = models.SmallIntegerField(
+    length_1 = models.SmallIntegerField(
+        verbose_name='Длина 1 уч., мм',
+    )
+    quantity_1 = models.SmallIntegerField(
+        default=1,
+        verbose_name='Кол-во 1 уч., шт',
+    )
+    length_2 = models.SmallIntegerField(
         blank=True,
         null=True,
-        verbose_name='Длина, мм',
+        verbose_name='Длина 2 уч., мм',
+    )
+    quantity_2 = models.SmallIntegerField(
+        default=1,
+        blank=True,
+        null=True,
+        verbose_name='Кол-во 2 уч., шт',
+    )
+    length_3 = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Длина 3 уч., мм',
+    )
+    quantity_3 = models.SmallIntegerField(
+        default=1,
+        blank=True,
+        null=True,
+        verbose_name='Кол-во 3 уч., шт',
+    )
+    length_4 = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Длина 4 уч., мм',
+    )
+    quantity_4 = models.SmallIntegerField(
+        default=1,
+        blank=True,
+        null=True,
+        verbose_name='Кол-во 4 уч., шт',
     )
     quantity = models.SmallIntegerField(
         blank=True,
@@ -77,13 +112,27 @@ class Rod(BaseModel):
         verbose_name='Кол-во, шт',
     )
 
+    @property
+    def length(self):
+        lenght = self.quantity_1 * self.length_1
+        if self.length_2:
+            lenght += self.quantity_2 * self.length_2
+        if self.length_3:
+            lenght += self.quantity_3 * self.length_3
+        if self.length_4:
+            lenght += self.quantity_4 * self.length_4
+
+        return round(lenght, 1)
+
     def mass_of_single_rod(self):
-        """Mass of single rod as mass of meter multiplied by length."""
+        """Mass of single rod as mass of meter multiplied by length.
+        """
         return round(MASS_OF_METER.get(self.diameter) * self.length / MM_IN_M,
                      2)
 
     def mass_of_rods(self):
-        """Mass of rods as mass of single rod multiplied by quantity."""
+        """Mass of rods as mass of single rod multiplied by quantity.
+        """
         return round(self.mass_of_single_rod() * self.quantity, 2)
 
     class Meta:

@@ -21,7 +21,7 @@
           <!-- Begin Page Content -->
           <div class="container-fluid">
 
-              <form enctype="multipart/form-data" class="container" method="post" id="product_form">
+              <form enctype="multipart/form-data" class="" method="post" id="product_form">
     {% csrf_token %}
     <!-- element form start -->
     <div class="card shadow mb-4">
@@ -68,11 +68,18 @@
             </div>
             <table class="table card-header">
                 <thead class="text-secondary">
-                    <th>Название <span style="color: red;" class="required">*</span></th>
+                    <th>Название позиции<span style="color: red;" class="required">*</span></th>
                     <th>Диаметр, мм <span style="color: red;" class="required">*</span></th>
-                    <th>Класс <span style="color: red;" class="required">*</span></th>
-                    <th>Длина, мм <span style="color: red;" class="required">*</span></th>
-                    <th>Кол-во, шт <span style="color: red;" class="required">*</span></th>
+                    <th>Класс арматуры<span style="color: red;" class="required">*</span></th>
+                    <th>Длина 1 уч., мм <span style="color: red;" class="required">*</span></th>
+                    <th>Кол-во 1 уч., шт <span style="color: red;" class="required">*</span></th>
+                    <th>Длина 2 уч., мм </th>
+                    <th>Кол-во 2 уч., шт </th>
+                    <th>Длина 3 уч., мм </th>
+                    <th>Кол-во 3 уч., шт </th>
+                    <th>Длина 4 уч., мм </th>
+                    <th>Кол-во 4 уч., шт </th>
+                    <th>Кол-во стержней, шт <span style="color: red;" class="required">*</span></th>
                 </thead>
                 <tbody id="item-rods">
                     <!-- formset non forms errors -->
@@ -105,22 +112,30 @@
                                             <i class="fas fa-copy fa-1x text-gray-100"></i>
                                         </a>
                                     </div>
+                                </td>
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModal{{formss.instance.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{formss.instance.pk}}" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel{{formss.instance.pk}}">Вы уверены, что хотите удалить этот элемент?</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                <td>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-danger btn-circle ml-4" data-toggle="modal" data-target="#exampleModal{{ formss.instance.pk }}" title="Удалить стержень">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal{{formss.instance.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{formss.instance.pk}}" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel{{formss.instance.pk}}">Вы уверены, что хотите удалить этот элемент?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a href="{% url 'calc:delete_rod' formss.instance.pk %}" type="button" class="btn btn-primary">Да, удалить</a>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <a href="{% url 'calc:delete_rod' formss.instance.pk %}" type="button" class="btn btn-primary">Да, удалить</a>
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                            </div>
-                                        </div>
                                         </div>
                                     </div>
                                 </td>
