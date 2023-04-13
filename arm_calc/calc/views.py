@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponseForbidden
@@ -19,7 +18,7 @@ User = get_user_model()
 class LandingView(TemplateView):
     template_name = 'calc/landing.html'
 
-@login_required
+
 class ProfileView(ListView):
     template_name = 'calc/profile.html'
     model = models.Site
@@ -29,7 +28,7 @@ class ProfileView(ListView):
         queryset = super().get_queryset()
         return queryset.filter(engineer=self.request.user)
 
-@login_required
+
 class SiteDetailView(DetailView):
     template_name = 'calc/site/site_detail.html'
     model = models.Site
@@ -47,7 +46,7 @@ class SiteDetailView(DetailView):
         }
         return context
 
-@login_required
+
 class SiteCreateView(CreateView):
     template_name = 'calc/site/site_create.html'
     Model = models.Site
@@ -64,7 +63,7 @@ class SiteCreateView(CreateView):
     def get_success_url(self):
         return reverse('calc:site_detail', kwargs={'pk': self.object.pk})
 
-@login_required
+
 class SiteUpdateView(UpdateView):
     template_name = 'calc/site/site_create.html'
     model = models.Site
@@ -87,7 +86,7 @@ class SiteUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('calc:site_detail', kwargs={'pk': self.object.pk})
 
-@login_required
+
 def site_duplicate(request, pk):
     site = models.Site.objects.get(pk=pk)
     engineer = site.engineer
@@ -139,13 +138,13 @@ def site_duplicate(request, pk):
 
     return redirect('calc:profile', username=engineer.username)
 
-@login_required
+
 def site_delete(request, pk):
     site = models.Site.objects.get(id=pk)
     site.delete()
     return redirect('calc:profile', username=site.engineer.username)
 
-@login_required
+
 class ConstructionDetailView(DetailView):
     template_name = 'calc/construction/construction_detail.html'
     model = models.Construction
@@ -158,7 +157,7 @@ class ConstructionDetailView(DetailView):
             construction=construction_id)
         return context
 
-@login_required
+
 class ConstructionCreateView(CreateView):
     template_name = 'calc/construction/construction_create.html'
     model = models.Construction
@@ -180,7 +179,7 @@ class ConstructionCreateView(CreateView):
         return reverse('calc:construction_detail',
                        kwargs={'pk': self.object.pk})
 
-@login_required
+
 class ConstructionUpdateView(UpdateView):
     template_name = 'calc/construction/construction_create.html'
     model = models.Construction
@@ -203,7 +202,7 @@ class ConstructionUpdateView(UpdateView):
         site = self.get_object().site
         return reverse('calc:site_detail', args=[site.pk])
 
-@login_required
+
 def construction_duplicate(request, pk):
     construction = models.Construction.objects.get(pk=pk)
     site = construction.site
@@ -247,13 +246,13 @@ def construction_duplicate(request, pk):
 
     return redirect('calc:site_detail', site.pk)
 
-@login_required
+
 def construction_delete(request, pk):
     construction = models.Construction.objects.get(id=pk)
     construction.delete()
     return redirect('calc:site_detail', pk=construction.site.pk)
 
-@login_required
+
 class VersionDetailView(DetailView):
     template_name = 'calc/version/version_detail.html'
     model = models.Version
@@ -266,7 +265,7 @@ class VersionDetailView(DetailView):
             version=version_id)
         return context
 
-@login_required
+
 class VersionCreateView(CreateView):
     template_name = 'calc/version/version_create.html'
     model = models.Version
@@ -287,7 +286,7 @@ class VersionCreateView(CreateView):
         return reverse('calc:version_detail',
                        kwargs={'pk': self.object.pk})
 
-@login_required
+
 class VersionUpdateView(UpdateView):
     template_name = 'calc/version/version_create.html'
     model = models.Version
@@ -310,7 +309,7 @@ class VersionUpdateView(UpdateView):
         construction = self.get_object().construction
         return reverse('calc:construction_detail', args=[construction.pk])
 
-@login_required
+
 def version_duplicate(request, pk):
     version = models.Version.objects.get(pk=pk)
     construction = version.construction
@@ -347,13 +346,13 @@ def version_duplicate(request, pk):
 
     return redirect('calc:construction_detail', construction.pk)
 
-@login_required
+
 def version_delete(request, pk):
     version = models.Version.objects.get(id=pk)
     version.delete()
     return redirect('calc:construction_detail', pk=version.construction.pk)
 
-@login_required
+
 class FolderDetailView(DetailView):
     template_name = 'calc/folder/folder_detail.html'
     model = models.Folder
@@ -366,7 +365,7 @@ class FolderDetailView(DetailView):
             folder=folder_id)
         return context
 
-@login_required
+
 class FolderCreateView(CreateView):
     template_name = 'calc/folder/folder_create.html'
     model = models.Folder
@@ -387,7 +386,7 @@ class FolderCreateView(CreateView):
         return reverse('calc:folder_detail',
                        kwargs={'pk': self.object.pk})
 
-@login_required
+
 class FolderUpdateView(UpdateView):
     template_name = 'calc/folder/folder_create.html'
     model = models.Folder
@@ -410,7 +409,7 @@ class FolderUpdateView(UpdateView):
         version = self.get_object().version
         return reverse('calc:version_detail', args=[version.pk])
 
-@login_required
+
 def folder_duplicate(request, pk):
     folder = models.Folder.objects.get(pk=pk)
     version = folder.version
@@ -440,13 +439,13 @@ def folder_duplicate(request, pk):
 
     return redirect('calc:version_detail', version.pk)
 
-@login_required
+
 def folder_delete(request, pk):
     folder = models.Folder.objects.get(id=pk)
     folder.delete()
     return redirect('calc:version_detail', pk=folder.version.pk)
 
-@login_required
+
 class ElementDetailView(DetailView):
     template_name = 'calc/element/element_detail.html'
     model = models.Element
@@ -459,7 +458,7 @@ class ElementDetailView(DetailView):
             element=element_id)
         return context
 
-@login_required
+
 class ElementCreateView(CreateView):
     template_name = 'calc/element/element_create.html'
     model = models.Element
@@ -482,7 +481,7 @@ class ElementCreateView(CreateView):
         return reverse('calc:element_detail',
                        kwargs={'pk': self.object.pk})
 
-@login_required
+
 class ElementUpdateView(UpdateView):
     template_name = 'calc/element/element_create.html'
     model = models.Element
@@ -503,7 +502,7 @@ class ElementUpdateView(UpdateView):
         folder = self.get_object().folder
         return reverse('calc:folder_detail', args=[folder.pk])
 
-@login_required
+
 def element_duplicate(request, pk):
     element = models.Element.objects.get(id=pk)
     place_folder = element.folder
@@ -526,13 +525,13 @@ def element_duplicate(request, pk):
 
     return redirect('calc:folder_detail', place_folder.pk)
 
-@login_required
+
 def element_delete(request, pk):
     element = models.Element.objects.get(id=pk)
     element.delete()
     return redirect('calc:folder_detail', pk=element.folder.pk)
 
-@login_required
+
 class RodsCalcInline:
     form_class = forms.RodsCalcForm
     model = models.RodsCalc
@@ -628,7 +627,7 @@ class RodsCalcInline:
             rod.rods_calc = self.object
             rod.save()
 
-@login_required
+
 class RodsCalcCreateView(RodsCalcInline, CreateView):
     def get_context_data(self, **kwargs):
         context = super(RodsCalcCreateView, self).get_context_data(**kwargs)
@@ -651,7 +650,7 @@ class RodsCalcCreateView(RodsCalcInline, CreateView):
                 ),
             }
 
-@login_required
+
 class RodsCalcUpdateView(RodsCalcInline, UpdateView):
 
     def get_context_data(self, **kwargs):
@@ -675,7 +674,7 @@ class RodsCalcUpdateView(RodsCalcInline, UpdateView):
             ),
         }
 
-@login_required
+
 def rods_calc_duplicate(request, pk):
     rods_calc = models.RodsCalc.objects.get(pk=pk)
     element = rods_calc.element
@@ -691,13 +690,13 @@ def rods_calc_duplicate(request, pk):
 
     return redirect('calc:element_detail', element.pk)
 
-@login_required
+
 def rods_calc_delete(request, pk):
     rods_calc = models.RodsCalc.objects.get(id=pk)
     rods_calc.delete()
     return redirect('calc:element_detail', pk=rods_calc.element.pk)
 
-@login_required
+
 def rod_duplicate(request, pk):
     rod = models.Rod.objects.get(pk=pk)
 
@@ -706,13 +705,13 @@ def rod_duplicate(request, pk):
 
     return redirect('calc:rods_calc_update', pk=rod.rods_calc.pk)
 
-@login_required
+
 def rod_delete(request, pk):
     rod = models.Rod.objects.get(id=pk)
     rod.delete()
     return redirect('calc:rods_calc_update', pk=rod.rods_calc.pk)
 
-@login_required
+
 class RodsCalcResultView(DetailView):
     template_name = 'calc/rods_calc/rods_calc_result.html'
     model = models.RodsCalc
