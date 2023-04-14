@@ -1,0 +1,29 @@
+{% load static %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'calc:profile' user.username %}">Личный кабинет</a></li>
+    {% if site %}
+      <li class="breadcrumb-item active" aria-current="page">{{ site.title }}</li>
+    {% elif construction %}
+      <li class="breadcrumb-item"><a href="{% url 'calc:site_detail' construction.site.pk %}" title="объект">{{ construction.site.title }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ construction.title }}</li>
+    {% elif version %}
+      <li class="breadcrumb-item"><a href="{% url 'calc:site_detail' version.construction.site.pk %}" title="объект">{{ version.construction.site.title }}</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'calc:construction_detail' version.construction.pk %}" title="сооружение">{{ version.construction.title }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ version.title }}</li>
+    {% elif folder %}
+      <li class="breadcrumb-item"><a href="{% url 'calc:site_detail' folder.version.construction.site.pk %}" title="объект">{{ folder.version.construction.site.title }}</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'calc:construction_detail' folder.version.construction.pk %}" title="сооружение">{{ folder.version.construction.title }}</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'calc:version_detail' folder.version.pk %}" title="стадия">{{ folder.version.title }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ folder.title }}</li>
+    {% elif element %}
+      <li class="breadcrumb-item"><a href="{% url 'calc:site_detail' element.folder.version.construction.site.pk %}" title="объект">{{ element.folder.version.construction.site.title }}</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'calc:construction_detail' element.folder.version.construction.pk %}" title="сооружение">{{ element.folder.version.construction.title }}</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'calc:version_detail' element.folder.version.pk %}" title="стадия">{{ element.folder.version.title }}</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'calc:folder_detail' element.folder.pk %}" title="папка">{{ element.folder.title }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ element.title }}</li>
+    {% endif %}
+  </ol>
+</nav>
+
+

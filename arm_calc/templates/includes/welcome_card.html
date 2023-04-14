@@ -1,0 +1,25 @@
+<div class="card h-100">
+<div class="bg-holder bg-card" style="background-image:url(../assets/img/icons/spot-illustrations/corner-3.png);">
+</div>
+<!--/.bg-holder-->
+
+<div class="card-header z-index-1">
+  <h5 class="text-primary mb-1">Добро пожаловать в Arm-Calc, {{ user.get_full_name | title }}!</h5>
+  <h6 class="text-600">Это ваш личный кабинет. Здесь вы можете создавать объекты и управлять ими.</h6>
+</div>
+<div class="card-body z-index-1">
+  <div class="row g-2 h-100 align-items-end">
+    <div class="col-sm-6 col-md-5">
+      <div class="d-flex position-relative">
+        <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="far fa-plus-square text-primary"></span></div>
+        <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:site_create' %}">
+            <h6 class="mb-0">Создать объект</h6>
+          </a>
+          <p class="mb-0 fs--2 text-500">Строительная площадка или город</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>

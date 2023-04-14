@@ -29,26 +29,6 @@ class ProfileView(ListView):
         return queryset.filter(engineer=self.request.user)
 
 
-class RodsCalcResultView(DetailView):
-    template_name = 'calc/rods_calc/rods_calc_result.html'
-    model = models.RodsCalc
-    context_object_name = 'rods_calc'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        rods_calc_id = self.kwargs.get('pk')
-        rod_classes = models.RodClass.objects.filter(
-            rods_calc=rods_calc_id)
-        context['rod_classes'] = rod_classes
-        rod_diameters = models.RodDiameter.objects.filter(
-            rod_class__in=rod_classes)
-        print(rod_diameters)
-        context['rod_diameters'] = rod_diameters
-        context['rods'] = models.Rod.objects.filter(
-            rods_calc=rods_calc_id)
-        return context
-
-
 class SiteDetailView(DetailView):
     template_name = 'calc/site/site_detail.html'
     model = models.Site
@@ -368,7 +348,7 @@ def version_duplicate(request, pk):
 
 
 def version_delete(request, pk):
-    version = models.Folder.objects.get(id=pk)
+    version = models.Version.objects.get(id=pk)
     version.delete()
     return redirect('calc:construction_detail', pk=version.construction.pk)
 
@@ -516,8 +496,6 @@ class ElementUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.__class__.__name__ == 'ElementUpdateView':
-            context['view_name'] = 'update'
         return context
 
     def get_success_url(self):
@@ -595,9 +573,14 @@ class RodsCalcInline:
                 class_mass_dict[rod_class] += mass_of_rods
 
         for rod_class, total_mass in class_mass_dict.items():
-            models.RodClass.objects.create(rods_calc=rods[0].rods_calc,
-                                           title=rod_class,
-                                           total_mass=total_mass)
+            try:
+                rod_class_object = models.RodClass.objects.get(rods_calc=rods[0].rods_calc, title=rod_class)
+                rod_class_object.total_mass = total_mass
+                rod_class_object.save()
+            except Exception:
+                models.RodClass.objects.create(rods_calc=rods[0].rods_calc,
+                                               title=rod_class,
+                                               total_mass=total_mass)
 
         diameter_class_mass_dict = {}
 
@@ -618,17 +601,23 @@ class RodsCalcInline:
                 title=rod_class_title,
                 rods_calc=rods_calc,
             ).order_by('-create_date').first()
-            models.RodDiameter.objects.create(
-                rod_class=rod_class,
-                title=diameter,
-                total_mass=value
-            )
+
+            try:
+                rod_diameter_object = models.RodDiameter.objects.get(rod_class=rod_class, title=diameter)
+                rod_diameter_object.total_mass = value
+                rod_diameter_object.save()
+            except Exception:
+                models.RodDiameter.objects.create(
+                    rod_class=rod_class,
+                    title=diameter,
+                    total_mass=value
+                )
 
         rod_classes = rods_calc.rod_classes.all()
         rods_calc.total_mass = sum([rc.total_mass for rc in rod_classes])
         rods_calc.save()
 
-        return redirect('calc:element_detail', element.pk)
+        return redirect('calc:rods_calc_update', rods_calc.pk)
 
     def formset_rods_valid(self, formset):
         rods = formset.save(commit=False)
@@ -643,6 +632,8 @@ class RodsCalcCreateView(RodsCalcInline, CreateView):
     def get_context_data(self, **kwargs):
         context = super(RodsCalcCreateView, self).get_context_data(**kwargs)
         context['named_formsets'] = self.get_named_formsets()
+        element_pk = self.kwargs['element_pk']
+        context['element'] = models.Element.objects.get(pk=element_pk)
         return context
 
     def get_named_formsets(self):
@@ -665,6 +656,12 @@ class RodsCalcUpdateView(RodsCalcInline, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(RodsCalcUpdateView, self).get_context_data(**kwargs)
         context['named_formsets'] = self.get_named_formsets()
+        rods_calc_pk = self.kwargs['pk']
+        rods_calc = models.RodsCalc.objects.get(pk=rods_calc_pk)
+        context['rods_calc'] = rods_calc
+        context['element'] = rods_calc.element
+        if self.__class__.__name__ == 'RodsCalcUpdateView':
+            context['view_name'] = 'update'
         return context
 
     def get_named_formsets(self):
@@ -715,113 +712,21 @@ def rod_delete(request, pk):
     return redirect('calc:rods_calc_update', pk=rod.rods_calc.pk)
 
 
-class VolumesCalcDetailView(TemplateView):
-    pass
+class RodsCalcResultView(DetailView):
+    template_name = 'calc/rods_calc/rods_calc_result.html'
+    model = models.RodsCalc
+    context_object_name = 'rods_calc'
 
-
-class VolumesCalcCreateView(CreateView):
-    pass
-
-
-class VolumesCalcUpdateView(RodsCalcInline, UpdateView):
-    pass
-
-
-class VolumesCalcDuplicateView(View):
-    pass
-
-
-class VolumesCalcDeleteView(DeleteView):
-    pass
-
-
-class VolumeDuplicateView(View):
-    Model = models.Volume
-
-
-class VolumeDeleteView(DeleteView):
-    Model = models.Volume
-
-
-class SquaresCalcDetailView(TemplateView):
-    pass
-
-
-class SquaresCalcCreateView(CreateView):
-    pass
-
-
-class SquaresCalcUpdateView(UpdateView):
-    pass
-
-
-class SquaresCalcDuplicateView(View):
-    Model = models.SquaresCalc
-
-
-class SquaresCalcDeleteView(DeleteView):
-    pass
-
-
-class SquareDuplicateView(View):
-    Model = models.Square
-
-
-class SquareDeleteView(DeleteView):
-    Model = models.Square
-
-
-class LengthsCalcDetailView(TemplateView):
-    pass
-
-
-class LengthsCalcCreateView(CreateView):
-    pass
-
-
-class LengthsCalcUpdateView(UpdateView):
-    pass
-
-
-class LengthsCalcDuplicateView(View):
-    Model = models.LengthsCalc
-
-
-class LengthsCalcDeleteView(DeleteView):
-    pass
-
-
-class LengthDuplicateView(View):
-    Model = models.Length
-
-
-class LengthDeleteView(DeleteView):
-    Model = models.Length
-
-
-class UnitsCalcDetailView(TemplateView):
-    pass
-
-
-class UnitsCalcCreateView(CreateView):
-    pass
-
-
-class UnitsCalcUpdateView(UpdateView):
-    pass
-
-
-class UnitsCalcDuplicateView(View):
-    Model = models.UnitsCalc
-
-
-class UnitsCalcDeleteView(DeleteView):
-    pass
-
-
-class UnitDuplicateView(View):
-    Model = models.Unit
-
-
-class UnitDeleteView(DeleteView):
-    Model = models.Unit
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        rods_calc_id = self.kwargs.get('pk')
+        rod_classes = models.RodClass.objects.filter(
+            rods_calc=rods_calc_id)
+        context['rod_classes'] = rod_classes
+        rod_diameters = models.RodDiameter.objects.filter(
+            rod_class__in=rod_classes)
+        print(rod_diameters)
+        context['rod_diameters'] = rod_diameters
+        context['rods'] = models.Rod.objects.filter(
+            rods_calc=rods_calc_id)
+        return context
