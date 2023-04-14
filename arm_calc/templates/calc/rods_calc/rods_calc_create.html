@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if view_name == 'update' %}
+        Обновление расчета армирования "{{ rods_calc.title }}"
+    {% else %}
+        Создание расчета армирования
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+  <div class="container" data-layout="container">
+    <div class="content">
+      {% include 'includes/topbar.html' %}
+      <form enctype="multipart/form-data" class="" method="post" id="product_form">
+        {% csrf_token %}
+        <div class="row g-lg-3 font-sans-serif">
+        <div class="col-lg-8">
+          <div class="card mb-3">
+            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../../../assets/img/icons/spot-illustrations/corner-4.png);">
+            </div>
+            <!--/.bg-holder-->
+
+            <div class="card-body z-index-1">
+              <h3>
+                {% if view_name == 'update' %}
+                    {{ rods_calc.title }}
+                {% else %}
+                    Создание расчета армирования
+                {% endif %}
+              </h3>
+              <p class="mb-0">
+                Обновление расчета армирования.
+              </p>
+              <p class="mb-0">
+                На этой странице вы можете создать и настроить стержни армирования.
+              </p>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <h5 class="mb-0">Информация о расчете</h5>
+            </div>
+            <div class="card-body bg-light">
+              {% for field in form %}
+                <div class="col-12 mb-3">
+                  <label class="form-label">
+                    {{ field.label }}
+                    {% if field.field.required %}
+                      <span class="text-danger">*</span>
+                    {% endif %}
+                  </label>
+                  {{ field }}
+                  {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                  {% endif %}
+                  {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="sticky-sidebar top-navbar-height d-flex flex-column">
+            <div class="card mb-lg-3 order-lg-0 order-1">
+              <div class="card-header py-2 d-flex flex-between-center">
+                <h5 class="mb-0">Расчет армирования элемента</h5>
+              </div>
+              <div class="card-body bg-light">
+                <ul class="list-unstyled fs--1 mb-0">
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Объект: </span>
+                    <a class="link-primary" href="{% url 'calc:site_detail' element.folder.version.construction.site.pk %}">
+                      <span class="fw-medium me-2">{{ element.folder.version.construction.site.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Сооружение: </span>
+                    <a class="link-primary" href="{% url 'calc:construction_detail' element.folder.version.construction.pk %}">
+                      <span class="fw-medium me-2">{{ element.folder.version.construction.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Стадия: </span>
+                    <a class="link-primary" href="{% url 'calc:version_detail' element.folder.version.pk %}">
+                      <span class="fw-medium me-2">{{ element.folder.version.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Папка: </span>
+                    <a class="link-primary" href="{% url 'calc:folder_detail' element.folder.pk %}">
+                      <span class="fw-medium me-2">{{ element.folder.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Элемент: </span>
+                    <a class="link-primary" href="{% url 'calc:element_detail' element.pk %}">
+                      <span class="fw-medium me-2">{{ element.title }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer py-2" id="course-publish-btn">
+                <div class="row flex-between-center g-0">
+
+                  <div class="col-auto">
+                    <button class="btn btn-primary me-1 mb-1" type="submit">
+                      <span class="fas fa-sync-alt me-1" data-fa-transform="shrink-3"></span>Сохранить изменения
+                    </button>
+                  </div>
+                  <div class="col-auto">
+                    {% if rods_calc.pk %}
+                      <a class="btn btn-link btn-sm text-primary fw-medium px-0" href="{% url 'calc:rods_calc_result' rods_calc.pk %}">
+                        <span class="far fa-list-alt me-1" data-fa-transform="shrink-3"></span>Посмотреть результат
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          {% with named_formsets.rods as formset %}
+            {{ formset.management_form }}
+            <script type="text/html" id="rods-template">  // id="inlineformsetname-template"
+            // id='inlineformsetname-__prefix__'
+            <tr id="rods-__prefix__" class= hide_all>
+                {% for fields in formset.empty_form.hidden_fields %}
+                    {{ fields }}
+                {% endfor %}
+
+                {% for fields in formset.empty_form.visible_fields %}
+                    <td>{{fields}}</td>
+                {% endfor %}
+            </tr>
+        </script>
+            <div class="card mb-3">
+            <div class="card-header">
+              <h5 class="mb-0">Арматурные стержни</h5>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive scrollbar">
+                <table class="table table-borderless mb-0 fs--1 overflow-hidden">
+                  <thead class="text-secondary">
+                    <th>Название позиции<span style="color: red;" class="required">*</span></th>
+                    <th>Диаметр, мм <span style="color: red;" class="required">*</span></th>
+                    <th>Класс арматуры<span style="color: red;" class="required">*</span></th>
+                    <th>Длина 1 уч., мм <span style="color: red;" class="required">*</span></th>
+                    <th>Кол-во 1 уч., шт <span style="color: red;" class="required">*</span></th>
+                    <th>Длина 2 уч., мм </th>
+                    <th>Кол-во 2 уч., шт </th>
+                    <th>Длина 3 уч., мм </th>
+                    <th>Кол-во 3 уч., шт </th>
+                    <th>Длина 4 уч., мм </th>
+                    <th>Кол-во 4 уч., шт </th>
+                    <th>Кол-во стержней, шт <span style="color: red;" class="required">*</span></th>
+                  </thead>
+                  <tbody id="item-rods">
+                    {% for error in formset.non_form_errors %}
+                      <span style="color: red">{{ error }}</span>
+                    {% endfor %}
+                    {% for formss in formset %}
+                      {{ formss.management_form }}
+                      <tr id="rods-{{ forloop.counter0 }}" class="btn-reveal-trigger bg-light hide_all">
+                        {{ formss.id }}
+                        {% for field in formss.visible_fields %}
+                          <td class="align-middle white-space-nowrap">
+                            {{ field }}
+                            {% for error in field.errors %}
+                              <span style="color: red">{{ error }}</span>
+                            {% endfor %}
+                          </td>
+                        {% endfor %}
+                        {% if formss.instance.pk %}
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropdown font-sans-serif position-static d-inline-block btn-reveal-trigger">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal dropdown-caret-none float-end" type="button" id="dropdown-0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><svg class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"></path></svg><!-- <span class="fas fa-ellipsis-h fs--1"></span> Font Awesome fontawesome.com --></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-0" style="">
+                                <a class="dropdown-item" href="{% url 'calc:rod_duplicate' formss.instance.pk %}">Дублировать</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="{% url 'calc:rod_delete' formss.instance.pk %}">Удалить</a>
+                              </div>
+                            </div>
+                          </td>
+                        {% endif %}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-footer py-2 text-center"><a class="btn btn-link btn-sm px-0 fw-medium add-rods" href="#" id="add-rod-button"> <span class="fas fa-plus me-1 fs--2"></span>Добавить стержень</a></div>
+          </div>
+          {% endwith %}
+        </div>
+      </div>
+      </form>
+
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script>
+        $(document).ready(function() {
+          // when user clicks add more btn of rods
+            $('.add-rods').click(function(ev) {
+              ev.preventDefault();
+              var count = $('#item-rods').children().length;
+              var tmplMarkup = $('#rods-template').html();
+              var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+              $('#item-rods').append(compiledTmpl);
+
+              // update form count
+              $('#id_rods-TOTAL_FORMS').attr('value', count+1);
+            });
+        });
+      </script>
+
+      {% include 'includes/footer.html' %}
+    </div>
+  </div>
+{% endblock %}

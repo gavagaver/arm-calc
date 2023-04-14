@@ -1,13 +1,58 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from calc.models import Element, Rod
+from . import models
+
+
+class SiteForm(forms.ModelForm):
+    class Meta:
+        model = models.Site
+        fields = ['title', ]
+        labels = {
+            'title': 'Укажите название объекта:',
+        }
+
+
+class ConstructionForm(forms.ModelForm):
+    class Meta:
+        model = models.Construction
+        fields = ['title', ]
+        labels = {
+            'title': 'Укажите название сооружения:',
+        }
+
+
+class VersionForm(forms.ModelForm):
+    class Meta:
+        model = models.Version
+        fields = ['title', ]
+        labels = {
+            'title': 'Укажите название версии:',
+        }
+
+
+class FolderForm(forms.ModelForm):
+    class Meta:
+        model = models.Folder
+        fields = ['title', ]
+        labels = {
+            'title': 'Укажите название папки:',
+        }
 
 
 class ElementForm(forms.ModelForm):
     class Meta:
-        model = Element
-        exclude = ('engineer', 'folder',)
+        model = models.Element
+        fields = ['title', ]
+        labels = {
+            'title': 'Укажите название элемента:',
+        }
+
+
+class RodsCalcForm(forms.ModelForm):
+    class Meta:
+        model = models.RodsCalc
+        fields = ('title', 'measurement_scale')
         widgets = {
             'title': forms.TextInput(
                 attrs={
@@ -24,8 +69,12 @@ class ElementForm(forms.ModelForm):
 
 class RodForm(forms.ModelForm):
     class Meta:
-        model = Rod
-        fields = '__all__'
+        model = models.Rod
+        exclude = (
+            'length',
+            'mass_of_single_rod',
+            'mass_of_rods',
+        )
         DIAMETERS = (
             ('6', '6'),
             ('8', '8'),
@@ -42,7 +91,7 @@ class RodForm(forms.ModelForm):
             ('36', '36'),
             ('40', '40'),
         )
-        ARM_CLASSES = (
+        ROD_CLASSES = (
             ('А240', 'А240'),
             ('А400', 'А400'),
             ('А500', 'А500'),
@@ -62,8 +111,8 @@ class RodForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'arm_class': forms.Select(
-                choices=ARM_CLASSES,
+            'rod_class': forms.Select(
+                choices=ROD_CLASSES,
                 attrs={
                     'class': 'form-control'
                 }
@@ -117,7 +166,7 @@ class RodForm(forms.ModelForm):
 
 
 RodFormSet = inlineformset_factory(
-    Element, Rod, form=RodForm,
+    models.RodsCalc, models.Rod, form=RodForm,
     extra=0, can_delete=False,
     can_delete_extra=True
 )

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Arm-Calc.ru - сервис для расчета объема бетона и веса арматуры при проектировании железобетонных конструкций
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-standard navbar-expand-lg fixed-top navbar-dark" data-navbar-darken-on-scroll="data-navbar-darken-on-scroll">
+        <div class="container"><a class="navbar-brand" href="/"><span class="text-white dark__text-white">Arm-Calc</span></a>
+          <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStandard" aria-controls="navbarStandard" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+          <div class="collapse navbar-collapse scrollbar" id="navbarStandard">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item d-flex align-items-center me-2">
+
+              </li>
+              {% if user.is_authenticated %}
+                {% include 'includes/profile_dropdown.html' %}
+              {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">Войти</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:signup' %}">Зарегистрироваться</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+
+
+<!-- ============================================-->
+<!-- <section> begin ============================-->
+<section class="py-0 overflow-hidden light" id="banner" style="height: 100vh;">
+
+<div class="bg-holder overlay" style="background-image:url({% static 'assets/img/generic/bg-2.jpg' %});background-position: center bottom;">
+</div>
+<!--/.bg-holder-->
+
+<div class="container">
+  <div class="row flex-center pt-8 pt-lg-10 pb-lg-9 pb-xl-0">
+    <div class="col-md-11 col-lg-8 col-xl-4 pb-7 pb-xl-9 text-center text-xl-start">
+      <h1 class="text-white">Быстрый и удобный<br />подсчет строительных объемов</h1>
+      <p class="lead text-white opacity-75">Считайте вес сложных арматурных каркасов, храните расчеты в облаке <br />и быстро корректируйте объемы в несколько кликов</p><a class="btn btn-outline-light border-2 rounded-pill btn-lg mt-4 fs-0 py-2" href="{% url 'users:signup' %}">Начать работу в Arm-Calc<span class="fas fa-play ms-2" data-fa-transform="shrink-6 down-1"></span></a>
+    </div>
+    <div class="col-xl-7 offset-xl-1 align-self-end mt-4 mt-xl-0">
+
+    </div>
+  </div>
+</div>
+<!-- end of .container-->
+<div class="container">
+
+</div>
+</section>
+<!-- <section> close ============================-->
+<!-- ============================================-->
+<div class="container">
+  {% include 'includes/footer.html' %}
+</div>
+
+{% endblock %}

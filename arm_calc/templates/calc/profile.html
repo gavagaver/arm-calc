@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Личный кабинет пользователя {{ user.get_full_name | title }}
+{% endblock %}
+
+{% block content %}
+  <div class="container" data-layout="container">
+    <script>
+      var isFluid = JSON.parse(localStorage.getItem('isFluid'));
+      if (isFluid) {
+        var container = document.querySelector('[data-layout]');
+        container.classList.remove('container');
+        container.classList.add('container-fluid');
+      }
+    </script>
+    <div class="content">
+      {% include 'includes/topbar.html' %}
+      <div class="row g-3 mb-3">
+        <div class="col-xxl-6 col-lg-12">
+          {% include 'includes/welcome_card.html' %}
+        </div>
+        <div class="col-xxl-3 col-md-6">
+
+        </div>
+        <div class="col-xxl-3 col-md-6">
+
+        </div>
+      </div>
+      <div class="row g-3 mb-3">
+        {% for site in sites %}
+          <div class="col-xxl-6 col-lg-12">
+            {% include 'calc/includes/site/site_card.html' %}
+          </div>
+        {% endfor %}
+
+      </div>
+      {% include 'includes/footer.html' %}
+    </div>
+  </div>
+{% endblock %}
+

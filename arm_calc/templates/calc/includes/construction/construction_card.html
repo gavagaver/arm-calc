@@ -1,0 +1,18 @@
+<div class="card h-md-100">
+  <div class="card-header d-flex flex-between-center pb-0">
+    <a href="{% url 'calc:construction_detail' construction.pk %}">
+      <h3 class="text-primary mb-1">{{ construction.title }}</h3>
+    </a>
+    {% include 'calc/includes/construction/construction_dropdown_actions.html' %}
+  </div>
+  <div class="card-body pt-2">
+    <div class="row g-0 h-100 align-items-center">
+      <div class="col">
+        <p class="text-600 fs--1">сооружение</p>
+      </div>
+      <div class="col-auto text-center ps-2">
+
+      </div>
+    </div>
+  </div>
+</div>
