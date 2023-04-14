@@ -42,6 +42,11 @@ class Element(BaseModel):
         verbose_name='Инженер',
         default=1,
     )
+    measurement_scale = models.SmallIntegerField(
+        default=1,
+        verbose_name='Масштаб измерений длины',
+        help_text='Во сколько раз вводимые значения длин больше действительных'
+    )
 
     class Meta:
         verbose_name = 'Элемент'
@@ -114,13 +119,14 @@ class Rod(BaseModel):
 
     @property
     def length(self):
-        lenght = self.quantity_1 * self.length_1
+        element_of_rod = Element.objects.get(pk=self.element.pk)
+        lenght = self.quantity_1 * self.length_1 / element_of_rod.measurement_scale
         if self.length_2:
-            lenght += self.quantity_2 * self.length_2
+            lenght += self.quantity_2 * self.length_2 / element_of_rod.measurement_scale
         if self.length_3:
-            lenght += self.quantity_3 * self.length_3
+            lenght += self.quantity_3 * self.length_3 / element_of_rod.measurement_scale
         if self.length_4:
-            lenght += self.quantity_4 * self.length_4
+            lenght += self.quantity_4 * self.length_4 / element_of_rod.measurement_scale
 
         return round(lenght, 1)
 
