@@ -81,7 +81,7 @@ class ElementInline:
                 formset_save_func(formset)
             else:
                 formset.save()
-        return redirect('account:list_elements', element.folder.pk)
+        return redirect('calc:update_element', element.pk)
 
     def formset_rods_valid(self, formset):
         rods = formset.save(commit=False)

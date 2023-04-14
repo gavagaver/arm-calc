@@ -116,7 +116,7 @@
 
                                 <td>
                                     <div class="col-auto">
-                                        <button type="button" class="btn btn-danger btn-circle ml-4" data-toggle="modal" data-target="#exampleModal{{ formss.instance.pk }}" title="Удалить стержень">
+                                        <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#exampleModal{{ formss.instance.pk }}" title="Удалить стержень">
                                             <i class="fas fa-trash"></i>
                                         </button>
 
@@ -144,35 +144,39 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="#" id="add-rod-button" class="btn btn-secondary add-rods">Добавить стержень</a>
+            <a href="#" id="add-rod-button" class="btn btn-secondary add-rods">+ Добавить стержень</a>
         </div>
 
     {% endwith %}
     <!-- inline form for Rod end -->
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block">Сохранить элемент</button>
+    <div class="form-group mb-4">
+        <button type="submit" class="btn btn-primary btn-block">Обновить элемент</button>
     </div>
+    {% if element.pk %}
+        <a href="{% url 'calc:result' element.pk%}" class="btn btn-success btn-block">Посмотреть результат</a>
+    {% endif %}
 
     </form>
 
               <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
-              <script>
-                      $(document).ready(function() {
-                        // when user clicks add more btn of rods
-                          $('.add-rods').click(function(ev) {
-                              ev.preventDefault();
-                              var count = $('#item-rods').children().length;
-                              var tmplMarkup = $('#rods-template').html();
-                              var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-                              $('#item-rods').append(compiledTmpl);
+            <script>
+              $(document).ready(function() {
+                // when user clicks add more btn of rods
+                  $('.add-rods').click(function(ev) {
+                      ev.preventDefault();
+                      var count = $('#item-rods').children().length;
+                      var tmplMarkup = $('#rods-template').html();
+                      var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+                      $('#item-rods').append(compiledTmpl);
 
-                              // update form count
-                              $('#id_rods-TOTAL_FORMS').attr('value', count+1);
-                          });
-                      });
-                    </script>
+                      // update form count
+                      $('#id_rods-TOTAL_FORMS').attr('value', count+1);
+                  });
+              });
+            </script>
+
 
           </div>
           <!-- /.container-fluid -->
