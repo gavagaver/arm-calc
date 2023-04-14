@@ -1,0 +1,20 @@
+<div class="col-lg-4 mb-4">
+    <div class="card border-left-light shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="h5 font-weight-bold text-primary mb-1">
+                        <a href="{% url 'calc:element_detail' element.pk%}">
+                            {{ element.title }}
+                        </a>
+                    </div>
+                </div>
+
+
+                {% include 'calc/includes/element/element_dropdown_actions.html' %}
+
+
+            </div>
+        </div>
+    </div>
+</div>

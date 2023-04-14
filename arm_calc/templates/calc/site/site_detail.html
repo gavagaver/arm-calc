@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Объект "{{ site.title }}"
+{% endblock %}
+
+{% block content %}
+
+  <!-- Sidebar -->
+  {% include 'includes/sidebar.html' %}
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+          <!-- Topbar -->
+          {% include 'includes/topbar.html' %}
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+
+
+            <div class="col-lg-5 mb-4">
+
+              <h5>объект</h5>
+
+              <h1>{{ site.title }}</h1>
+
+            </div>
+
+            {% for construction in constructions %}
+              {% include 'calc/includes/construction/construction_card.html' %}
+            {% endfor %}
+
+
+            <div class="col-lg-5 mb-4">
+
+
+
+              <a href="{% url 'calc:construction_create' site.pk %}"
+                 class="btn btn-success btn-lg"
+              >
+                <i class="fas fa-folder fa-lg text-white-50"></i>
+                Создать сооружение
+              </a>
+
+
+
+            </div>
+
+          </div>
+          <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'includes/footer.html' %}
+      <!-- End of Footer -->
+
+  </div>
+  <!-- End of Content Wrapper -->
+
+{% endblock %}

@@ -1,0 +1,32 @@
+<div class="dropdown no-arrow">
+    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
+        <div class="dropdown-header">Выберите действие:</div>
+        <a class="dropdown-item" href="{% url 'calc:version_update' version.pk%}">Редактировать</a>
+        <a class="dropdown-item" href="{% url 'calc:version_duplicate' version.pk%}">Дублировать</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#" style="color: #e74a3b;" data-toggle="modal" data-target="#exampleModal{{ version.pk }}" >Удалить</a>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal{{ version.pk }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{ version.pk }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel{{ version.pk }}">Вы уверены, что хотите удалить этот элемент?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'calc:version_delete' version.pk%}" type="button" class="btn btn-primary">Да, удалить</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

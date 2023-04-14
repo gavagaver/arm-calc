@@ -1,29 +1,60 @@
-from django.contrib.auth import get_user_model
-
 from django.db import models
 
-from account.models import Folder
-from core.models import BaseModel
+from core.models import User, BaseModel, ConstructionModel, CalcModel, \
+    PartModel
 
-User = get_user_model()
 
-MASS_OF_METER = {
-    6: 0.222,
-    8: 0.395,
-    10: 0.617,
-    12: 0.888,
-    14: 1.210,
-    16: 1.580,
-    18: 2.000,
-    20: 2.470,
-    22: 2.980,
-    25: 3.850,
-    28: 4.830,
-    32: 6.310,
-    36: 7.990,
-    40: 9.870,
-}
-MM_IN_M = 1000
+class Site(BaseModel):
+    engineer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='sites',
+        verbose_name='Инженер',
+    )
+
+    class Meta:
+        verbose_name = 'Объект'
+        verbose_name_plural = 'Объекты'
+
+
+class Construction(ConstructionModel):
+    site = models.ForeignKey(
+        Site,
+        on_delete=models.CASCADE,
+        related_name='constructions',
+        verbose_name='Объект',
+        default=1,
+    )
+
+    class Meta:
+        verbose_name = 'Сооружение'
+        verbose_name_plural = 'Сооружения'
+
+
+class Version(BaseModel):
+    construction = models.ForeignKey(
+        Construction,
+        on_delete=models.CASCADE,
+        related_name='versions',
+        verbose_name='Сооружение',
+    )
+
+    class Meta:
+        verbose_name = 'Версия'
+        verbose_name_plural = 'Версии'
+
+
+class Folder(BaseModel):
+    version = models.ForeignKey(
+        Version,
+        on_delete=models.CASCADE,
+        related_name='folders',
+        verbose_name='Версия',
+    )
+
+    class Meta:
+        verbose_name = 'Папка'
+        verbose_name_plural = 'Папки'
 
 
 class Element(BaseModel):
@@ -32,15 +63,12 @@ class Element(BaseModel):
         on_delete=models.CASCADE,
         related_name='elements',
         verbose_name='Папка',
-        blank=True,
-        null=True,
     )
     engineer = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='elements',
         verbose_name='Инженер',
-        default=1,
     )
 
     class Meta:
@@ -48,22 +76,91 @@ class Element(BaseModel):
         verbose_name_plural = 'Элементы'
 
 
-class Rod(BaseModel):
+class RodsCalc(CalcModel):
     element = models.ForeignKey(
         Element,
         on_delete=models.CASCADE,
-        related_name='rods',
+        related_name='rods_calcs',
         verbose_name='Элемент',
+    )
+    total_mass = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Всего, кг',
+    )
+    measurement_scale = models.SmallIntegerField(
+        default=1,
+        verbose_name='Масштаб измерений',
+        help_text='Во сколько раз вводимые значения больше действительных'
+    )
+
+    class Meta:
+        verbose_name = 'Расчет армирования'
+        verbose_name_plural = 'Расчеты армирования'
+
+
+class RodClass(BaseModel):
+    rods_calc = models.ForeignKey(
+        RodsCalc,
+        on_delete=models.CASCADE,
+        related_name='rod_classes',
+        verbose_name='Армирование',
+    )
+    total_mass = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Всего, кг',
+    )
+
+
+class RodDiameter(BaseModel):
+    rod_class = models.ForeignKey(
+        RodClass,
+        on_delete=models.CASCADE,
+        related_name='rod_diameters',
+        verbose_name='Класс арматуры',
+    )
+    total_mass = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Всего, кг',
+    )
+
+
+class Rod(PartModel):
+    MASS_OF_METER = {
+        6: 0.222,
+        8: 0.395,
+        10: 0.617,
+        12: 0.888,
+        14: 1.210,
+        16: 1.580,
+        18: 2.000,
+        20: 2.470,
+        22: 2.980,
+        25: 3.850,
+        28: 4.830,
+        32: 6.310,
+        36: 7.990,
+        40: 9.870,
+    }
+    MM_IN_M = 1000
+
+    rods_calc = models.ForeignKey(
+        RodsCalc,
+        on_delete=models.CASCADE,
+        related_name='rods',
+        verbose_name='Армирование',
     )
     diameter = models.SmallIntegerField(
         blank=True,
         null=True,
         verbose_name='Диаметр, мм',
     )
-    arm_class = models.CharField(
-        max_length=30,
+    rod_class = models.CharField(
         blank=True,
         null=True,
+        max_length=30,
         verbose_name='Класс арматуры',
     )
     length_1 = models.SmallIntegerField(
@@ -111,31 +208,136 @@ class Rod(BaseModel):
         null=True,
         verbose_name='Кол-во, шт',
     )
+    length = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Длина, мм',
+    )
+    mass_of_single_rod = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Масса стержня, кг',
+    )
+    mass_of_rods = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Масса позиции, кг',
+    )
 
-    @property
-    def length(self):
-        lenght = self.quantity_1 * self.length_1
+    def save(self, *args, **kwargs):
+        self.calculate_length()
+        self.calculate_mass_of_single_rod()
+        self.calculate_mass_of_rods()
+        super(Rod, self).save(*args, **kwargs)
+
+    def calculate_length(self):
+        rods_calc = RodsCalc.objects.get(pk=self.rods_calc.pk)
+        length = self.quantity_1 * self.length_1 / rods_calc.measurement_scale
         if self.length_2:
-            lenght += self.quantity_2 * self.length_2
+            length += self.quantity_2 * self.length_2 / rods_calc.measurement_scale
         if self.length_3:
-            lenght += self.quantity_3 * self.length_3
+            length += self.quantity_3 * self.length_3 / rods_calc.measurement_scale
         if self.length_4:
-            lenght += self.quantity_4 * self.length_4
+            length += self.quantity_4 * self.length_4 / rods_calc.measurement_scale
+        self.length = round(length, 3)
 
-        return round(lenght, 1)
+    def calculate_mass_of_single_rod(self):
+        self.mass_of_single_rod = round(
+            self.MASS_OF_METER.get(self.diameter) * self.length / self.MM_IN_M,
+            2)
 
-    def mass_of_single_rod(self):
-        """Mass of single rod as mass of meter multiplied by length.
-        """
-        return round(MASS_OF_METER.get(self.diameter) * self.length / MM_IN_M,
-                     2)
-
-    def mass_of_rods(self):
-        """Mass of rods as mass of single rod multiplied by quantity.
-        """
-        return round(self.mass_of_single_rod() * self.quantity, 2)
+    def calculate_mass_of_rods(self):
+        self.mass_of_rods = round(self.mass_of_single_rod * self.quantity, 3)
 
     class Meta:
         verbose_name = 'Стержень'
         verbose_name_plural = 'Стержни'
         ordering = ('title',)
+
+
+class VolumesCalc(CalcModel):
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name='volumes_calcs',
+        verbose_name='Элемент',
+    )
+
+    class Meta:
+        verbose_name = 'Расчет объема'
+        verbose_name_plural = 'Расчеты объемов'
+
+
+class Volume(PartModel):
+    volumes_calc = models.ForeignKey(
+        VolumesCalc,
+        on_delete=models.CASCADE,
+        related_name='volumes',
+        verbose_name='Расчет объема',
+    )
+
+
+class SquaresCalc(CalcModel):
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name='squares_calcs',
+        verbose_name='Элемент',
+    )
+
+    class Meta:
+        verbose_name = 'Расчет площади'
+        verbose_name_plural = 'Расчеты площадей'
+
+
+class Square(PartModel):
+    squares_calc = models.ForeignKey(
+        SquaresCalc,
+        on_delete=models.CASCADE,
+        related_name='squares',
+        verbose_name='Расчет площади',
+    )
+
+
+class LengthsCalc(CalcModel):
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name='lengths_calcs',
+        verbose_name='Элемент',
+    )
+
+    class Meta:
+        verbose_name = 'Расчет длины'
+        verbose_name_plural = 'Расчеты длин'
+
+
+class Length(PartModel):
+    lengths_calc = models.ForeignKey(
+        LengthsCalc,
+        on_delete=models.CASCADE,
+        related_name='lengths',
+        verbose_name='Расчет длины',
+    )
+
+
+class UnitsCalc(CalcModel):
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name='units_calcs',
+        verbose_name='Элемент',
+    )
+
+    class Meta:
+        verbose_name = 'Расчет единиц'
+        verbose_name_plural = 'Расчеты единиц'
+
+
+class Unit(PartModel):
+    units_calc = models.ForeignKey(
+        UnitsCalc,
+        on_delete=models.CASCADE,
+        related_name='units',
+        verbose_name='Расчет единиц',
+    )

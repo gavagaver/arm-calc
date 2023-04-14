@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Армирование  {{ element.title }}
+{% endblock %}
+
+{% block content %}
+  <!-- Sidebar -->
+  {% include 'includes/sidebar.html' %}
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+          <!-- Topbar -->
+          {% include 'includes/topbar.html' %}
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+
+              <form enctype="multipart/form-data" class="" method="post" id="product_form">
+    {% csrf_token %}
+    <!-- element form start -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h1 class="m-0 font-weight-bold text-primary">Армирование</h1>
+        </div>
+        {% for field in form %}
+            <div class="form-group card-body border-0">
+                <label>{{field.label}}</label>
+                {% if field.field.required %}
+                    <span style="color: red;" class="required">*</span>
+                {% endif %}
+
+                {{field}}
+                {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <!-- element form end  -->
+
+    <!-- inline form for Rod start -->
+    {% with named_formsets.rods as formset %}
+        {{ formset.management_form }}
+        <script type="text/html" id="rods-template">  // id="inlineformsetname-template"
+            // id='inlineformsetname-__prefix__'
+            <tr id="rods-__prefix__" class= hide_all>
+                {% for fields in formset.empty_form.hidden_fields %}
+                    {{ fields }}
+                {% endfor %}
+
+                {% for fields in formset.empty_form.visible_fields %}
+                    <td>{{fields}}</td>
+                {% endfor %}
+            </tr>
+        </script>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h4 class="m-0 font-weight-bold text-primary">Стержни</h4>
+            </div>
+            <table class="table card-header">
+                <thead class="text-secondary">
+                    <th>Название позиции<span style="color: red;" class="required">*</span></th>
+                    <th>Диаметр, мм <span style="color: red;" class="required">*</span></th>
+                    <th>Класс арматуры<span style="color: red;" class="required">*</span></th>
+                    <th>Длина 1 уч., мм <span style="color: red;" class="required">*</span></th>
+                    <th>Кол-во 1 уч., шт <span style="color: red;" class="required">*</span></th>
+                    <th>Длина 2 уч., мм </th>
+                    <th>Кол-во 2 уч., шт </th>
+                    <th>Длина 3 уч., мм </th>
+                    <th>Кол-во 3 уч., шт </th>
+                    <th>Длина 4 уч., мм </th>
+                    <th>Кол-во 4 уч., шт </th>
+                    <th>Кол-во стержней, шт <span style="color: red;" class="required">*</span></th>
+                </thead>
+                <tbody id="item-rods">
+                    <!-- formset non forms errors -->
+                    {% for error in formset.non_form_errors %}
+                        <span style="color: red">{{ error }}</span>
+                    {% endfor %}
+                    {% for formss in formset %}
+                        {{ formss.management_form }}
+                        <tr id="rods-{{ forloop.counter0 }}" class= hide_all>  <!-- id="inlineformsetname-counter" -->
+                            {{ formss.id }}
+                            {% for field in formss.visible_fields %}
+                                <td>
+                                    {{field}}
+                                    {% for error in field.errors %}
+                                        <span style="color: red">{{ error }}</span>
+                                    {% endfor %}
+
+                                    {% comment %} {{ field.DELETE }} {% endcomment %}
+                                </td>
+                            {% endfor %}
+                            {% comment %} for delete {% endcomment %}
+                            {% if formss.instance.pk %}
+                                <td>
+
+                                    <div class="col-auto">
+                                        <a href="{% url 'calc:rod_duplicate' formss.instance.pk %}"
+                                           class="btn btn-warning btn-circle"
+                                           title="Дублировать стержень"
+                                        >
+                                            <i class="fas fa-copy fa-1x text-gray-100"></i>
+                                        </a>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-danger btn-circle ml-4" data-toggle="modal" data-target="#exampleModal{{ formss.instance.pk }}" title="Удалить стержень">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal{{formss.instance.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{formss.instance.pk}}" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel{{formss.instance.pk}}">Вы уверены, что хотите удалить этот элемент?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a href="{% url 'calc:rod_delete' formss.instance.pk %}" type="button" class="btn btn-primary">Да, удалить</a>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="#" id="add-rod-button" class="btn btn-secondary add-rods">Добавить стержень</a>
+        </div>
+
+    {% endwith %}
+    <!-- inline form for Rod end -->
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block">Сохранить армирование</button>
+    </div>
+
+    </form>
+
+              <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+              <script>
+                      $(document).ready(function() {
+                        // when user clicks add more btn of rods
+                          $('.add-rods').click(function(ev) {
+                              ev.preventDefault();
+                              var count = $('#item-rods').children().length;
+                              var tmplMarkup = $('#rods-template').html();
+                              var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+                              $('#item-rods').append(compiledTmpl);
+
+                              // update form count
+                              $('#id_rods-TOTAL_FORMS').attr('value', count+1);
+                          });
+                      });
+                    </script>
+
+          </div>
+          <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'includes/footer.html' %}
+      <!-- End of Footer -->
+
+  </div>
+  <!-- End of Content Wrapper -->
+
+{% endblock %}
