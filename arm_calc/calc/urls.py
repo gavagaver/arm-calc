@@ -1,5 +1,4 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
 from . import views
 
@@ -177,18 +176,18 @@ urlpatterns_rods_calc = [
 ]
 
 urlpatterns = (
-        [
-            path(
-                '',
-                views.LandingView.as_view(),
-                name='landing',
-            ),
-            path(
-                'profile/<str:username>/',
-                views.ProfileView.as_view(),
-                name='profile',
-            ),
-        ]
-        + urlpatterns_objects
-        + urlpatterns_rods_calc
+    [
+        path(
+            '',
+            views.LandingView.as_view(),
+            name='landing',
+        ),
+        path(
+            'profile/<str:username>/',
+            views.ProfileView.as_view(),
+            name='profile',
+        ),
+    ]
+    + urlpatterns_objects
+    + urlpatterns_rods_calc
 )

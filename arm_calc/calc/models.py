@@ -1,7 +1,7 @@
 from django.db import models
 
-from core.models import User, BaseModel, ConstructionModel, CalcModel, \
-    PartModel
+from core.models import (BaseModel, CalcModel, ConstructionModel, PartModel,
+                         User)
 
 
 class Site(BaseModel):
@@ -234,11 +234,14 @@ class Rod(PartModel):
         rods_calc = RodsCalc.objects.get(pk=self.rods_calc.pk)
         length = self.quantity_1 * self.length_1 / rods_calc.measurement_scale
         if self.length_2:
-            length += self.quantity_2 * self.length_2 / rods_calc.measurement_scale
+            length += (self.quantity_2 * self.length_2
+                       / rods_calc.measurement_scale)
         if self.length_3:
-            length += self.quantity_3 * self.length_3 / rods_calc.measurement_scale
+            length += (self.quantity_3 * self.length_3
+                       / rods_calc.measurement_scale)
         if self.length_4:
-            length += self.quantity_4 * self.length_4 / rods_calc.measurement_scale
+            length += (self.quantity_4 * self.length_4
+                       / rods_calc.measurement_scale)
         self.length = round(length, 3)
 
     def calculate_mass_of_single_rod(self):

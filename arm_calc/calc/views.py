@@ -1,16 +1,10 @@
-from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.core.cache import cache
-from django.db.models import Q
-from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.views import View
-from django.views.generic import CreateView, UpdateView, TemplateView, \
-    DeleteView, DetailView, ListView, FormView
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.views.generic import (CreateView, DetailView, ListView,
+                                  TemplateView, UpdateView)
 
-from . import models
-from . import forms
+from . import forms, models
 
 User = get_user_model()
 
@@ -495,8 +489,7 @@ class ElementUpdateView(UpdateView):
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+        return super().get_context_data(**kwargs)
 
     def get_success_url(self):
         folder = self.get_object().folder
@@ -574,7 +567,10 @@ class RodsCalcInline:
 
         for rod_class, total_mass in class_mass_dict.items():
             try:
-                rod_class_object = models.RodClass.objects.get(rods_calc=rods[0].rods_calc, title=rod_class)
+                rod_class_object = models.RodClass.objects.get(
+                    rods_calc=rods[0].rods_calc,
+                    title=rod_class
+                )
                 rod_class_object.total_mass = total_mass
                 rod_class_object.save()
             except Exception:
@@ -603,7 +599,10 @@ class RodsCalcInline:
             ).order_by('-create_date').first()
 
             try:
-                rod_diameter_object = models.RodDiameter.objects.get(rod_class=rod_class, title=diameter)
+                rod_diameter_object = models.RodDiameter.objects.get(
+                    rod_class=rod_class,
+                    title=diameter
+                )
                 rod_diameter_object.total_mass = value
                 rod_diameter_object.save()
             except Exception:
@@ -641,14 +640,13 @@ class RodsCalcCreateView(RodsCalcInline, CreateView):
             return {
                 'rods': forms.RodFormSet(prefix='rods'),
             }
-        else:
-            return {
-                'rods': forms.RodFormSet(
-                    self.request.POST or None,
-                    self.request.FILES or None,
-                    prefix='rods'
-                ),
-            }
+        return {
+            'rods': forms.RodFormSet(
+                self.request.POST or None,
+                self.request.FILES or None,
+                prefix='rods'
+            ),
+        }
 
 
 class RodsCalcUpdateView(RodsCalcInline, UpdateView):
