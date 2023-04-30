@@ -1,6 +1,5 @@
 from core.models import (BaseModel, CalcModel, ConstructionModel, PartModel,
                          User)
-
 from django.db import models
 
 
