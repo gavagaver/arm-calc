@@ -43,8 +43,10 @@ jobs:
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2 
         with:
+          context: ./arm_calc
+          file: ./Dockerfile
           push: true
-          tags: gavagaver/arm_calc:latest
+          tags: gavagaver/arm_calc:latest 
                 
   send_message:
     runs-on: ubuntu-latest
