@@ -57,7 +57,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_KEY }}
+        key: ${{ secrets.KEY_SSH }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
           sudo docker pull gavagaver/arm_calc
