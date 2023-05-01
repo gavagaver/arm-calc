@@ -41,7 +41,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build by docker compose
-        run: docker-compose up -d --build
+        run: |
+          cd infra/
+          docker-compose up -d --build
       - name: Push to Docker Hub
         run: docker push gavagaver/arm_calc
           
