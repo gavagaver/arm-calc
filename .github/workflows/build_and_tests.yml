@@ -44,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v2 
         with:
           context: ./arm_calc
-          file: ./Dockerfile
+          file: ./arm_calc/Dockerfile
           push: true
           tags: gavagaver/arm_calc:latest 
                 
