@@ -25,6 +25,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    'arm-calc.ru',
     '158.160.3.166',
     'localhost',
     '127.0.0.1',
