@@ -30,7 +30,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'arm-calc.ru',
-    '158.160.3.166',
+    '84.201.161.254',
     'localhost',
     '127.0.0.1',
     '[::1]',
