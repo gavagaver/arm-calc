@@ -139,4 +139,4 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'calc:landing'
 LOGOUT_REDIRECT_URL = 'calc:landing'
 
-CSRF_TRUSTED_ORIGINS=["http://84.252.136.76"]
+CSRF_TRUSTED_ORIGINS = ["http://84.252.136.76"]
