@@ -613,7 +613,10 @@ class RodsCalcInline:
                 )
 
         rod_classes = rods_calc.rod_classes.all()
-        rods_calc.total_mass = sum([rc.total_mass for rc in rod_classes])
+        rods_calc.total_mass = round(
+            sum([rc.total_mass for rc in rod_classes]),
+            2,
+        )
         rods_calc.save()
 
         return redirect('calc:rods_calc_update', rods_calc.pk)
