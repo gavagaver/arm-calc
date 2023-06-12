@@ -38,8 +38,20 @@
 <div class="container">
   <div class="row flex-center pt-8 pt-lg-10 pb-lg-9 pb-xl-0">
     <div class="col-md-11 col-lg-8 col-xl-4 pb-7 pb-xl-9 text-center text-xl-start">
-      <h1 class="text-white">Быстрый и удобный<br />подсчет строительных объемов</h1>
-      <p class="lead text-white opacity-75">Считайте вес сложных арматурных каркасов, храните расчеты в облаке <br />и быстро корректируйте объемы в несколько кликов</p><a class="btn btn-outline-light border-2 rounded-pill btn-lg mt-4 fs-0 py-2" href="{% url 'users:signup' %}">Начать работу в Arm-Calc<span class="fas fa-play ms-2" data-fa-transform="shrink-6 down-1"></span></a>
+      <h1 class="text-white">Простой подсчет<br />сложных каркасов</h1>
+      <p class="lead text-white opacity-75">
+        Считайте вес сложных арматурных каркасов, храните расчеты в облаке <br />
+        и корректируйте объемы в несколько кликов
+      </p>
+      {% if user.is_authenticated %}
+        <a class="btn btn-outline-light border-2 rounded-pill btn-lg mt-4 fs-0 py-2" href="{% url 'calc:profile' user.username %}">
+          Начать работу в Arm-Calc<span class="fas fa-play ms-2" data-fa-transform="shrink-6 down-1"></span>
+        </a>
+      {% else %}
+        <a class="btn btn-outline-light border-2 rounded-pill btn-lg mt-4 fs-0 py-2" href="{% url 'users:signup' %}">
+          Начать работу в Arm-Calc<span class="fas fa-play ms-2" data-fa-transform="shrink-6 down-1"></span>
+        </a>
+      {% endif %}
     </div>
     <div class="col-xl-7 offset-xl-1 align-self-end mt-4 mt-xl-0">
 
