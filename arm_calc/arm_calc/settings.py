@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+import sentry_sdk
 from dotenv import load_dotenv
+from sentry_sdk.integrations.django import DjangoIntegration
 
 load_dotenv()
 
@@ -153,3 +155,12 @@ CSRF_TRUSTED_ORIGINS = [
     'https://arm-calc.ru',
     'https://www.arm-calc.ru',
 ]
+
+sentry_sdk.init(
+    dsn="https://520d1037dc244ef395c9567f93177134@o4504957231300608.ingest.sentry.io/4505347344367616",
+    integrations=[
+        DjangoIntegration(),
+    ],
+    traces_sample_rate=1.0,
+    send_default_pii=True,
+)
