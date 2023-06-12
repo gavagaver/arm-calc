@@ -82,12 +82,12 @@ class RodsCalc(CalcModel):
         related_name='rods_calcs',
         verbose_name='Элемент',
     )
-    total_mass = models.SmallIntegerField(
+    total_mass = models.FloatField(
         blank=True,
         null=True,
         verbose_name='Всего, кг',
     )
-    measurement_scale = models.SmallIntegerField(
+    measurement_scale = models.PositiveSmallIntegerField(
         default=1,
         verbose_name='Масштаб измерений',
         help_text='Во сколько раз вводимые значения больше действительных'
@@ -105,7 +105,7 @@ class RodClass(BaseModel):
         related_name='rod_classes',
         verbose_name='Армирование',
     )
-    total_mass = models.SmallIntegerField(
+    total_mass = models.FloatField(
         blank=True,
         null=True,
         verbose_name='Всего, кг',
@@ -119,7 +119,7 @@ class RodDiameter(BaseModel):
         related_name='rod_diameters',
         verbose_name='Класс арматуры',
     )
-    total_mass = models.SmallIntegerField(
+    total_mass = models.FloatField(
         blank=True,
         null=True,
         verbose_name='Всего, кг',
@@ -151,7 +151,7 @@ class Rod(PartModel):
         related_name='rods',
         verbose_name='Армирование',
     )
-    diameter = models.SmallIntegerField(
+    diameter = models.PositiveSmallIntegerField(
         blank=True,
         null=True,
         verbose_name='Диаметр, мм',
@@ -191,33 +191,22 @@ class Rod(PartModel):
         null=True,
         verbose_name='Кол-во 3 уч., шт',
     )
-    length_4 = models.SmallIntegerField(
-        blank=True,
-        null=True,
-        verbose_name='Длина 4 уч., мм',
-    )
-    quantity_4 = models.SmallIntegerField(
-        default=1,
-        blank=True,
-        null=True,
-        verbose_name='Кол-во 4 уч., шт',
-    )
     quantity = models.SmallIntegerField(
         blank=True,
         null=True,
         verbose_name='Кол-во, шт',
     )
-    length = models.SmallIntegerField(
+    length = models.FloatField(
         blank=True,
         null=True,
         verbose_name='Длина, мм',
     )
-    mass_of_single_rod = models.SmallIntegerField(
+    mass_of_single_rod = models.FloatField(
         blank=True,
         null=True,
         verbose_name='Масса стержня, кг',
     )
-    mass_of_rods = models.SmallIntegerField(
+    mass_of_rods = models.FloatField(
         blank=True,
         null=True,
         verbose_name='Масса позиции, кг',
@@ -237,9 +226,6 @@ class Rod(PartModel):
                        / rods_calc.measurement_scale)
         if self.length_3:
             length += (self.quantity_3 * self.length_3
-                       / rods_calc.measurement_scale)
-        if self.length_4:
-            length += (self.quantity_4 * self.length_4
                        / rods_calc.measurement_scale)
         self.length = round(length, 3)
 

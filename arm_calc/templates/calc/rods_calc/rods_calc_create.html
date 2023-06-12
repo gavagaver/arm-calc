@@ -154,8 +154,6 @@
                     <th>Кол-во 2 уч., шт </th>
                     <th>Длина 3 уч., мм </th>
                     <th>Кол-во 3 уч., шт </th>
-                    <th>Длина 4 уч., мм </th>
-                    <th>Кол-во 4 уч., шт </th>
                     <th>Кол-во стержней, шт <span style="color: red;" class="required">*</span></th>
                   </thead>
                   <tbody id="item-rods">
@@ -167,7 +165,7 @@
                       <tr id="rods-{{ forloop.counter0 }}" class="btn-reveal-trigger bg-light hide_all">
                         {{ formss.id }}
                         {% for field in formss.visible_fields %}
-                          <td class="align-middle white-space-nowrap">
+                          <td class="align-middle white-space-nowrap" style="min-width: 150px;">
                             {{ field }}
                             {% for error in field.errors %}
                               <span style="color: red">{{ error }}</span>
