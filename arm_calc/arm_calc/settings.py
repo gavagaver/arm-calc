@@ -28,7 +28,14 @@ SECRET_KEY = 'p&l%385148ksll%385148ksll%385148ksll%385148ksl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '84.252.136.76',
+    'arm-calc.ru',
+    'www.arm-calc.ru',
+    'web',
+]
 
 # Application definition
 
@@ -124,7 +131,6 @@ USE_TZ = True
 
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_URL = '/static/'
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_URL = '/media/'
@@ -139,4 +145,4 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'calc:landing'
 LOGOUT_REDIRECT_URL = 'calc:landing'
 
-CSRF_TRUSTED_ORIGINS = ["http://84.252.136.76"]
+CSRF_TRUSTED_ORIGINS = ['http://84.252.136.76', 'arm-calc.ru', 'www.arm-calc.ru']
