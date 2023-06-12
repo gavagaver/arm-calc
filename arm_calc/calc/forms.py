@@ -27,7 +27,7 @@ class VersionForm(forms.ModelForm):
         model = models.Version
         fields = ['title', ]
         labels = {
-            'title': 'Укажите название версии:',
+            'title': 'Укажите название стадии:',
         }
 
 
