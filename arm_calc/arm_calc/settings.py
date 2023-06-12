@@ -145,4 +145,11 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'calc:landing'
 LOGOUT_REDIRECT_URL = 'calc:landing'
 
-CSRF_TRUSTED_ORIGINS = ['http://84.252.136.76', 'arm-calc.ru', 'www.arm-calc.ru']
+CSRF_TRUSTED_ORIGINS = [
+    'http://84.252.136.76',
+    'http://arm-calc.ru',
+    'http://www.arm-calc.ru',
+    'https://84.252.136.76',
+    'https://arm-calc.ru',
+    'https://www.arm-calc.ru',
+]
