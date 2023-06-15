@@ -2,6 +2,8 @@ from core.models import (BaseModel, CalcModel, ConstructionModel, PartModel,
                          User)
 from django.db import models
 
+from . import calculation_settings
+
 
 class Site(BaseModel):
     engineer = models.ForeignKey(
@@ -127,24 +129,6 @@ class RodDiameter(BaseModel):
 
 
 class Rod(PartModel):
-    MASS_OF_METER = {
-        6: 0.222,
-        8: 0.395,
-        10: 0.617,
-        12: 0.888,
-        14: 1.210,
-        16: 1.580,
-        18: 2.000,
-        20: 2.470,
-        22: 2.980,
-        25: 3.850,
-        28: 4.830,
-        32: 6.310,
-        36: 7.990,
-        40: 9.870,
-    }
-    MM_IN_M = 1000
-
     rods_calc = models.ForeignKey(
         RodsCalc,
         on_delete=models.CASCADE,
@@ -230,8 +214,8 @@ class Rod(PartModel):
         self.length = round(length, 3)
 
     def calculate_mass_of_single_rod(self):
-        self.mass_of_single_rod = (self.MASS_OF_METER.get(self.diameter)
-                                   * self.length / self.MM_IN_M)
+        self.mass_of_single_rod = (calculation_settings.MASS_OF_METER.get(self.diameter)
+                                   * self.length / calculation_settings.MM_IN_M)
 
     def calculate_mass_of_rods(self):
         self.mass_of_rods = round(self.mass_of_single_rod * self.quantity, 3)
