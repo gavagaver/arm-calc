@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 
 import sentry_sdk
+from django.urls import reverse_lazy
 from dotenv import load_dotenv
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -90,7 +91,8 @@ WSGI_APPLICATION = 'arm_calc.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
+        'ENGINE': os.getenv('DB_ENGINE',
+                            default='django.db.backends.postgresql'),
         'NAME': os.getenv('DB_NAME', default='postgres'),
         'USER': os.getenv('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
@@ -144,7 +146,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'calc:landing'
+LOGIN_REDIRECT_URL = reverse_lazy(
+    'calc:profile',
+    kwargs={'username': 'user.username'},
+)
 LOGOUT_REDIRECT_URL = 'calc:landing'
 
 CSRF_TRUSTED_ORIGINS = [
