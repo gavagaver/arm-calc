@@ -1,4 +1,4 @@
-# Arm-Calc.ru - калькулятор армирования
+# Arm-Calc.ru - калькулятор сложного армирования
 [![CI](https://github.com/gavagaver/arm-calc/actions/workflows/build_and_tests.yml/badge.svg?branch=main)](https://github.com/gavagaver/arm-calc/actions/workflows/build_and_tests.yml)
 
 [Arm-Calc.ru](http://arm-calc.ru) - веб-приложение для подсчета веса сложных арматурных каркасов 
