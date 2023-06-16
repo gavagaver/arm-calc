@@ -2,8 +2,8 @@ from django.shortcuts import redirect
 
 from . import models
 
-
 # Site operations
+
 
 def site_duplicate(request, pk):
     site = models.Site.objects.get(pk=pk)
