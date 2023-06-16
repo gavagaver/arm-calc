@@ -13,9 +13,9 @@
         <div class="card">
           <div class="card-body p-4 p-sm-5">
             <div class="fw-black lh-1 text-300 fs-error">403</div>
-            <p class="lead mt-4 text-800 font-sans-serif fw-semi-bold w-md-75 w-xl-100 mx-auto">Что-то пошло не так.</p>
+            <p class="lead mt-4 text-800 font-sans-serif fw-semi-bold w-md-75 w-xl-100 mx-auto">Страница доступна только авторизованным пользователям.</p>
             <hr />
-            <p>Попробуйте обновить страницу позже. Если ошибка остается, <a href="mailto:gav@gaver.ru">напишите нам</a>.</p><a class="btn btn-primary btn-sm mt-3" href="/"><span class="fas fa-home me-2"></span>Вернуться на главную</a>
+            <p>Войдите на сайт, чтобы продолжить. Если ошибка остается, <a href="mailto:gav@gaver.ru">напишите нам</a>.</p><a class="btn btn-primary btn-sm mt-3" href="{% url 'users:login' %}"><span class="fas fa-home me-2"></span>Войти</a>
           </div>
         </div>
       </div>
