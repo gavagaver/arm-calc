@@ -48,4 +48,11 @@ urlpatterns = [
         ),
         name='password_change_done'
     ),
+    path(
+        'privacy-policy/',
+        views.PrivacyPolicyView.as_view(
+            template_name='users/privacy-policy.html',
+        ),
+        name='privacy-policy',
+    ),
 ]

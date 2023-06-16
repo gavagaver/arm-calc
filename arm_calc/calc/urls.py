@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import views, views_operations
 
 app_name = 'calc'
 
@@ -22,12 +22,12 @@ urlpatterns_objects = [
     ),
     path(
         'site/<int:pk>/duplicate/',
-        views.site_duplicate,
+        views_operations.site_duplicate,
         name='site_duplicate',
     ),
     path(
         'site/<int:pk>/delete/',
-        views.site_delete,
+        views_operations.site_delete,
         name='site_delete',
     ),
 
@@ -48,12 +48,12 @@ urlpatterns_objects = [
     ),
     path(
         'construction/<int:pk>/duplicate/',
-        views.construction_duplicate,
+        views_operations.construction_duplicate,
         name='construction_duplicate',
     ),
     path(
         'construction/<int:pk>/delete/',
-        views.construction_delete,
+        views_operations.construction_delete,
         name='construction_delete',
     ),
 
@@ -74,12 +74,12 @@ urlpatterns_objects = [
     ),
     path(
         'version/<int:pk>/duplicate/',
-        views.version_duplicate,
+        views_operations.version_duplicate,
         name='version_duplicate',
     ),
     path(
         'version/<int:pk>/delete/',
-        views.version_delete,
+        views_operations.version_delete,
         name='version_delete',
     ),
 
@@ -100,12 +100,12 @@ urlpatterns_objects = [
     ),
     path(
         'folder/<int:pk>/duplicate/',
-        views.folder_duplicate,
+        views_operations.folder_duplicate,
         name='folder_duplicate',
     ),
     path(
         'folder/<int:pk>/delete/',
-        views.folder_delete,
+        views_operations.folder_delete,
         name='folder_delete',
     ),
 
@@ -126,12 +126,12 @@ urlpatterns_objects = [
     ),
     path(
         'element/<int:pk>/duplicate/',
-        views.element_duplicate,
+        views_operations.element_duplicate,
         name='element_duplicate',
     ),
     path(
         'element/<int:pk>/delete/',
-        views.element_delete,
+        views_operations.element_delete,
         name='element_delete',
     ),
 ]
@@ -149,12 +149,12 @@ urlpatterns_rods_calc = [
     ),
     path(
         'rods_calc/<int:pk>/duplicate/',
-        views.rods_calc_duplicate,
+        views_operations.rods_calc_duplicate,
         name='rods_calc_duplicate',
     ),
     path(
         'rods_calc/<int:pk>/delete/',
-        views.rods_calc_delete,
+        views_operations.rods_calc_delete,
         name='rods_calc_delete',
     ),
     path(
@@ -165,12 +165,12 @@ urlpatterns_rods_calc = [
 
     path(
         'rod/<int:pk>/duplicate/',
-        views.rod_duplicate,
+        views_operations.rod_duplicate,
         name='rod_duplicate',
     ),
     path(
         'rod/<int:pk>/delete/',
-        views.rod_delete,
+        views_operations.rod_delete,
         name='rod_delete',
     ),
 ]
