@@ -146,36 +146,36 @@ class Rod(PartModel):
         max_length=30,
         verbose_name='Класс арматуры',
     )
-    length_1 = models.SmallIntegerField(
+    length_1 = models.PositiveIntegerField(
         verbose_name='Длина 1 уч., мм',
     )
-    quantity_1 = models.SmallIntegerField(
+    quantity_1 = models.PositiveIntegerField(
         default=1,
         verbose_name='Кол-во 1 уч., шт',
     )
-    length_2 = models.SmallIntegerField(
+    length_2 = models.PositiveIntegerField(
         blank=True,
         null=True,
         verbose_name='Длина 2 уч., мм',
     )
-    quantity_2 = models.SmallIntegerField(
+    quantity_2 = models.PositiveIntegerField(
         default=1,
         blank=True,
         null=True,
         verbose_name='Кол-во 2 уч., шт',
     )
-    length_3 = models.SmallIntegerField(
+    length_3 = models.PositiveIntegerField(
         blank=True,
         null=True,
         verbose_name='Длина 3 уч., мм',
     )
-    quantity_3 = models.SmallIntegerField(
+    quantity_3 = models.PositiveIntegerField(
         default=1,
         blank=True,
         null=True,
         verbose_name='Кол-во 3 уч., шт',
     )
-    quantity = models.SmallIntegerField(
+    quantity = models.PositiveIntegerField(
         blank=True,
         null=True,
         verbose_name='Кол-во, шт',
