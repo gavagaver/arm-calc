@@ -132,4 +132,4 @@ dmypy.json
 .idea
 
 /arm_calc/staticfiles/
-/static/
+static/
