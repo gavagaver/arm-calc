@@ -13,3 +13,7 @@ class SignUp(CreateView):
 
 class PasswordChangeDone(TemplateView):
     template_name = 'users/password_change'
+
+
+class PrivacyPolicyView(TemplateView):
+    template_name = 'users/privacy-policy.html'
