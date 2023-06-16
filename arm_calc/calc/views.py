@@ -33,11 +33,6 @@ class SiteDetailView(DetailView):
         site_id = self.kwargs.get('pk')
         context['constructions'] = models.Construction.objects.filter(
             site=site_id)
-        context['dropdown_actions'] = {
-            'Редактировать': reverse('calc:site_update',
-                                     args=[self.object.pk]),
-            'Удалить': reverse('calc:site_delete', args=[self.object.pk]),
-        }
         return context
 
 
@@ -196,7 +191,6 @@ class VersionUpdateView(UpdateView):
         return reverse('calc:construction_detail', args=[construction.pk])
 
 
-
 class FolderDetailView(DetailView):
     template_name = 'calc/folder/folder_detail.html'
     model = models.Folder
@@ -254,7 +248,6 @@ class FolderUpdateView(UpdateView):
         return reverse('calc:version_detail', args=[version.pk])
 
 
-
 class ElementDetailView(DetailView):
     template_name = 'calc/element/element_detail.html'
     model = models.Element
@@ -309,7 +302,6 @@ class ElementUpdateView(UpdateView):
     def get_success_url(self):
         folder = self.get_object().folder
         return reverse('calc:folder_detail', args=[folder.pk])
-
 
 
 class RodsCalcInline:
@@ -461,7 +453,6 @@ class RodsCalcUpdateView(RodsCalcInline, UpdateView):
                 prefix='rods'
             ),
         }
-
 
 
 class RodsCalcResultView(DetailView):
