@@ -402,8 +402,6 @@ class RodsCalcInline:
 
     def formset_rods_valid(self, formset):
         rods = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
         for rod in rods:
             rod.rods_calc = self.object
             rod.save()
