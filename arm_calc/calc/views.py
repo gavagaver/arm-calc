@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views.generic import (CreateView, DetailView, ListView,
                                   TemplateView, UpdateView)
 
-from . import forms, models
+from . import forms, models, calculation_settings
 
 User = get_user_model()
 
@@ -378,9 +378,12 @@ class RodsCalcInline:
 
     def form_valid(self, form):
         named_formsets = self.get_named_formsets()
+
+        # formset validation. If not successful, then render the formset again
         if not all((x.is_valid() for x in named_formsets.values())):
             return self.render_to_response(self.get_context_data(form=form))
 
+        # set rods_calc to which element it belongs
         rods_calc = form.save(commit=False)
         try:
             element_pk = self.kwargs['element_pk']
@@ -391,6 +394,7 @@ class RodsCalcInline:
         rods_calc.save()
         self.object = form.save()
 
+        # find specific save function for every formset or save
         for name, formset in named_formsets.items():
             formset_save_func = getattr(self, f'formset_{name}_valid', None)
             if formset_save_func is not None:
@@ -398,8 +402,10 @@ class RodsCalcInline:
             else:
                 formset.save()
 
+        # calculate the rods_calc
         rods = models.Rod.objects.filter(rods_calc=rods_calc)
 
+        # calculate the mass of the reinforcement of each class
         class_mass_dict = {}
 
         for rod in rods:
@@ -411,6 +417,7 @@ class RodsCalcInline:
             else:
                 class_mass_dict[rod_class] += mass_of_rods
 
+        # save the mass of the reinforcement of each class in database
         for rod_class, total_mass in class_mass_dict.items():
             try:
                 rod_class_object = models.RodClass.objects.get(
@@ -420,10 +427,13 @@ class RodsCalcInline:
                 rod_class_object.total_mass = total_mass
                 rod_class_object.save()
             except Exception:
-                models.RodClass.objects.create(rods_calc=rods[0].rods_calc,
-                                               title=rod_class,
-                                               total_mass=total_mass)
+                models.RodClass.objects.create(
+                    rods_calc=rods[0].rods_calc,
+                    title=rod_class,
+                    total_mass=total_mass,
+                )
 
+        # calculate the mass of the reinforcement of each diameter and class
         diameter_class_mass_dict = {}
 
         for rod in rods:
@@ -437,6 +447,7 @@ class RodsCalcInline:
             else:
                 diameter_class_mass_dict[(diameter, rod_class)] += mass_of_rods
 
+        # save the mass of the reinforcement of each class in database
         for key, value in diameter_class_mass_dict.items():
             diameter, rod_class_title = key
             rod_class = models.RodClass.objects.filter(
@@ -458,10 +469,11 @@ class RodsCalcInline:
                     total_mass=value
                 )
 
+        # calculate total mass of rods_calc and save
         rod_classes = rods_calc.rod_classes.all()
         rods_calc.total_mass = round(
             sum([rc.total_mass for rc in rod_classes]),
-            2,
+            calculation_settings.NUM_OF_DECIMALS,
         )
         rods_calc.save()
 
@@ -475,6 +487,10 @@ class RodsCalcInline:
 
 
 class RodsCalcCreateView(RodsCalcInline, CreateView):
+    """
+    A view that renders the rods_calc create page template
+    and handles the creation of a new rods_calc.
+    """
     def get_context_data(self, **kwargs):
         context = super(RodsCalcCreateView, self).get_context_data(**kwargs)
         context['named_formsets'] = self.get_named_formsets()
@@ -497,7 +513,10 @@ class RodsCalcCreateView(RodsCalcInline, CreateView):
 
 
 class RodsCalcUpdateView(RodsCalcInline, UpdateView):
-
+    """
+    A view that renders the rods_calc update page template
+    and handles the updating of an existing rods_calc.
+    """
     def get_context_data(self, **kwargs):
         context = super(RodsCalcUpdateView, self).get_context_data(**kwargs)
         context['named_formsets'] = self.get_named_formsets()
@@ -521,6 +540,9 @@ class RodsCalcUpdateView(RodsCalcInline, UpdateView):
 
 
 class RodsCalcResultView(DetailView):
+    """
+    A view that renders the results page of rods_calc.
+    """
     template_name = 'calc/rods_calc/rods_calc_result.html'
     model = models.RodsCalc
     context_object_name = 'rods_calc'
