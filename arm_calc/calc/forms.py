@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from . import models, calculation_settings
+from . import calculation_settings, models
 
 
 class SiteForm(forms.ModelForm):

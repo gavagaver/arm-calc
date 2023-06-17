@@ -251,8 +251,8 @@ class Rod(PartModel):
         based on its length and diameter.
         """
         self.mass_of_single_rod = (
-                calc.MASS_OF_METER.get(self.diameter)
-                * self.length / calc.MM_IN_M
+            calc.MASS_OF_METER.get(self.diameter)
+            * self.length / calc.MM_IN_M
         )
 
     def calculate_mass_of_rods(self):

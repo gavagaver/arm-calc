@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views.generic import (CreateView, DetailView, ListView,
                                   TemplateView, UpdateView)
 
-from . import forms, models, calculation_settings
+from . import calculation_settings, forms, models
 
 User = get_user_model()
 
