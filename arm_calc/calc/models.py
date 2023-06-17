@@ -2,10 +2,14 @@ from core.models import (BaseModel, CalcModel, ConstructionModel, PartModel,
                          User)
 from django.db import models
 
-from . import calculation_settings
+from . import calculation_settings as calc
 
 
 class Site(BaseModel):
+    """
+    Model for representing a site.
+    A site is a project that contains constructions.
+    """
     engineer = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -19,6 +23,9 @@ class Site(BaseModel):
 
 
 class Construction(ConstructionModel):
+    """
+    Model for representing a construction, which belongs to a site.
+    """
     site = models.ForeignKey(
         Site,
         on_delete=models.CASCADE,
@@ -33,6 +40,9 @@ class Construction(ConstructionModel):
 
 
 class Version(BaseModel):
+    """
+    Model for representing a version of a construction.
+    """
     construction = models.ForeignKey(
         Construction,
         on_delete=models.CASCADE,
@@ -46,6 +56,9 @@ class Version(BaseModel):
 
 
 class Folder(BaseModel):
+    """
+    Model for representing a folder containing elements within a version.
+    """
     version = models.ForeignKey(
         Version,
         on_delete=models.CASCADE,
@@ -59,6 +72,9 @@ class Folder(BaseModel):
 
 
 class Element(BaseModel):
+    """
+    Model for representing an element, which belongs to a folder.
+    """
     folder = models.ForeignKey(
         Folder,
         on_delete=models.CASCADE,
@@ -78,6 +94,9 @@ class Element(BaseModel):
 
 
 class RodsCalc(CalcModel):
+    """
+    Model for representing a calculation of reinforcement for an element.
+    """
     element = models.ForeignKey(
         Element,
         on_delete=models.CASCADE,
@@ -101,6 +120,9 @@ class RodsCalc(CalcModel):
 
 
 class RodClass(BaseModel):
+    """
+    Model for representing a class of reinforcement for a calculation.
+    """
     rods_calc = models.ForeignKey(
         RodsCalc,
         on_delete=models.CASCADE,
@@ -115,6 +137,9 @@ class RodClass(BaseModel):
 
 
 class RodDiameter(BaseModel):
+    """
+    Model for representing a diameter of reinforcement rod.
+    """
     rod_class = models.ForeignKey(
         RodClass,
         on_delete=models.CASCADE,
@@ -129,6 +154,9 @@ class RodDiameter(BaseModel):
 
 
 class Rod(PartModel):
+    """
+    Model for representing a single reinforcement rod.
+    """
     rods_calc = models.ForeignKey(
         RodsCalc,
         on_delete=models.CASCADE,
@@ -203,6 +231,10 @@ class Rod(PartModel):
         super(Rod, self).save(*args, **kwargs)
 
     def calculate_length(self):
+        """
+        Calculates the length of the reinforcement rod
+        based on lengths and quantities of different sections.
+        """
         rods_calc = RodsCalc.objects.get(pk=self.rods_calc.pk)
         length = self.quantity_1 * self.length_1 / rods_calc.measurement_scale
         if self.length_2:
@@ -211,16 +243,27 @@ class Rod(PartModel):
         if self.length_3:
             length += (self.quantity_3 * self.length_3
                        / rods_calc.measurement_scale)
-        self.length = round(length, 3)
+        self.length = round(length, calc.NUM_OF_DECIMALS)
 
     def calculate_mass_of_single_rod(self):
+        """
+        Calculates the mass of a single reinforcement rod
+        based on its length and diameter.
+        """
         self.mass_of_single_rod = (
-            calculation_settings.MASS_OF_METER.get(self.diameter)
-            * self.length / calculation_settings.MM_IN_M
+                calc.MASS_OF_METER.get(self.diameter)
+                * self.length / calc.MM_IN_M
         )
 
     def calculate_mass_of_rods(self):
-        self.mass_of_rods = round(self.mass_of_single_rod * self.quantity, 3)
+        """
+        Calculates the total mass of the reinforcement rods
+        based on the mass of a single rod and its quantity.
+        """
+        self.mass_of_rods = round(
+            self.mass_of_single_rod * self.quantity,
+            calc.NUM_OF_DECIMALS,
+        )
 
     class Meta:
         verbose_name = 'Стержень'
