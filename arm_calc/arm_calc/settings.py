@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', default='p&l%385148ksll%385148ksll%385148ksll%385148ksl')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 1
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
