@@ -10,10 +10,17 @@ User = get_user_model()
 
 
 class LandingView(TemplateView):
+    """
+    A view that renders the landing page template.
+    """
     template_name = 'calc/landing.html'
 
 
 class ProfileView(ListView):
+    """
+    A view that renders the profile page template and displays a list of sites
+    associated with the logged-in engineer.
+    """
     template_name = 'calc/profile.html'
     model = models.Site
     context_object_name = 'sites'
@@ -24,6 +31,10 @@ class ProfileView(ListView):
 
 
 class SiteDetailView(DetailView):
+    """
+    A view that renders the site detail page template and displays information
+    about a specific site.
+    """
     template_name = 'calc/site/site_detail.html'
     model = models.Site
     context_object_name = 'site'
@@ -37,6 +48,10 @@ class SiteDetailView(DetailView):
 
 
 class SiteCreateView(CreateView):
+    """
+    A view that renders the site create page template
+    and handles the creation of a new site.
+    """
     template_name = 'calc/site/site_create.html'
     Model = models.Site
     form_class = forms.SiteForm
@@ -54,6 +69,10 @@ class SiteCreateView(CreateView):
 
 
 class SiteUpdateView(UpdateView):
+    """
+    A view that renders the site update page template
+    and handles the updating of an existing site.
+    """
     template_name = 'calc/site/site_create.html'
     model = models.Site
     form_class = forms.SiteForm
@@ -77,6 +96,10 @@ class SiteUpdateView(UpdateView):
 
 
 class ConstructionDetailView(DetailView):
+    """
+    A view that renders the construction detail page template
+    and displays information about a specific construction.
+    """
     template_name = 'calc/construction/construction_detail.html'
     model = models.Construction
     context_object_name = 'construction'
@@ -90,6 +113,10 @@ class ConstructionDetailView(DetailView):
 
 
 class ConstructionCreateView(CreateView):
+    """
+    A view that renders the construction create page template
+    and handles the creation of a new construction.
+    """
     template_name = 'calc/construction/construction_create.html'
     model = models.Construction
     form_class = forms.ConstructionForm
@@ -112,6 +139,10 @@ class ConstructionCreateView(CreateView):
 
 
 class ConstructionUpdateView(UpdateView):
+    """
+    A view that renders the construction update page template
+    and handles the updating of an existing construction.
+    """
     template_name = 'calc/construction/construction_create.html'
     model = models.Construction
     form_class = forms.ConstructionForm
@@ -135,6 +166,10 @@ class ConstructionUpdateView(UpdateView):
 
 
 class VersionDetailView(DetailView):
+    """
+    A view that renders the version detail page template and displays
+    information about a specific version.
+    """
     template_name = 'calc/version/version_detail.html'
     model = models.Version
     context_object_name = 'version'
@@ -148,6 +183,10 @@ class VersionDetailView(DetailView):
 
 
 class VersionCreateView(CreateView):
+    """
+    A view that renders the version create page template
+    and handles the creation of a new version.
+    """
     template_name = 'calc/version/version_create.html'
     model = models.Version
     form_class = forms.VersionForm
@@ -169,6 +208,10 @@ class VersionCreateView(CreateView):
 
 
 class VersionUpdateView(UpdateView):
+    """
+    A view that renders the version update page template
+    and handles the updating of an existing version.
+    """
     template_name = 'calc/version/version_create.html'
     model = models.Version
     form_class = forms.VersionForm
@@ -192,6 +235,10 @@ class VersionUpdateView(UpdateView):
 
 
 class FolderDetailView(DetailView):
+    """
+    A view that renders the folder detail page template and displays
+    information about a specific folder.
+    """
     template_name = 'calc/folder/folder_detail.html'
     model = models.Folder
     context_object_name = 'folder'
@@ -205,6 +252,10 @@ class FolderDetailView(DetailView):
 
 
 class FolderCreateView(CreateView):
+    """
+    A view that renders the folder create page template
+    and handles the creation of a new folder.
+    """
     template_name = 'calc/folder/folder_create.html'
     model = models.Folder
     form_class = forms.FolderForm
@@ -226,6 +277,10 @@ class FolderCreateView(CreateView):
 
 
 class FolderUpdateView(UpdateView):
+    """
+    A view that renders the folder update page template
+    and handles the updating of an existing folder.
+    """
     template_name = 'calc/folder/folder_create.html'
     model = models.Folder
     form_class = forms.FolderForm
@@ -249,6 +304,10 @@ class FolderUpdateView(UpdateView):
 
 
 class ElementDetailView(DetailView):
+    """
+    A view that renders the element detail page template and displays
+    information about a specific element.
+    """
     template_name = 'calc/element/element_detail.html'
     model = models.Element
     context_object_name = 'element'
@@ -262,6 +321,10 @@ class ElementDetailView(DetailView):
 
 
 class ElementCreateView(CreateView):
+    """
+    A view that renders the element create page template
+    and handles the creation of a new element.
+    """
     template_name = 'calc/element/element_create.html'
     model = models.Element
     form_class = forms.ElementForm
@@ -285,6 +348,10 @@ class ElementCreateView(CreateView):
 
 
 class ElementUpdateView(UpdateView):
+    """
+    A view that renders the element update page template
+    and handles the updating of an existing element.
+    """
     template_name = 'calc/element/element_create.html'
     model = models.Element
     form_class = forms.ElementForm
