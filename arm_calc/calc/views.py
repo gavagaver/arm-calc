@@ -4,16 +4,23 @@ from django.urls import reverse
 from django.views.generic import (CreateView, DetailView, ListView,
                                   TemplateView, UpdateView)
 
-from . import forms, models
+from . import calculation_settings, forms, models
 
 User = get_user_model()
 
 
 class LandingView(TemplateView):
+    """
+    A view that renders the landing page template.
+    """
     template_name = 'calc/landing.html'
 
 
 class ProfileView(ListView):
+    """
+    A view that renders the profile page template and displays a list of sites
+    associated with the logged-in engineer.
+    """
     template_name = 'calc/profile.html'
     model = models.Site
     context_object_name = 'sites'
@@ -24,6 +31,10 @@ class ProfileView(ListView):
 
 
 class SiteDetailView(DetailView):
+    """
+    A view that renders the site detail page template and displays information
+    about a specific site.
+    """
     template_name = 'calc/site/site_detail.html'
     model = models.Site
     context_object_name = 'site'
@@ -37,6 +48,10 @@ class SiteDetailView(DetailView):
 
 
 class SiteCreateView(CreateView):
+    """
+    A view that renders the site create page template
+    and handles the creation of a new site.
+    """
     template_name = 'calc/site/site_create.html'
     Model = models.Site
     form_class = forms.SiteForm
@@ -54,6 +69,10 @@ class SiteCreateView(CreateView):
 
 
 class SiteUpdateView(UpdateView):
+    """
+    A view that renders the site update page template
+    and handles the updating of an existing site.
+    """
     template_name = 'calc/site/site_create.html'
     model = models.Site
     form_class = forms.SiteForm
@@ -77,6 +96,10 @@ class SiteUpdateView(UpdateView):
 
 
 class ConstructionDetailView(DetailView):
+    """
+    A view that renders the construction detail page template
+    and displays information about a specific construction.
+    """
     template_name = 'calc/construction/construction_detail.html'
     model = models.Construction
     context_object_name = 'construction'
@@ -90,6 +113,10 @@ class ConstructionDetailView(DetailView):
 
 
 class ConstructionCreateView(CreateView):
+    """
+    A view that renders the construction create page template
+    and handles the creation of a new construction.
+    """
     template_name = 'calc/construction/construction_create.html'
     model = models.Construction
     form_class = forms.ConstructionForm
@@ -112,6 +139,10 @@ class ConstructionCreateView(CreateView):
 
 
 class ConstructionUpdateView(UpdateView):
+    """
+    A view that renders the construction update page template
+    and handles the updating of an existing construction.
+    """
     template_name = 'calc/construction/construction_create.html'
     model = models.Construction
     form_class = forms.ConstructionForm
@@ -135,6 +166,10 @@ class ConstructionUpdateView(UpdateView):
 
 
 class VersionDetailView(DetailView):
+    """
+    A view that renders the version detail page template and displays
+    information about a specific version.
+    """
     template_name = 'calc/version/version_detail.html'
     model = models.Version
     context_object_name = 'version'
@@ -148,6 +183,10 @@ class VersionDetailView(DetailView):
 
 
 class VersionCreateView(CreateView):
+    """
+    A view that renders the version create page template
+    and handles the creation of a new version.
+    """
     template_name = 'calc/version/version_create.html'
     model = models.Version
     form_class = forms.VersionForm
@@ -169,6 +208,10 @@ class VersionCreateView(CreateView):
 
 
 class VersionUpdateView(UpdateView):
+    """
+    A view that renders the version update page template
+    and handles the updating of an existing version.
+    """
     template_name = 'calc/version/version_create.html'
     model = models.Version
     form_class = forms.VersionForm
@@ -192,6 +235,10 @@ class VersionUpdateView(UpdateView):
 
 
 class FolderDetailView(DetailView):
+    """
+    A view that renders the folder detail page template and displays
+    information about a specific folder.
+    """
     template_name = 'calc/folder/folder_detail.html'
     model = models.Folder
     context_object_name = 'folder'
@@ -205,6 +252,10 @@ class FolderDetailView(DetailView):
 
 
 class FolderCreateView(CreateView):
+    """
+    A view that renders the folder create page template
+    and handles the creation of a new folder.
+    """
     template_name = 'calc/folder/folder_create.html'
     model = models.Folder
     form_class = forms.FolderForm
@@ -226,6 +277,10 @@ class FolderCreateView(CreateView):
 
 
 class FolderUpdateView(UpdateView):
+    """
+    A view that renders the folder update page template
+    and handles the updating of an existing folder.
+    """
     template_name = 'calc/folder/folder_create.html'
     model = models.Folder
     form_class = forms.FolderForm
@@ -249,6 +304,10 @@ class FolderUpdateView(UpdateView):
 
 
 class ElementDetailView(DetailView):
+    """
+    A view that renders the element detail page template and displays
+    information about a specific element.
+    """
     template_name = 'calc/element/element_detail.html'
     model = models.Element
     context_object_name = 'element'
@@ -262,6 +321,10 @@ class ElementDetailView(DetailView):
 
 
 class ElementCreateView(CreateView):
+    """
+    A view that renders the element create page template
+    and handles the creation of a new element.
+    """
     template_name = 'calc/element/element_create.html'
     model = models.Element
     form_class = forms.ElementForm
@@ -285,6 +348,10 @@ class ElementCreateView(CreateView):
 
 
 class ElementUpdateView(UpdateView):
+    """
+    A view that renders the element update page template
+    and handles the updating of an existing element.
+    """
     template_name = 'calc/element/element_create.html'
     model = models.Element
     form_class = forms.ElementForm
@@ -311,9 +378,12 @@ class RodsCalcInline:
 
     def form_valid(self, form):
         named_formsets = self.get_named_formsets()
+
+        # formset validation. If not successful, then render the formset again
         if not all((x.is_valid() for x in named_formsets.values())):
             return self.render_to_response(self.get_context_data(form=form))
 
+        # set rods_calc to which element it belongs
         rods_calc = form.save(commit=False)
         try:
             element_pk = self.kwargs['element_pk']
@@ -324,6 +394,7 @@ class RodsCalcInline:
         rods_calc.save()
         self.object = form.save()
 
+        # find specific save function for every formset or save
         for name, formset in named_formsets.items():
             formset_save_func = getattr(self, f'formset_{name}_valid', None)
             if formset_save_func is not None:
@@ -331,8 +402,10 @@ class RodsCalcInline:
             else:
                 formset.save()
 
+        # calculate the rods_calc
         rods = models.Rod.objects.filter(rods_calc=rods_calc)
 
+        # calculate the mass of the reinforcement of each class
         class_mass_dict = {}
 
         for rod in rods:
@@ -344,6 +417,7 @@ class RodsCalcInline:
             else:
                 class_mass_dict[rod_class] += mass_of_rods
 
+        # save the mass of the reinforcement of each class in database
         for rod_class, total_mass in class_mass_dict.items():
             try:
                 rod_class_object = models.RodClass.objects.get(
@@ -353,10 +427,13 @@ class RodsCalcInline:
                 rod_class_object.total_mass = total_mass
                 rod_class_object.save()
             except Exception:
-                models.RodClass.objects.create(rods_calc=rods[0].rods_calc,
-                                               title=rod_class,
-                                               total_mass=total_mass)
+                models.RodClass.objects.create(
+                    rods_calc=rods[0].rods_calc,
+                    title=rod_class,
+                    total_mass=total_mass,
+                )
 
+        # calculate the mass of the reinforcement of each diameter and class
         diameter_class_mass_dict = {}
 
         for rod in rods:
@@ -370,6 +447,7 @@ class RodsCalcInline:
             else:
                 diameter_class_mass_dict[(diameter, rod_class)] += mass_of_rods
 
+        # save the mass of the reinforcement of each class in database
         for key, value in diameter_class_mass_dict.items():
             diameter, rod_class_title = key
             rod_class = models.RodClass.objects.filter(
@@ -391,10 +469,11 @@ class RodsCalcInline:
                     total_mass=value
                 )
 
+        # calculate total mass of rods_calc and save
         rod_classes = rods_calc.rod_classes.all()
         rods_calc.total_mass = round(
             sum([rc.total_mass for rc in rod_classes]),
-            2,
+            calculation_settings.NUM_OF_DECIMALS,
         )
         rods_calc.save()
 
@@ -408,6 +487,10 @@ class RodsCalcInline:
 
 
 class RodsCalcCreateView(RodsCalcInline, CreateView):
+    """
+    A view that renders the rods_calc create page template
+    and handles the creation of a new rods_calc.
+    """
     def get_context_data(self, **kwargs):
         context = super(RodsCalcCreateView, self).get_context_data(**kwargs)
         context['named_formsets'] = self.get_named_formsets()
@@ -430,7 +513,10 @@ class RodsCalcCreateView(RodsCalcInline, CreateView):
 
 
 class RodsCalcUpdateView(RodsCalcInline, UpdateView):
-
+    """
+    A view that renders the rods_calc update page template
+    and handles the updating of an existing rods_calc.
+    """
     def get_context_data(self, **kwargs):
         context = super(RodsCalcUpdateView, self).get_context_data(**kwargs)
         context['named_formsets'] = self.get_named_formsets()
@@ -454,6 +540,9 @@ class RodsCalcUpdateView(RodsCalcInline, UpdateView):
 
 
 class RodsCalcResultView(DetailView):
+    """
+    A view that renders the results page of rods_calc.
+    """
     template_name = 'calc/rods_calc/rods_calc_result.html'
     model = models.RodsCalc
     context_object_name = 'rods_calc'

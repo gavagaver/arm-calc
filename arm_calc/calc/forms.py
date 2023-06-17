@@ -1,10 +1,14 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from . import models
+from . import calculation_settings, models
 
 
 class SiteForm(forms.ModelForm):
+    """
+    Form for creating or editing a Site object.
+    """
+
     class Meta:
         model = models.Site
         fields = ['title', ]
@@ -14,6 +18,10 @@ class SiteForm(forms.ModelForm):
 
 
 class ConstructionForm(forms.ModelForm):
+    """
+    Form for creating or editing a Construction object.
+    """
+
     class Meta:
         model = models.Construction
         fields = ['title', ]
@@ -23,6 +31,10 @@ class ConstructionForm(forms.ModelForm):
 
 
 class VersionForm(forms.ModelForm):
+    """
+    Form for creating or editing a Version object.
+    """
+
     class Meta:
         model = models.Version
         fields = ['title', ]
@@ -32,15 +44,24 @@ class VersionForm(forms.ModelForm):
 
 
 class FolderForm(forms.ModelForm):
+    """
+    Form for creating or editing a Folder object.
+    """
+
     class Meta:
         model = models.Folder
         fields = ['title', ]
         labels = {
             'title': 'Укажите название папки:',
+
         }
 
 
 class ElementForm(forms.ModelForm):
+    """
+    Form for creating or editing an Element object.
+    """
+
     class Meta:
         model = models.Element
         fields = ['title', ]
@@ -50,6 +71,10 @@ class ElementForm(forms.ModelForm):
 
 
 class RodsCalcForm(forms.ModelForm):
+    """
+    Form for creating or editing a RodsCalc object.
+    """
+
     class Meta:
         model = models.RodsCalc
         fields = ('title', 'measurement_scale')
@@ -68,36 +93,16 @@ class RodsCalcForm(forms.ModelForm):
 
 
 class RodForm(forms.ModelForm):
+    """
+    Form for creating or editing a Rod object.
+    """
+
     class Meta:
         model = models.Rod
         exclude = (
             'length',
             'mass_of_single_rod',
             'mass_of_rods',
-        )
-        DIAMETERS = (
-            ('6', '6'),
-            ('8', '8'),
-            ('10', '10'),
-            ('12', '12'),
-            ('14', '14'),
-            ('16', '16'),
-            ('18', '18'),
-            ('20', '20'),
-            ('22', '22'),
-            ('25', '25'),
-            ('28', '28'),
-            ('32', '32'),
-            ('36', '36'),
-            ('40', '40'),
-        )
-        ROD_CLASSES = (
-            ('А240', 'А240'),
-            ('А400', 'А400'),
-            ('А500', 'А500'),
-            ('А600', 'А600'),
-            ('А800', 'А800'),
-            ('А1000', 'А1000'),
         )
         widgets = {
             'title': forms.TextInput(
@@ -106,13 +111,13 @@ class RodForm(forms.ModelForm):
                 }
             ),
             'diameter': forms.Select(
-                choices=DIAMETERS,
+                choices=calculation_settings.DIAMETERS,
                 attrs={
                     'class': 'form-control'
                 }
             ),
             'rod_class': forms.Select(
-                choices=ROD_CLASSES,
+                choices=calculation_settings.ROD_CLASSES,
                 attrs={
                     'class': 'form-control'
                 }

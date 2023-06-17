@@ -6,6 +6,9 @@ User = get_user_model()
 
 
 class CreationForm(UserCreationForm):
+    """
+    A form for creating a new user account.
+    """
     first_name = forms.CharField(
         label='Имя',
         required=True,

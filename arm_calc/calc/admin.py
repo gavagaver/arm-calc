@@ -4,6 +4,9 @@ from . import models
 
 
 class SiteAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for Site model.
+    """
     list_display = ('title', 'engineer')
     search_fields = ('title',)
     list_filter = ('create_date',)
@@ -11,6 +14,9 @@ class SiteAdmin(admin.ModelAdmin):
 
 
 class ConstructionAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for Construction model.
+    """
     list_display = ('title', 'site')
     search_fields = ('title',)
     list_filter = ('create_date',)
@@ -18,6 +24,9 @@ class ConstructionAdmin(admin.ModelAdmin):
 
 
 class VersionAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for Version model.
+    """
     list_display = ('title', 'construction')
     search_fields = ('title',)
     list_filter = ('create_date',)
@@ -25,6 +34,9 @@ class VersionAdmin(admin.ModelAdmin):
 
 
 class ElementAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for Element model.
+    """
     list_display = (
         'pk',
         'title',
@@ -37,6 +49,9 @@ class ElementAdmin(admin.ModelAdmin):
 
 
 class FolderAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for Folder model.
+    """
     list_display = (
         'pk',
         'title',
@@ -50,6 +65,9 @@ class FolderAdmin(admin.ModelAdmin):
 
 
 class RodsCalcAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for RodsCalc model.
+    """
     list_display = ('title', 'element', 'total_mass')
     search_fields = ('title',)
     list_filter = ('create_date',)
@@ -57,16 +75,25 @@ class RodsCalcAdmin(admin.ModelAdmin):
 
 
 class RodClassAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for RodClass model.
+    """
     list_display = ('rods_calc', 'title', 'total_mass')
     empty_value_display = '-пусто-',
 
 
 class RodDiameterAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for RodDiameter model.
+    """
     list_display = ('rod_class', 'title', 'total_mass')
     empty_value_display = '-пусто-',
 
 
 class RodAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for Rod model.
+    """
     list_display = (
         'pk',
         'title',
