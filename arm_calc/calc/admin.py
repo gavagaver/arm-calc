@@ -3,7 +3,7 @@ from django.contrib import admin
 from . import models
 
 
-class SiteAdmin:
+class SiteAdmin(admin.ModelAdmin):
     """
     Admin configuration for Site model.
     """
@@ -13,7 +13,7 @@ class SiteAdmin:
     empty_value_display = '-пусто-',
 
 
-class ConstructionAdmin:
+class ConstructionAdmin(admin.ModelAdmin):
     """
     Admin configuration for Construction model.
     """
@@ -23,7 +23,7 @@ class ConstructionAdmin:
     empty_value_display = '-пусто-',
 
 
-class VersionAdmin:
+class VersionAdmin(admin.ModelAdmin):
     """
     Admin configuration for Version model.
     """
@@ -33,7 +33,7 @@ class VersionAdmin:
     empty_value_display = '-пусто-',
 
 
-class ElementAdmin:
+class ElementAdmin(admin.ModelAdmin):
     """
     Admin configuration for Element model.
     """

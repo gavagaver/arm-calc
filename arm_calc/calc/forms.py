@@ -170,12 +170,8 @@ class RodForm(forms.ModelForm):
         }
 
 
-class RodFormSet(inlineformset_factory):
-    """
-    Formset for creating or editing multiple Rod objects in RodsCalc object.
-    """
-    model = models.RodsCalc
-    form = RodForm
-    extra = 0
-    can_delete = False
-    can_delete_extra = True
+RodFormSet = inlineformset_factory(
+    models.RodsCalc, models.Rod, form=RodForm,
+    extra=0, can_delete=False,
+    can_delete_extra=True
+)
