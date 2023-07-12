@@ -166,13 +166,13 @@ class Rod(PartModel):
     diameter = models.PositiveSmallIntegerField(
         blank=True,
         null=True,
-        verbose_name='Диаметр, мм',
+        verbose_name='⌀',
     )
     rod_class = models.CharField(
         blank=True,
         null=True,
         max_length=30,
-        verbose_name='Класс арматуры',
+        verbose_name='Класс',
     )
     length_1 = models.PositiveIntegerField(
         verbose_name='Длина 1 уч., мм',
