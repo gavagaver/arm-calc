@@ -203,6 +203,24 @@ class Rod(PartModel):
         null=True,
         verbose_name='Кол-во 3 уч., шт',
     )
+    quantity_a = models.PositiveIntegerField(
+        default=1,
+        blank=True,
+        null=True,
+        verbose_name='Множитель A, шт',
+    )
+    quantity_b = models.PositiveIntegerField(
+        default=1,
+        blank=True,
+        null=True,
+        verbose_name='Множитель B, шт',
+    )
+    quantity_c = models.PositiveIntegerField(
+        default=1,
+        blank=True,
+        null=True,
+        verbose_name='Множитель C, шт',
+    )
     quantity = models.PositiveIntegerField(
         blank=True,
         null=True,
@@ -225,17 +243,19 @@ class Rod(PartModel):
     )
 
     def save(self, *args, **kwargs):
-        self.calculate_length()
+        self.calculate_fields()
         self.calculate_mass_of_single_rod()
         self.calculate_mass_of_rods()
         super(Rod, self).save(*args, **kwargs)
 
-    def calculate_length(self):
+    def calculate_fields(self):
         """
-        Calculates the length of the reinforcement rod
-        based on lengths and quantities of different sections.
+        Calculates the length and quantity of the reinforcement rod
+        based on lengths and quantities of different sections
+        and quantities a, b, c.
         """
         rods_calc = RodsCalc.objects.get(pk=self.rods_calc.pk)
+
         length = self.quantity_1 * self.length_1 / rods_calc.measurement_scale
         if self.length_2:
             length += (self.quantity_2 * self.length_2
@@ -244,6 +264,9 @@ class Rod(PartModel):
             length += (self.quantity_3 * self.length_3
                        / rods_calc.measurement_scale)
         self.length = round(length, calc.NUM_OF_DECIMALS)
+
+        quantity = self.quantity_a * self.quantity_b * self.quantity_c
+        self.quantity = round(quantity, calc.NUM_OF_DECIMALS_OF_INTEGER)
 
     def calculate_mass_of_single_rod(self):
         """

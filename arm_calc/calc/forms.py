@@ -101,6 +101,7 @@ class RodForm(forms.ModelForm):
         model = models.Rod
         exclude = (
             'length',
+            'quantity',
             'mass_of_single_rod',
             'mass_of_rods',
         )
@@ -152,17 +153,17 @@ class RodForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'length_4': forms.NumberInput(
+            'quantity_a': forms.NumberInput(
                 attrs={
                     'class': 'form-control'
                 }
             ),
-            'quantity_4': forms.NumberInput(
+            'quantity_b': forms.NumberInput(
                 attrs={
                     'class': 'form-control'
                 }
             ),
-            'quantity': forms.NumberInput(
+            'quantity_c': forms.NumberInput(
                 attrs={
                     'class': 'form-control'
                 }
