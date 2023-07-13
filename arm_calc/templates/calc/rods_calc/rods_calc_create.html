@@ -75,154 +75,208 @@
           {% with named_formsets.rods as formset %}
             {{ formset.management_form }}
             <script type="text/html" id="rods-template">
-            <div id="rods-__prefix__" class="card border h-100 border-secondary mb-3 bg-light hide_all">
-
+              <div id="rods-__prefix__" class="card mb-3">
                 {% for field in formset.empty_form.hidden_fields %}
-                    {{ field }}
+                  {{ field }}
                 {% endfor %}
 
-                    <div class="card-header">
-
-                      <div class="row">
-
-                      <div class="col-6">
-                        <div class="form-floating">
-                          {{ formset.empty_form.visible_fields.0 }}
-                          <label for="{{ formset.empty_form.visible_fields.0.id_for_label }}">
-                            {{ formset.empty_form.visible_fields.0.label }}
-                          </label>
-                        </div>
-                        {% for error in formset.empty_form.visible_fields.0.errors %}
-                          <span style="color: red">{{ error }}</span>
-                        {% endfor %}
+                <div class="card-header">
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-floating">
+                        {{ formset.empty_form.visible_fields.0 }}
+                        <label for="{{ formset.empty_form.visible_fields.0.id_for_label }}">
+                          {{ formset.empty_form.visible_fields.0.label }}
+                        </label>
                       </div>
-
-                      <div class="col-2">
-                        <div class="form-floating">
-                          {{ formset.empty_form.visible_fields.1 }}
-                          <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
-                            {{ formset.empty_form.visible_fields.1.label }}
-                          </label>
-                        </div>
-                        {% for error in formset.empty_form.visible_fields.1.errors %}
-                          <span style="color: red">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-
-                      <div class="col-2">
-                        <div class="form-floating">
-                          {{ formset.empty_form.visible_fields.2 }}
-                          <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
-                            {{ formset.empty_form.visible_fields.2.label }}
-                          </label>
-                        </div>
-                        {% for error in formset.empty_form.visible_fields.2.errors %}
-                          <span style="color: red">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                      </div>
-
+                      {% for error in formset.empty_form.visible_fields.0.errors %}
+                        <span style="color: red">{{ error }}</span>
+                      {% endfor %}
                     </div>
-
-                    <div class="card-body">
+                    <div class="col-2">
+                      <div class="form-floating">
+                        {{ formset.empty_form.visible_fields.1 }}
+                        <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
+                          {{ formset.empty_form.visible_fields.1.label }}
+                        </label>
+                      </div>
+                      {% for error in formset.empty_form.visible_fields.1.errors %}
+                        <span style="color: red">{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                    <div class="col-2">
+                      <div class="form-floating">
+                        {{ formset.empty_form.visible_fields.2 }}
+                        <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
+                          {{ formset.empty_form.visible_fields.2.label }}
+                        </label>
+                      </div>
+                      {% for error in formset.empty_form.visible_fields.2.errors %}
+                        <span style="color: red">{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                    <div class="col-2">
+                    </div>
+                  </div>
+                </div>
+          
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-6">
                       <div class="row">
-                      <div class="col-6">
                         <div class="col-12 mb-3">
-                          <h6>Длина стержня</h6>
-                        </div>
-                      <div class="row">
-                      <div class="col-6 mb-3">
-                        <div class="form-floating mb-3">
-                          {{ formset.empty_form.visible_fields.3 }}
-                          <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
-                            {{ formset.empty_form.visible_fields.3.label }}
-                          </label>
-                        </div>
-                        {% for error in formset.empty_form.visible_fields.3.errors %}
-                          <span style="color: red">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                      <div class="col-6 mb-3">
-                        <div class="form-floating mb-3">
-                          {{ formset.empty_form.visible_fields.4 }}
-                          <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
-                            {{ formset.empty_form.visible_fields.4.label }}
-                          </label>
-                        </div>
-                        {% for error in formset.empty_form.visible_fields.4.errors %}
-                          <span style="color: red">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-6 mb-3">
-                        <div class="form-floating mb-3">
-                          {{ formset.empty_form.visible_fields.5 }}
-                          <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
-                            {{ formset.empty_form.visible_fields.5.label }}
-                          </label>
-                        </div>
-                        {% for error in formset.empty_form.visible_fields.5.errors %}
-                          <span style="color: red">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                      <div class="col-6 mb-3">
-                        <div class="form-floating mb-3">
-                          {{ formset.empty_form.visible_fields.6 }}
-                          <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
-                            {{ formset.empty_form.visible_fields.6.label }}
-                          </label>
-                        </div>
-                        {% for error in formset.empty_form.visible_fields.6.errors %}
-                          <span style="color: red">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-6 mb-3">
-                        <div class="form-floating mb-3">
-                          {{ formset.empty_form.visible_fields.7 }}
-                          <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
-                            {{ formset.empty_form.visible_fields.7.label }}
-                          </label>
-                        </div>
-                        {% for error in formset.empty_form.visible_fields.7.errors %}
-                          <span style="color: red">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                      <div class="col-6 mb-3">
-                        <div class="form-floating mb-3">
-                          {{ formset.empty_form.visible_fields.8 }}
-                          <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
-                            {{ formset.empty_form.visible_fields.8.label }}
-                          </label>
-                        </div>
-                        {% for error in formset.empty_form.visible_fields.8.errors %}
-                          <span style="color: red">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                      </div>
-                      </div>
+                          <div class="d-flex align-items-center">
+                            <a class="nav-link pe-0 ps-2" id="navbarDropdownLength" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <h6>Длина стержня <i class="fas fa-question-circle"></i></h6>
+                            </a>
 
-                      <div class="col-6">
-                        <div class="col-12 mb-3">
-                          <h6>Количество стержней</h6>
+                            <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownLength">
+                              <div class="bg-white dark__bg-1000 rounded-2 py-2">
+                                <img class="me-2" src="{% static 'assets/img/hint_length.png' %}" alt="" width="600">
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      <div class="col-6 mb-3">
+                      </div>
+                      <div class="row">
+                        <div class="col-6 mb-3">
+                          <div class="form-floating mb-3">
+                            {{ formset.empty_form.visible_fields.3 }}
+                            <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
+                              {{ formset.empty_form.visible_fields.3.label }}
+                            </label>
+                          </div>
+                          {% for error in formset.empty_form.visible_fields.3.errors %}
+                            <span style="color: red">{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                        <div class="col-6 mb-3">
+                          <div class="form-floating mb-3">
+                            {{ formset.empty_form.visible_fields.4 }}
+                            <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
+                              {{ formset.empty_form.visible_fields.4.label }}
+                            </label>
+                          </div>
+                          {% for error in formset.empty_form.visible_fields.4.errors %}
+                            <span style="color: red">{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-6 mb-3">
+                          <div class="form-floating mb-3">
+                            {{ formset.empty_form.visible_fields.5 }}
+                            <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
+                              {{ formset.empty_form.visible_fields.5.label }}
+                            </label>
+                          </div>
+                          {% for error in formset.empty_form.visible_fields.5.errors %}
+                            <span style="color: red">{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                        <div class="col-6 mb-3">
+                          <div class="form-floating mb-3">
+                            {{ formset.empty_form.visible_fields.6 }}
+                            <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
+                              {{ formset.empty_form.visible_fields.6.label }}
+                            </label>
+                          </div>
+                          {% for error in formset.empty_form.visible_fields.6.errors %}
+                            <span style="color: red">{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-6 mb-3">
+                          <div class="form-floating mb-3">
+                            {{ formset.empty_form.visible_fields.7 }}
+                            <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
+                              {{ formset.empty_form.visible_fields.7.label }}
+                            </label>
+                          </div>
+                          {% for error in formset.empty_form.visible_fields.7.errors %}
+                            <span style="color: red">{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                        <div class="col-6 mb-3">
+                          <div class="form-floating mb-3">
+                            {{ formset.empty_form.visible_fields.8 }}
+                            <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
+                              {{ formset.empty_form.visible_fields.8.label }}
+                            </label>
+                          </div>
+                          {% for error in formset.empty_form.visible_fields.8.errors %}
+                            <span style="color: red">{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-4">
+                        </div>
+                        <div class="col-8 mb-3">
+                          <div class="d-flex align-items-center">
+                            <a class="nav-link pe-0 ps-2" id="navbarDropdownQuantity" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <h6>Количество стержней <i class="fas fa-question-circle"></i></h6>
+                            </a>
+                            <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownQuantity">
+                              <div class="bg-white dark__bg-1000 rounded-2 py-2">
+                                <img class="me-2" src="{% static 'assets/img/hint_quantity.png' %}" alt="" width="450">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-4">
+                        </div>
+                        <div class="col-8 mb-3">
+                          <div class="form-floating mb-3">
+                            {{ formset.empty_form.visible_fields.9 }}
+                            <label for="{{ formset.empty_form.visible_fields.9.id_for_label }}">
+                              {{ formset.empty_form.visible_fields.9.label }}
+                            </label>
+                          </div>
+                          {% for error in formset.empty_form.visible_fields.9.errors %}
+                            <span style="color: red">{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-4">
+                        </div>
+                        <div class="col-8 mb-3">
+                          <div class="form-floating mb-3">
+                            {{ formset.empty_form.visible_fields.10 }}
+                            <label for="{{ formset.empty_form.visible_fields.10.id_for_label }}">
+                              {{ formset.empty_form.visible_fields.10.label }}
+                            </label>
+                          </div>
+                          {% for error in formset.empty_form.visible_fields.10.errors %}
+                            <span style="color: red">{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-4">
+                        </div>
+                        <div class="col-8 mb-3">
                         <div class="form-floating mb-3">
-                          {{ formset.empty_form.visible_fields.9 }}
-                          <label for="{{ formset.empty_form.visible_fields.1.id_for_label }}">
-                            {{ formset.empty_form.visible_fields.9.label }}
+                          {{ formset.empty_form.visible_fields.11 }}
+                          <label for="{{ formset.empty_form.visible_fields.11.id_for_label }}">
+                            {{ formset.empty_form.visible_fields.11.label }}
                           </label>
                         </div>
-                        {% for error in formset.empty_form.visible_fields.9.errors %}
+                        {% for error in formset.empty_form.visible_fields.11.errors %}
                           <span style="color: red">{{ error }}</span>
                         {% endfor %}
-                      </div>
                       </div>
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
             </script>
             <div class="card col-lg-12 mb-3">
             <div class="card-header">
@@ -267,219 +321,217 @@
 
                     <div class="accordion-collapse collapse border" id="collapse{{ forloop.counter0 }}" aria-labelledby="heading{{ forloop.counter0 }}" data-bs-parent="#accordionExample" style="">
                       <div class="accordion-body">
-
                         <div class="card-header">
-                      {{ formss.id }}
-                      <div class="row">
-                        <div class="col-6">
-                          <div class="form-floating">
-                            {{ formss.visible_fields.0 }}
-                            <label for="{{ formss.visible_fields.0.id_for_label }}">
-                              {{ formss.visible_fields.0.label }}
-                            </label>
-                          </div>
-                          {% for error in formss.visible_fields.0.errors %}
-                            <span style="color: red">{{ error }}</span>
-                          {% endfor %}
-                        </div>
-                        <div class="col-2">
-                          <div class="form-floating">
-                            {{ formss.visible_fields.1 }}
-                            <label for="{{ formss.visible_fields.1.id_for_label }}">
-                              {{ formss.visible_fields.1.label }}
-                            </label>
-                          </div>
-                          {% for error in formss.visible_fields.1.errors %}
-                            <span style="color: red">{{ error }}</span>
-                          {% endfor %}
-                        </div>
-                        <div class="col-2">
-                          <div class="form-floating">
-                            {{ formss.visible_fields.2 }}
-                            <label for="{{ formss.visible_fields.1.id_for_label }}">
-                              {{ formss.visible_fields.2.label }}
-                            </label>
-                          </div>
-                          {% for error in formss.visible_fields.2.errors %}
-                            <span style="color: red">{{ error }}</span>
-                          {% endfor %}
-                        </div>
-                        <div class="col-2">
-                          {% if formss.instance.pk %}
-                            <div class="dropdown font-sans-serif d-inline-block btn-reveal-trigger float-end">
-                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal dropdown-caret-none" type="button" id="dropdown-0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
-                                <svg class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                  <path fill="currentColor" d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"></path>
-                                </svg><!-- <span class="fas fa-ellipsis-h fs--1"></span> Font Awesome fontawesome.com -->
-                              </button>
-                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-0" style="">
-                                <a class="dropdown-item" href="{% url 'calc:rod_duplicate' formss.instance.pk %}">Дублировать</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="{% url 'calc:rod_delete' formss.instance.pk %}">Удалить</a>
-                              </div>
-                            </div>
-                          {% endif %}
-                        </div>
-                      </div>
-                    </div>
-
-                        <div class="card-body">
-                      <div class="row">
-                        <div class="col-6">
+                          {{ formss.id }}
                           <div class="row">
-                            <div class="col-12 mb-3">
-                              <div class="d-flex align-items-center">
-                                <a class="nav-link pe-0 ps-2" id="navbarDropdownLength-{{ forloop.counter0 }}" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <h6>Длина стержня <i class="fas fa-question-circle"></i></h6>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownLength-{{ forloop.counter0 }}">
-                                  <div class="bg-white dark__bg-1000 rounded-2 py-2">
-                                    <img class="me-2" src="{% static 'assets/img/hint_length.png' %}" alt="" width="600">
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-6 mb-3">
-                            <div class="form-floating mb-3">
-                              {{ formss.visible_fields.3 }}
-                              <label for="{{ formss.visible_fields.1.id_for_label }}">
-                                {{ formss.visible_fields.3.label }}
-                              </label>
-                            </div>
-                            {% for error in formss.visible_fields.3.errors %}
-                              <span style="color: red">{{ error }}</span>
-                            {% endfor %}
-                            </div>
-                            <div class="col-6 mb-3">
-                              <div class="form-floating mb-3">
-                                {{ formss.visible_fields.4 }}
-                                <label for="{{ formss.visible_fields.1.id_for_label }}">
-                                  {{ formss.visible_fields.4.label }}
+                            <div class="col-6">
+                              <div class="form-floating">
+                                {{ formss.visible_fields.0 }}
+                                <label for="{{ formss.visible_fields.0.id_for_label }}">
+                                  {{ formss.visible_fields.0.label }}
                                 </label>
                               </div>
-                              {% for error in formss.visible_fields.4.errors %}
+                              {% for error in formss.visible_fields.0.errors %}
                                 <span style="color: red">{{ error }}</span>
                               {% endfor %}
                             </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-6 mb-3">
-                            <div class="form-floating mb-3">
-                              {{ formss.visible_fields.5 }}
-                              <label for="{{ formss.visible_fields.1.id_for_label }}">
-                                {{ formss.visible_fields.5.label }}
-                              </label>
+                            <div class="col-2">
+                              <div class="form-floating">
+                                {{ formss.visible_fields.1 }}
+                                <label for="{{ formss.visible_fields.1.id_for_label }}">
+                                  {{ formss.visible_fields.1.label }}
+                                </label>
+                              </div>
+                              {% for error in formss.visible_fields.1.errors %}
+                                <span style="color: red">{{ error }}</span>
+                              {% endfor %}
                             </div>
-                            {% for error in formss.visible_fields.5.errors %}
-                              <span style="color: red">{{ error }}</span>
-                            {% endfor %}
-                          </div>
-                            <div class="col-6 mb-3">
-                            <div class="form-floating mb-3">
-                              {{ formss.visible_fields.6 }}
-                              <label for="{{ formss.visible_fields.1.id_for_label }}">
-                                {{ formss.visible_fields.6.label }}
-                              </label>
+                            <div class="col-2">
+                              <div class="form-floating">
+                                {{ formss.visible_fields.2 }}
+                                <label for="{{ formss.visible_fields.1.id_for_label }}">
+                                  {{ formss.visible_fields.2.label }}
+                                </label>
+                              </div>
+                              {% for error in formss.visible_fields.2.errors %}
+                                <span style="color: red">{{ error }}</span>
+                              {% endfor %}
                             </div>
-                            {% for error in formss.visible_fields.6.errors %}
-                              <span style="color: red">{{ error }}</span>
-                            {% endfor %}
-                          </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-6 mb-3">
-                            <div class="form-floating mb-3">
-                              {{ formss.visible_fields.7 }}
-                              <label for="{{ formss.visible_fields.1.id_for_label }}">
-                                {{ formss.visible_fields.7.label }}
-                              </label>
+                            <div class="col-2">
+                              {% if formss.instance.pk %}
+                                <div class="dropdown font-sans-serif d-inline-block btn-reveal-trigger float-end">
+                                  <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal dropdown-caret-none" type="button" id="dropdown-0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
+                                    <svg class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                      <path fill="currentColor" d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"></path>
+                                    </svg><!-- <span class="fas fa-ellipsis-h fs--1"></span> Font Awesome fontawesome.com -->
+                                  </button>
+                                  <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-0" style="">
+                                    <a class="dropdown-item" href="{% url 'calc:rod_duplicate' formss.instance.pk %}">Дублировать</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-danger" href="{% url 'calc:rod_delete' formss.instance.pk %}">Удалить</a>
+                                  </div>
+                                </div>
+                              {% endif %}
                             </div>
-                            {% for error in formss.visible_fields.7.errors %}
-                              <span style="color: red">{{ error }}</span>
-                            {% endfor %}
-                          </div>
-                            <div class="col-6 mb-3">
-                            <div class="form-floating mb-3">
-                              {{ formss.visible_fields.8 }}
-                              <label for="{{ formss.visible_fields.1.id_for_label }}">
-                                {{ formss.visible_fields.8.label }}
-                              </label>
-                            </div>
-                            {% for error in formss.visible_fields.8.errors %}
-                              <span style="color: red">{{ error }}</span>
-                            {% endfor %}
-                          </div>
                           </div>
                         </div>
-                        <div class="col-6">
+
+                        <div class="card-body">
                           <div class="row">
-                            <div class="col-4">
-                            </div>
-                            <div class="col-8 mb-3">
-                              <div class="d-flex align-items-center">
-                                <a class="nav-link pe-0 ps-2" id="navbarDropdownQuantity-{{ forloop.counter0 }}" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <h6>Количество стержней <i class="fas fa-question-circle"></i></h6>
-                                </a>
-                                <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownQuantity-{{ forloop.counter0 }}">
-                                  <div class="bg-white dark__bg-1000 rounded-2 py-2">
-                                    <img class="me-2" src="{% static 'assets/img/hint_quantity.png' %}" alt="" width="450">
+                            <div class="col-6">
+                              <div class="row">
+                                <div class="col-12 mb-3">
+                                  <div class="d-flex align-items-center">
+                                    <a class="nav-link pe-0 ps-2" id="navbarDropdownLength-{{ forloop.counter0 }}" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <h6>Длина стержня <i class="fas fa-question-circle"></i></h6>
+                                    </a>
+    
+                                    <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownLength-{{ forloop.counter0 }}">
+                                      <div class="bg-white dark__bg-1000 rounded-2 py-2">
+                                        <img class="me-2" src="{% static 'assets/img/hint_length.png' %}" alt="" width="600">
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
+                              <div class="row">
+                                <div class="col-6 mb-3">
+                                <div class="form-floating mb-3">
+                                  {{ formss.visible_fields.3 }}
+                                  <label for="{{ formss.visible_fields.1.id_for_label }}">
+                                    {{ formss.visible_fields.3.label }}
+                                  </label>
+                                </div>
+                                {% for error in formss.visible_fields.3.errors %}
+                                  <span style="color: red">{{ error }}</span>
+                                {% endfor %}
+                                </div>
+                                <div class="col-6 mb-3">
+                                  <div class="form-floating mb-3">
+                                    {{ formss.visible_fields.4 }}
+                                    <label for="{{ formss.visible_fields.1.id_for_label }}">
+                                      {{ formss.visible_fields.4.label }}
+                                    </label>
+                                  </div>
+                                  {% for error in formss.visible_fields.4.errors %}
+                                    <span style="color: red">{{ error }}</span>
+                                  {% endfor %}
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-6 mb-3">
+                                <div class="form-floating mb-3">
+                                  {{ formss.visible_fields.5 }}
+                                  <label for="{{ formss.visible_fields.1.id_for_label }}">
+                                    {{ formss.visible_fields.5.label }}
+                                  </label>
+                                </div>
+                                {% for error in formss.visible_fields.5.errors %}
+                                  <span style="color: red">{{ error }}</span>
+                                {% endfor %}
+                              </div>
+                                <div class="col-6 mb-3">
+                                <div class="form-floating mb-3">
+                                  {{ formss.visible_fields.6 }}
+                                  <label for="{{ formss.visible_fields.1.id_for_label }}">
+                                    {{ formss.visible_fields.6.label }}
+                                  </label>
+                                </div>
+                                {% for error in formss.visible_fields.6.errors %}
+                                  <span style="color: red">{{ error }}</span>
+                                {% endfor %}
+                              </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-6 mb-3">
+                                <div class="form-floating mb-3">
+                                  {{ formss.visible_fields.7 }}
+                                  <label for="{{ formss.visible_fields.1.id_for_label }}">
+                                    {{ formss.visible_fields.7.label }}
+                                  </label>
+                                </div>
+                                {% for error in formss.visible_fields.7.errors %}
+                                  <span style="color: red">{{ error }}</span>
+                                {% endfor %}
+                              </div>
+                                <div class="col-6 mb-3">
+                                <div class="form-floating mb-3">
+                                  {{ formss.visible_fields.8 }}
+                                  <label for="{{ formss.visible_fields.1.id_for_label }}">
+                                    {{ formss.visible_fields.8.label }}
+                                  </label>
+                                </div>
+                                {% for error in formss.visible_fields.8.errors %}
+                                  <span style="color: red">{{ error }}</span>
+                                {% endfor %}
+                              </div>
+                              </div>
                             </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-4">
+                            <div class="col-6">
+                              <div class="row">
+                                <div class="col-4">
+                                </div>
+                                <div class="col-8 mb-3">
+                                  <div class="d-flex align-items-center">
+                                    <a class="nav-link pe-0 ps-2" id="navbarDropdownQuantity-{{ forloop.counter0 }}" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <h6>Количество стержней <i class="fas fa-question-circle"></i></h6>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownQuantity-{{ forloop.counter0 }}">
+                                      <div class="bg-white dark__bg-1000 rounded-2 py-2">
+                                        <img class="me-2" src="{% static 'assets/img/hint_quantity.png' %}" alt="" width="450">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-4">
+                                </div>
+                                <div class="col-8 mb-3">
+                                  <div class="form-floating mb-3">
+                                  {{ formss.visible_fields.9 }}
+                                  <label for="{{ formss.visible_fields.9.id_for_label }}">
+                                    {{ formss.visible_fields.9.label }}
+                                  </label>
+                                </div>
+                                {% for error in formss.visible_fields.9.errors %}
+                                  <span style="color: red">{{ error }}</span>
+                                {% endfor %}
+                              </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-4">
+                                </div>
+                                <div class="col-8 mb-3">
+                                <div class="form-floating mb-3">
+                                  {{ formss.visible_fields.10 }}
+                                  <label for="{{ formss.visible_fields.10.id_for_label }}">
+                                    {{ formss.visible_fields.10.label }}
+                                  </label>
+                                </div>
+                                {% for error in formss.visible_fields.10.errors %}
+                                  <span style="color: red">{{ error }}</span>
+                                {% endfor %}
+                              </div>
+                              </div>
+                              <div class="row">
+                              <div class="col-4">
+                              </div>
+                              <div class="col-8 mb-3">
+                                <div class="form-floating mb-3">
+                                  {{ formss.visible_fields.11 }}
+                                  <label for="{{ formss.visible_fields.11.id_for_label }}">
+                                    {{ formss.visible_fields.11.label }}
+                                  </label>
+                                </div>
+                                {% for error in formss.visible_fields.11.errors %}
+                                  <span style="color: red">{{ error }}</span>
+                                {% endfor %}
+                              </div>
                             </div>
-                            <div class="col-8 mb-3">
-                              <div class="form-floating mb-3">
-                              {{ formss.visible_fields.9 }}
-                              <label for="{{ formss.visible_fields.9.id_for_label }}">
-                                {{ formss.visible_fields.9.label }}
-                              </label>
                             </div>
-                            {% for error in formss.visible_fields.9.errors %}
-                              <span style="color: red">{{ error }}</span>
-                            {% endfor %}
-                          </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-4">
-                            </div>
-                            <div class="col-8 mb-3">
-                            <div class="form-floating mb-3">
-                              {{ formss.visible_fields.10 }}
-                              <label for="{{ formss.visible_fields.10.id_for_label }}">
-                                {{ formss.visible_fields.10.label }}
-                              </label>
-                            </div>
-                            {% for error in formss.visible_fields.10.errors %}
-                              <span style="color: red">{{ error }}</span>
-                            {% endfor %}
-                          </div>
-                          </div>
-                          <div class="row">
-                          <div class="col-4">
-                          </div>
-                          <div class="col-8 mb-3">
-                            <div class="form-floating mb-3">
-                              {{ formss.visible_fields.11 }}
-                              <label for="{{ formss.visible_fields.11.id_for_label }}">
-                                {{ formss.visible_fields.11.label }}
-                              </label>
-                            </div>
-                            {% for error in formss.visible_fields.11.errors %}
-                              <span style="color: red">{{ error }}</span>
-                            {% endfor %}
                           </div>
                         </div>
-                        </div>
-                      </div>
-                    </div>
-
                       </div>
                     </div>
 
