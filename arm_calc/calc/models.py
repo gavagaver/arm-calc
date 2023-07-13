@@ -254,8 +254,6 @@ class Rod(PartModel):
         based on lengths and quantities of different sections
         and quantities a, b, c.
         """
-        rods_calc = RodsCalc.objects.get(pk=self.rods_calc.pk)
-
         length = self.quantity_1 * self.length_1
         if self.length_2:
             length += self.quantity_2 * self.length_2
