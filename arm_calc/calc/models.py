@@ -175,51 +175,51 @@ class Rod(PartModel):
         verbose_name='Класс',
     )
     length_1 = models.PositiveIntegerField(
-        verbose_name='Длина 1 уч., мм',
+        verbose_name='Длина A, мм',
     )
     quantity_1 = models.PositiveIntegerField(
         default=1,
-        verbose_name='Кол-во 1 уч., шт',
+        verbose_name='Кол-во n1, шт',
     )
     length_2 = models.PositiveIntegerField(
         blank=True,
         null=True,
-        verbose_name='Длина 2 уч., мм',
+        verbose_name='Длина B, мм',
     )
     quantity_2 = models.PositiveIntegerField(
         default=1,
         blank=True,
         null=True,
-        verbose_name='Кол-во 2 уч., шт',
+        verbose_name='Кол-во n2, шт',
     )
     length_3 = models.PositiveIntegerField(
         blank=True,
         null=True,
-        verbose_name='Длина 3 уч., мм',
+        verbose_name='Длина C, мм',
     )
     quantity_3 = models.PositiveIntegerField(
         default=1,
         blank=True,
         null=True,
-        verbose_name='Кол-во 3 уч., шт',
+        verbose_name='Кол-во n3, шт',
     )
     quantity_a = models.PositiveIntegerField(
         default=1,
         blank=True,
         null=True,
-        verbose_name='Множитель A, шт',
+        verbose_name='Множитель F, шт',
     )
     quantity_b = models.PositiveIntegerField(
         default=1,
         blank=True,
         null=True,
-        verbose_name='Множитель B, шт',
+        verbose_name='Множитель G, шт',
     )
     quantity_c = models.PositiveIntegerField(
         default=1,
         blank=True,
         null=True,
-        verbose_name='Множитель C, шт',
+        verbose_name='Множитель H, шт',
     )
     quantity = models.PositiveIntegerField(
         blank=True,
@@ -256,13 +256,11 @@ class Rod(PartModel):
         """
         rods_calc = RodsCalc.objects.get(pk=self.rods_calc.pk)
 
-        length = self.quantity_1 * self.length_1 / rods_calc.measurement_scale
+        length = self.quantity_1 * self.length_1
         if self.length_2:
-            length += (self.quantity_2 * self.length_2
-                       / rods_calc.measurement_scale)
+            length += self.quantity_2 * self.length_2
         if self.length_3:
-            length += (self.quantity_3 * self.length_3
-                       / rods_calc.measurement_scale)
+            length += self.quantity_3 * self.length_3
         self.length = round(length, calc.NUM_OF_DECIMALS)
 
         quantity = self.quantity_a * self.quantity_b * self.quantity_c

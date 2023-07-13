@@ -77,14 +77,9 @@ class RodsCalcForm(forms.ModelForm):
 
     class Meta:
         model = models.RodsCalc
-        fields = ('title', 'measurement_scale')
+        fields = ('title',)
         widgets = {
             'title': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
-            'measurement_scale': forms.NumberInput(
                 attrs={
                     'class': 'form-control'
                 }
