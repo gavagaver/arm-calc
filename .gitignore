@@ -130,6 +130,3 @@ dmypy.json
 
 # IDE
 .idea
-
-# Static
-/arm_calc/staticfiles/
