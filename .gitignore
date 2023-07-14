@@ -133,4 +133,3 @@ dmypy.json
 
 # Static
 /arm_calc/staticfiles/
-static/
