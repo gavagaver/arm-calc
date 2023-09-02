@@ -561,5 +561,6 @@ class RodsCalcResultView(DetailView):
             rod_class__in=rod_classes)
         context['rod_diameters'] = rod_diameters
         context['rods'] = models.Rod.objects.filter(
-            rods_calc=rods_calc_id)
+            rods_calc=rods_calc_id
+        )
         return context
