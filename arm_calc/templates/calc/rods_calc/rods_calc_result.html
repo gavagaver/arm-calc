@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load user_filters %}
+
 {% block title %}
   Результаты расчета армирования "{{ rods_calc.title }}"
 {% endblock %}
@@ -122,9 +124,9 @@
                       <td class="text-nowrap">⌀{{ rod.diameter }}</td>
                       <td class="text-nowrap">{{ rod.rod_class }}</td>
                       <td class="text-nowrap">{{ rod.length|floatformat:0 }}</td>
-                      <td class="text-nowrap">{{ rod.quantity }}</td>
-                      <td class="text-nowrap">{{ rod.mass_of_single_rod|floatformat:3 }}</td>
-                      <td class="text-nowrap">{{ rod.mass_of_rods|floatformat:3 }}</td>
+                      <td class="text-nowrap">{{ rod.quantity|multiply:rods_calc.quantity }}</td>
+                      <td class="text-nowrap">{{ rod.mass_of_single_rod|multiply:rods_calc.quantity |floatformat:3 }}</td>
+                      <td class="text-nowrap">{{ rod.mass_of_rods|multiply:rods_calc.quantity |floatformat:3 }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
