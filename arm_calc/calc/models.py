@@ -108,10 +108,9 @@ class RodsCalc(CalcModel):
         null=True,
         verbose_name='Всего, кг',
     )
-    measurement_scale = models.PositiveSmallIntegerField(
+    quantity = models.PositiveSmallIntegerField(
         default=1,
-        verbose_name='Масштаб измерений',
-        help_text='Во сколько раз вводимые значения больше действительных'
+        verbose_name='Количество элементов',
     )
 
     class Meta:
