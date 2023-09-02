@@ -410,7 +410,9 @@ class RodsCalcInline:
 
         for rod in rods:
             rod_class = rod.rod_class
-            mass_of_rods = rod.mass_of_rods
+
+            # Multiply total_mass by the number of elements
+            mass_of_rods = rod.mass_of_rods * rods_calc.quantity
 
             if rod_class not in class_mass_dict:
                 class_mass_dict[rod_class] = mass_of_rods
@@ -439,7 +441,9 @@ class RodsCalcInline:
         for rod in rods:
             diameter = rod.diameter
             rod_class = rod.rod_class
-            mass_of_rods = rod.mass_of_rods
+
+            # Multiply total_mass by the number of elements
+            mass_of_rods = rod.mass_of_rods * rods_calc.quantity
 
             if (diameter, rod_class) not in diameter_class_mass_dict:
                 diameter_class_mass_dict[(diameter, rod_class)] = mass_of_rods
