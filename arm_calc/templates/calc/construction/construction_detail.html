@@ -15,12 +15,35 @@
         <div class="col-xxl-6 col-lg-12">
           <div class="card mb-3">
             <div class="card-body d-flex flex-wrap flex-between-center">
-              <div>
+              <div class="col-3">
                 <h6 class="text-primary">сооружение</h6>
                 <h5 class="mb-0">{{ construction.title }}</h5>
               </div>
-              <div>
-                <a class="btn btn-primary" href="{% url 'calc:version_create' construction.pk %}" role="button">Создать стадию</a>
+              <div class="col-9 d-flex justify-content-end">
+                <div class="ps-2">
+                  <a class="btn btn-secondary" href="{% url 'calc:construction_update' construction.pk%}" role="button">
+                    <span class="far fa-copy me-1" data-fa-transform="shrink-3"></span>
+                    Редактировать
+                  </a>
+                </div>
+                <div class="ps-2">
+                  <a class="btn btn-warning" href="{% url 'calc:construction_duplicate' construction.pk%}" role="button">
+                    <span class="far fa-copy me-1" data-fa-transform="shrink-3"></span>
+                    Дублировать
+                  </a>
+                </div>
+                <div class="ps-2">
+                  <a class="btn btn-danger" href="{% url 'calc:construction_delete' construction.pk %}" role="button">
+                    <span class="fas fa-trash me-1" data-fa-transform="shrink-3"></span>
+                    Удалить
+                  </a>
+                </div>
+                <div class="ps-2">
+                  <a class="btn btn-primary" href="{% url 'calc:version_create' construction.pk %}" role="button">
+                    <span class="fas fa-plus me-1" data-fa-transform="shrink-3"></span>
+                    Создать стадию
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -34,7 +57,7 @@
       </div>
       <div class="row g-3 mb-3">
         {% for version in versions %}
-          <div class="col-xxl-6 col-lg-12">
+          <div class="col-xxl-6 col-lg-6">
             {% include 'calc/includes/version/version_card.html' %}
           </div>
         {% empty %}
