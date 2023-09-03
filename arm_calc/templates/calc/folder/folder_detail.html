@@ -15,12 +15,35 @@
         <div class="col-xxl-6 col-lg-12">
           <div class="card mb-3">
             <div class="card-body d-flex flex-wrap flex-between-center">
-              <div>
+              <div class="col-3">
                 <h6 class="text-primary">папка</h6>
                 <h5 class="mb-0">{{ folder.title }}</h5>
               </div>
-              <div>
-                <a class="btn btn-primary" href="{% url 'calc:element_create' folder.pk %}" role="button">Создать элемент</a>
+              <div class="col-9 d-flex justify-content-end">
+                <div class="ps-2">
+                  <a class="btn btn-secondary" href="{% url 'calc:folder_update' folder.pk%}" role="button">
+                    <span class="far fa-copy me-1" data-fa-transform="shrink-3"></span>
+                    Редактировать
+                  </a>
+                </div>
+                <div class="ps-2">
+                  <a class="btn btn-warning" href="{% url 'calc:folder_duplicate' folder.pk%}" role="button">
+                    <span class="far fa-copy me-1" data-fa-transform="shrink-3"></span>
+                    Дублировать
+                  </a>
+                </div>
+                <div class="ps-2">
+                  <a class="btn btn-danger" href="{% url 'calc:folder_delete' folder.pk %}" role="button">
+                    <span class="fas fa-trash me-1" data-fa-transform="shrink-3"></span>
+                    Удалить
+                  </a>
+                </div>
+                <div class="ps-2">
+                  <a class="btn btn-primary" href="{% url 'calc:element_create' folder.pk %}" role="button">
+                    <span class="fas fa-plus me-1" data-fa-transform="shrink-3"></span>
+                    Создать элемент
+                  </a>
+                </div>
               </div>
             </div>
           </div>

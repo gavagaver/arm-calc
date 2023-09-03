@@ -1,0 +1,11 @@
+User-agent: Yandex
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /site/
+Disallow: /construction/
+Disallow: /version/
+Disallow: /folder/
+Disallow: /element/
+Disallow: /rods_calc/
+Host: arm-calc.ru
+Sitemap: http://arm-calc.ru/sitemap.xml

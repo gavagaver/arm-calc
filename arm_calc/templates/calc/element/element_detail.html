@@ -15,12 +15,35 @@
         <div class="col-xxl-6 col-lg-12">
           <div class="card mb-3">
             <div class="card-body d-flex flex-wrap flex-between-center">
-              <div>
+              <div class="col-3">
                 <h6 class="text-primary">элемент</h6>
                 <h5 class="mb-0">{{ element.title }}</h5>
               </div>
-              <div>
-                <a class="btn btn-primary" href="{% url 'calc:rods_calc_create' element.pk %}" role="button">Создать расчет армирования</a>
+              <div class="col-9 d-flex justify-content-end">
+                <div class="ps-2">
+                  <a class="btn btn-secondary" href="{% url 'calc:element_update' element.pk%}" role="button">
+                    <span class="far fa-copy me-1" data-fa-transform="shrink-3"></span>
+                    Редактировать
+                  </a>
+                </div>
+                <div class="ps-2">
+                  <a class="btn btn-warning" href="{% url 'calc:element_duplicate' element.pk%}" role="button">
+                    <span class="far fa-copy me-1" data-fa-transform="shrink-3"></span>
+                    Дублировать
+                  </a>
+                </div>
+                <div class="ps-2">
+                  <a class="btn btn-danger" href="{% url 'calc:element_delete' element.pk %}" role="button">
+                    <span class="fas fa-trash me-1" data-fa-transform="shrink-3"></span>
+                    Удалить
+                  </a>
+                </div>
+                <div class="ps-2">
+                  <a class="btn btn-primary" href="{% url 'calc:rods_calc_create' element.pk %}" role="button">
+                    <span class="fas fa-plus me-1" data-fa-transform="shrink-3"></span>
+                    Создать расчет армирования
+                  </a>
+                </div>
               </div>
             </div>
           </div>

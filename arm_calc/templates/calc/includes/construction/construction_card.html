@@ -9,6 +9,14 @@
     <div class="row g-0 h-100 align-items-center">
       <div class="col">
         <p class="text-600 fs--1">сооружение</p>
+        {% for version in construction.versions.all %}
+          <a href="{% url 'calc:version_detail' version.pk %}" class="text-decoration-none hover-underline-none">
+            <span class="badge bg-primary">{{ version.title }}</span>
+          </a>
+        {% endfor %}
+        <a href="{% url 'calc:version_create' construction.pk %}" class="text-decoration-none hover-underline-none">
+          <span class="badge bg-secondary">+ Добавить стадию</span>
+        </a>
       </div>
       <div class="col-auto text-center ps-2">
 

@@ -1,17 +1,62 @@
+{% load static %}
+
 <div class="card h-md-100">
   <div class="card-header d-flex flex-between-center pb-0">
     <a href="{% url 'calc:site_detail' site.pk %}">
-      <h3 class="text-primary mb-1">{{ site.title }}</h3>
+      <h3 class="text-dark mb-1">{{ site.title }}</h3>
     </a>
     {% include 'calc/includes/site/site_dropdown_actions.html' %}
   </div>
   <div class="card-body pt-2">
-    <div class="row g-0 h-100 align-items-center">
+    <div class="row g-0 h-100 align-items-start">
       <div class="col">
         <p class="text-600 fs--1">объект</p>
-      </div>
-      <div class="col-auto text-center ps-2">
+        {% for construction in site.constructions.all|slice:":2"  %}
+          <div class="card h-md-100 mb-3">
+          <div class="card-header d-flex flex-between-center pb-0">
+            <a href="{% url 'calc:construction_detail' construction.pk %}">
+              <h4 class="text-primary mb-1">{{ construction.title }}</h4>
+            </a>
+            {% include 'calc/includes/construction/construction_dropdown_actions.html' %}
+          </div>
+          <div class="card-body pt-2">
+            <div class="row g-0 h-100 align-items-start">
+              <div class="col">
+                <p class="text-600 fs--1">сооружение</p>
+                {% for version in construction.versions.all %}
+                  <a href="{% url 'calc:version_detail' version.pk %}" class="text-decoration-none hover-underline-none">
+                    <span class="badge bg-warning">{{ version.title }}</span>
+                  </a>
+                {% endfor %}
+                <a href="{% url 'calc:version_create' construction.pk %}" class="text-decoration-none hover-underline-none">
+                  <span class="badge bg-light text-primary">+ Создать стадию</span>
+                </a>
+              </div>
+              <div class="col-auto text-center ps-2">
 
+              </div>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+
+        {% endfor %}
+
+        {% if site.constructions.count > 2 %}
+          <a href="{% url 'calc:site_detail' site.pk %}" class="text-decoration-none hover-underline-none d-flex align-items-center justify-content-center mb-3">
+            <span class="badge bg-primary">Посмотреть все сооружения</span>
+          </a>
+        {% endif %}
+
+        <a href="{% url 'calc:construction_create' site.pk %}" class="text-decoration-none hover-underline-none d-flex align-items-center justify-content-center">
+          <span class="badge bg-light text-primary">+ Создать сооружение</span>
+        </a>
+      </div>
+
+      <div class="col-auto text-center ps-2">
+        <p class="text-600 fs--1">
+
+        </p>
       </div>
     </div>
   </div>
