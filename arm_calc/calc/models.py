@@ -1,7 +1,6 @@
-from django.db import models
-
 from core.models import (BaseModel, CalcModel, ConstructionModel, PartModel,
                          User)
+from django.db import models
 
 from . import calculation_settings as calc
 
