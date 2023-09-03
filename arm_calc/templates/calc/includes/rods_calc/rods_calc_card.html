@@ -1,3 +1,5 @@
+{% load user_filters %}
+
 <div class="card h-md-100">
   <div class="card-header d-flex flex-between-center pb-0">
     <a href="{% url 'calc:rods_calc_update' rods_calc.pk %}">
@@ -6,12 +8,31 @@
     {% include 'calc/includes/rods_calc/rods_calc_dropdown_actions.html' %}
   </div>
   <div class="card-body pt-2">
-    <div class="row g-0 h-100 align-items-center">
+    <div class="row">
       <div class="col">
         <p class="text-600 fs--1">расчет армирования</p>
+        <div class="d-flex align-items-center mb-3">
+          {% if rods_calc.rod_classes.all %}
+            <span class="far fa-list-alt text-primary"></span>
+            <p class="fs--1 ps-2 mb-0">Расход на <strong>{{ rods_calc.quantity }}</strong> {{ rods_calc.quantity|pluralize_ru:"элемент, элемента, элементов" }}: </p>
+            {% for rodclass in rods_calc.rod_classes.all %}
+              <p class="fs--1 ps-2 mb-0"><strong>{{ rodclass.title }}</strong>: {{ rodclass.total_mass }} кг</p>
+            {% endfor %}
+          {% endif %}
+        </div>
       </div>
-      <div class="col-auto text-center ps-2">
-
+    </div>
+    <div class="row">
+      <div class="col">
+        <a href="{% url 'calc:rods_calc_update' rods_calc.pk %}" class="text-decoration-none hover-underline-none">
+          <span class="badge bg-light text-primary">Редактировать расчет</span>
+        </a>
+        <a href="{% url 'calc:rods_calc_result' rods_calc.pk %}" class="text-decoration-none hover-underline-none ps-2">
+          <span class="badge bg-primary">Посмотреть результат</span>
+        </a>
+      </div>
+      <div class="col d-flex justify-content-end">
+        <span class="text-secondary ms-auto fs-0">Изменено: {{ rods_calc.update_date }}</span>
       </div>
     </div>
   </div>

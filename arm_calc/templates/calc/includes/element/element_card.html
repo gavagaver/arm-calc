@@ -1,3 +1,5 @@
+{% load user_filters %}
+
 <div class="card h-md-100">
   <div class="card-header d-flex flex-between-center pb-0">
     <a href="{% url 'calc:element_detail' element.pk %}">
@@ -10,8 +12,13 @@
       <div class="col">
         <p class="text-600 fs--1">элемент</p>
       </div>
-      <div class="col-auto text-center ps-2">
-
+      <div class="d-flex">
+        {% if element.rods_calcs.count %}
+          <span class="fas fa-cubes text-primary"></span>
+        {% else %}
+          <span class="fas fa-cubes text-secondary"></span>
+        {% endif %}
+        <p class="fs--1 ps-2 mb-0"><strong>{{ element.rods_calcs.count }}</strong> {{ element.rods_calcs.count|pluralize_ru:"расчет, расчета, расчетов" }} армирования</p>
       </div>
     </div>
   </div>

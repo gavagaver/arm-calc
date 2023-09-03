@@ -1,3 +1,5 @@
+{% load user_filters %}
+
 <div class="card h-md-100">
   <div class="card-header d-flex flex-between-center pb-0">
     <a href="{% url 'calc:folder_detail' folder.pk %}">
@@ -10,8 +12,13 @@
       <div class="col">
         <p class="text-600 fs--1">папка</p>
       </div>
-      <div class="col-auto text-center ps-2">
-
+      <div class="d-flex">
+        {% if folder.elements.count %}
+          <span class="fas fa-cubes text-primary"></span>
+        {% else %}
+          <span class="fas fa-cubes text-secondary"></span>
+        {% endif %}
+        <p class="fs--1 ps-2 mb-0"><strong>{{ folder.elements.count }}</strong> {{ folder.elements.count|pluralize_ru:"элемент, элемента, элементов" }}</p>
       </div>
     </div>
   </div>
