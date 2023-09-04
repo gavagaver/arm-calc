@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import (CreateView, DetailView, ListView,
@@ -28,6 +29,19 @@ class ProfileView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(engineer=self.request.user)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        try:
+            last_update_element = (
+                self.request.user.elements.order_by('-update_date').first()
+            )
+        except ObjectDoesNotExist:
+            last_update_element = None
+
+        context['last_update_element'] = last_update_element
+        return context
 
 
 class SiteDetailView(DetailView):
@@ -410,7 +424,9 @@ class RodsCalcInline:
 
         for rod in rods:
             rod_class = rod.rod_class
-            mass_of_rods = rod.mass_of_rods
+
+            # Multiply total_mass by the number of elements
+            mass_of_rods = rod.mass_of_rods * rods_calc.quantity
 
             if rod_class not in class_mass_dict:
                 class_mass_dict[rod_class] = mass_of_rods
@@ -439,7 +455,9 @@ class RodsCalcInline:
         for rod in rods:
             diameter = rod.diameter
             rod_class = rod.rod_class
-            mass_of_rods = rod.mass_of_rods
+
+            # Multiply total_mass by the number of elements
+            mass_of_rods = rod.mass_of_rods * rods_calc.quantity
 
             if (diameter, rod_class) not in diameter_class_mass_dict:
                 diameter_class_mass_dict[(diameter, rod_class)] = mass_of_rods
@@ -557,5 +575,6 @@ class RodsCalcResultView(DetailView):
             rod_class__in=rod_classes)
         context['rod_diameters'] = rod_diameters
         context['rods'] = models.Rod.objects.filter(
-            rods_calc=rods_calc_id)
+            rods_calc=rods_calc_id
+        )
         return context

@@ -13,14 +13,61 @@
       </div>
       <div class="row g-3 mb-3">
         <div class="col-xxl-6 col-lg-12">
-          <div class="card mb-3">
-            <div class="card-body d-flex flex-wrap flex-between-center">
-              <div>
-                <h6 class="text-primary">сооружение</h6>
-                <h5 class="mb-0">{{ construction.title }}</h5>
-              </div>
-              <div>
-                <a class="btn btn-primary" href="{% url 'calc:version_create' construction.pk %}" role="button">Создать стадию</a>
+          <div class="card h-100">
+            <div class="bg-holder bg-card" style="background-image:url(../assets/img/icons/spot-illustrations/corner-3.png);">
+            </div>
+            <!--/.bg-holder-->
+
+            <div class="card-header z-index-1">
+              <h5 class="text-primary mb-1">{{ construction.title }}</h5>
+              <h6 class="text-600">сооружение</h6>
+            </div>
+            <div class="card-body z-index-1">
+              <div class="row g-2 h-100 align-items-end">
+                <div class="col-sm-6 col-md-5">
+                  <div class="d-flex position-relative">
+                    <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="fas fa-pen text-secondary"></span></div>
+                    <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:construction_update' construction.pk%}">
+                        <h6 class="mb-0">Редактировать</h6>
+                      </a>
+                      <p class="mb-0 fs--2 text-500">Внесите необходимые изменения</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-md-5">
+                  <div class="d-flex position-relative">
+                    <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="fas fa-trash text-danger"></span></div>
+                    <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:construction_delete' construction.pk%}">
+                        <h6 class="mb-0">Удалить</h6>
+                      </a>
+                      <p class="mb-0 fs--2 text-500">Удалите без возможности восстановления</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-md-5">
+                  <div class="d-flex position-relative">
+                    <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="far fa-copy text-warning"></span></div>
+                    <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:construction_duplicate' construction.pk%}">
+                        <h6 class="mb-0">Дублировать</h6>
+                      </a>
+                      <p class="mb-0 fs--2 text-500">Создайте копию и отредактируйте</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-md-5">
+                  <div class="d-flex position-relative">
+                    <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="fas fa-plus text-primary"></span></div>
+                    <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:version_create' construction.pk %}">
+                        <h6 class="mb-0">Создать стадию</h6>
+                      </a>
+                      <p class="mb-0 fs--2 text-500">Добавьте для текущего сооружения стадию</p>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -34,7 +81,7 @@
       </div>
       <div class="row g-3 mb-3">
         {% for version in versions %}
-          <div class="col-xxl-6 col-lg-12">
+          <div class="col-xxl-6 col-lg-6">
             {% include 'calc/includes/version/version_card.html' %}
           </div>
         {% empty %}

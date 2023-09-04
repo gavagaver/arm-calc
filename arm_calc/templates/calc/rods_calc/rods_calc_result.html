@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load user_filters %}
+
 {% block title %}
   Результаты расчета армирования "{{ rods_calc.title }}"
 {% endblock %}
@@ -41,7 +43,6 @@
               </p>
             </div>
           </div>
-
         </div>
         <div class="col-lg-4 mb-3">
           <div class="sticky-sidebar top-navbar-height d-flex flex-column">
@@ -100,7 +101,7 @@
         <div class="col-lg-12 mb-3">
           <div class="card">
             <div class="card-header py-3 d-flex flex-between-center">
-              <h5 class="mb-0">Спецификация</h5>
+              <h5 class="mb-0">Спецификация (расход на {{ rods_calc.quantity }} шт.)</h5>
             </div>
             <div class="table-responsive scrollbar">
               <table class="table table-hover table-striped overflow-hidden">
@@ -122,9 +123,9 @@
                       <td class="text-nowrap">⌀{{ rod.diameter }}</td>
                       <td class="text-nowrap">{{ rod.rod_class }}</td>
                       <td class="text-nowrap">{{ rod.length|floatformat:0 }}</td>
-                      <td class="text-nowrap">{{ rod.quantity }}</td>
-                      <td class="text-nowrap">{{ rod.mass_of_single_rod|floatformat:3 }}</td>
-                      <td class="text-nowrap">{{ rod.mass_of_rods|floatformat:3 }}</td>
+                      <td class="text-nowrap">{{ rod.quantity|multiply:rods_calc.quantity }}</td>
+                      <td class="text-nowrap">{{ rod.mass_of_single_rod|multiply:rods_calc.quantity |floatformat:3 }}</td>
+                      <td class="text-nowrap">{{ rod.mass_of_rods|multiply:rods_calc.quantity |floatformat:3 }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -136,7 +137,7 @@
         <div class="col-lg-12 mb-3">
           <div class="card">
             <div class="card-header py-3 d-flex flex-between-center">
-              <h5 class="mb-0">Ведомость расхода стали, кг</h5>
+              <h5 class="mb-0">Ведомость расхода стали, кг (расход на {{ rods_calc.quantity }} шт.)</h5>
             </div>
             <div class="row g-3 mb-3">
               {% for rod_class in rod_classes %}

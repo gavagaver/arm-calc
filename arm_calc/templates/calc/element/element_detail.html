@@ -13,17 +13,66 @@
       </div>
       <div class="row g-3 mb-3">
         <div class="col-xxl-6 col-lg-12">
-          <div class="card mb-3">
-            <div class="card-body d-flex flex-wrap flex-between-center">
-              <div>
-                <h6 class="text-primary">элемент</h6>
-                <h5 class="mb-0">{{ element.title }}</h5>
-              </div>
-              <div>
-                <a class="btn btn-primary" href="{% url 'calc:rods_calc_create' element.pk %}" role="button">Создать расчет армирования</a>
+          <div class="card h-100">
+            <div class="bg-holder bg-card" style="background-image:url(../assets/img/icons/spot-illustrations/corner-3.png);">
+            </div>
+            <!--/.bg-holder-->
+
+            <div class="card-header z-index-1">
+              <h5 class="text-primary mb-1">{{ element.title }}</h5>
+              <h6 class="text-600">элемент</h6>
+            </div>
+            <div class="card-body z-index-1">
+              <div class="row g-2 h-100 align-items-end">
+                <div class="col-sm-6 col-md-5">
+                  <div class="d-flex position-relative">
+                    <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="fas fa-pen text-secondary"></span></div>
+                    <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:element_update' element.pk%}">
+                        <h6 class="mb-0">Редактировать</h6>
+                      </a>
+                      <p class="mb-0 fs--2 text-500">Внесите необходимые изменения</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-md-5">
+                  <div class="d-flex position-relative">
+                    <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="fas fa-trash text-danger"></span></div>
+                    <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:element_delete' element.pk%}">
+                        <h6 class="mb-0">Удалить</h6>
+                      </a>
+                      <p class="mb-0 fs--2 text-500">Удалите без возможности восстановления</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-md-5">
+                  <div class="d-flex position-relative">
+                    <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="far fa-copy text-warning"></span></div>
+                    <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:element_duplicate' element.pk%}">
+                        <h6 class="mb-0">Дублировать</h6>
+                      </a>
+                      <p class="mb-0 fs--2 text-500">Создайте копию и отредактируйте</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-md-5">
+                  <div class="d-flex position-relative">
+                    <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="fas fa-plus text-primary"></span></div>
+                    <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:rods_calc_create' element.pk %}">
+                        <h6 class="mb-0">Создать расчет армирования</h6>
+                      </a>
+                      <p class="mb-0 fs--2 text-500">Добавьте для текущего элемента расчет</p>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
+
+
         </div>
         <div class="col-xxl-3 col-md-6">
 

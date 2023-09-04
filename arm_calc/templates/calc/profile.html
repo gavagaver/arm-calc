@@ -7,14 +7,6 @@
 
 {% block content %}
   <div class="container" data-layout="container">
-    <script>
-      var isFluid = JSON.parse(localStorage.getItem('isFluid'));
-      if (isFluid) {
-        var container = document.querySelector('[data-layout]');
-        container.classList.remove('container');
-        container.classList.add('container-fluid');
-      }
-    </script>
     <div class="content">
       {% include 'includes/topbar.html' %}
       <div class="row g-3 mb-3">
@@ -30,7 +22,7 @@
       </div>
       <div class="row g-3 mb-3">
         {% for site in sites %}
-          <div class="col-xxl-6 col-lg-12">
+          <div class="col-xxl-6 col-lg-6">
             {% include 'calc/includes/site/site_card.html' %}
           </div>
         {% empty %}

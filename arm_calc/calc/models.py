@@ -20,6 +20,7 @@ class Site(BaseModel):
     class Meta:
         verbose_name = 'Объект'
         verbose_name_plural = 'Объекты'
+        ordering = ('-update_date',)
 
 
 class Construction(ConstructionModel):
@@ -37,6 +38,7 @@ class Construction(ConstructionModel):
     class Meta:
         verbose_name = 'Сооружение'
         verbose_name_plural = 'Сооружения'
+        ordering = ('-update_date',)
 
 
 class Version(BaseModel):
@@ -53,6 +55,7 @@ class Version(BaseModel):
     class Meta:
         verbose_name = 'Версия'
         verbose_name_plural = 'Версии'
+        ordering = ('-update_date',)
 
 
 class Folder(BaseModel):
@@ -69,6 +72,7 @@ class Folder(BaseModel):
     class Meta:
         verbose_name = 'Папка'
         verbose_name_plural = 'Папки'
+        ordering = ('-update_date',)
 
 
 class Element(BaseModel):
@@ -91,6 +95,7 @@ class Element(BaseModel):
     class Meta:
         verbose_name = 'Элемент'
         verbose_name_plural = 'Элементы'
+        ordering = ('title',)
 
 
 class RodsCalc(CalcModel):
@@ -108,15 +113,15 @@ class RodsCalc(CalcModel):
         null=True,
         verbose_name='Всего, кг',
     )
-    measurement_scale = models.PositiveSmallIntegerField(
+    quantity = models.PositiveSmallIntegerField(
         default=1,
-        verbose_name='Масштаб измерений',
-        help_text='Во сколько раз вводимые значения больше действительных'
+        verbose_name='Количество элементов',
     )
 
     class Meta:
         verbose_name = 'Расчет армирования'
         verbose_name_plural = 'Расчеты армирования'
+        ordering = ('-update_date',)
 
 
 class RodClass(BaseModel):
@@ -287,4 +292,3 @@ class Rod(PartModel):
     class Meta:
         verbose_name = 'Стержень'
         verbose_name_plural = 'Стержни'
-        ordering = ('title',)
