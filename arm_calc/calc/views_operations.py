@@ -1,6 +1,8 @@
 from django.shortcuts import redirect
 
 from . import models
+from .utils import duplicate_with_related
+
 
 # Site operations
 
@@ -11,8 +13,9 @@ def site_duplicate(request, pk):
     versions, folders, elements, rods_calcs, and rods.
     """
     site = models.Site.objects.get(pk=pk)
-    engineer = site.engineer
+
     constructions = models.Construction.objects.filter(site=site)
+    engineer = site.engineer
 
     site.pk = None
     site.save()
@@ -20,43 +23,31 @@ def site_duplicate(request, pk):
     for construction in constructions:
         versions = models.Version.objects.filter(construction=construction)
 
-        construction.pk = None
-        construction.site = site
-        construction.save()
+        duplicate_with_related(construction, site)
 
         for version in versions:
             folders = models.Folder.objects.filter(version=version)
 
-            version.pk = None
-            version.construction = construction
-            version.save()
+            duplicate_with_related(version, construction)
 
             for folder in folders:
                 elements = models.Element.objects.filter(folder=folder)
 
-                folder.pk = None
-                folder.version = version
-                folder.save()
+                duplicate_with_related(folder, version)
 
                 for element in elements:
                     rods_calcs = models.RodsCalc.objects.filter(
                         element=element)
 
-                    element.pk = None
-                    element.folder = folder
-                    element.save()
+                    duplicate_with_related(element, folder)
 
                     for rods_calc in rods_calcs:
                         rods = models.Rod.objects.filter(rods_calc=rods_calc)
 
-                        rods_calc.pk = None
-                        rods_calc.element = element
-                        rods_calc.save()
+                        duplicate_with_related(rods_calc, element)
 
                         for rod in rods:
-                            rod.pk = None
-                            rod.rods_calc = rods_calc
-                            rod.save()
+                            duplicate_with_related(rod, rods_calc)
 
     return redirect('calc:profile', username=engineer.username)
 
@@ -87,35 +78,26 @@ def construction_duplicate(request, pk):
     for version in versions:
         folders = models.Folder.objects.filter(version=version)
 
-        version.pk = None
-        version.construction = construction
-        version.save()
+        duplicate_with_related(version, construction)
 
         for folder in folders:
             elements = models.Element.objects.filter(folder=folder)
 
-            folder.pk = None
-            folder.version = version
-            folder.save()
+            duplicate_with_related(folder, version)
 
             for element in elements:
-                rods_calcs = models.RodsCalc.objects.filter(element=element)
+                rods_calcs = models.RodsCalc.objects.filter(
+                    element=element)
 
-                element.pk = None
-                element.folder = folder
-                element.save()
+                duplicate_with_related(element, folder)
 
                 for rods_calc in rods_calcs:
                     rods = models.Rod.objects.filter(rods_calc=rods_calc)
 
-                    rods_calc.pk = None
-                    rods_calc.element = element
-                    rods_calc.save()
+                    duplicate_with_related(rods_calc, element)
 
                     for rod in rods:
-                        rod.pk = None
-                        rod.rods_calc = rods_calc
-                        rod.save()
+                        duplicate_with_related(rod, rods_calc)
 
     return redirect('calc:site_detail', site.pk)
 
@@ -146,28 +128,21 @@ def version_duplicate(request, pk):
     for folder in folders:
         elements = models.Element.objects.filter(folder=folder)
 
-        folder.pk = None
-        folder.version = version
-        folder.save()
+        duplicate_with_related(folder, version)
 
         for element in elements:
-            rods_calcs = models.RodsCalc.objects.filter(element=element)
+            rods_calcs = models.RodsCalc.objects.filter(
+                element=element)
 
-            element.pk = None
-            element.folder = folder
-            element.save()
+            duplicate_with_related(element, folder)
 
             for rods_calc in rods_calcs:
                 rods = models.Rod.objects.filter(rods_calc=rods_calc)
 
-                rods_calc.pk = None
-                rods_calc.element = element
-                rods_calc.save()
+                duplicate_with_related(rods_calc, element)
 
                 for rod in rods:
-                    rod.pk = None
-                    rod.rods_calc = rods_calc
-                    rod.save()
+                    duplicate_with_related(rod, rods_calc)
 
     return redirect('calc:construction_detail', construction.pk)
 
@@ -196,23 +171,18 @@ def folder_duplicate(request, pk):
     folder.save()
 
     for element in elements:
-        rods_calcs = models.RodsCalc.objects.filter(element=element)
+        rods_calcs = models.RodsCalc.objects.filter(
+            element=element)
 
-        element.pk = None
-        element.folder = folder
-        element.save()
+        duplicate_with_related(element, folder)
 
         for rods_calc in rods_calcs:
             rods = models.Rod.objects.filter(rods_calc=rods_calc)
 
-            rods_calc.pk = None
-            rods_calc.element = element
-            rods_calc.save()
+            duplicate_with_related(rods_calc, element)
 
             for rod in rods:
-                rod.pk = None
-                rod.rods_calc = rods_calc
-                rod.save()
+                duplicate_with_related(rod, rods_calc)
 
     return redirect('calc:version_detail', version.pk)
 
@@ -243,14 +213,10 @@ def element_duplicate(request, pk):
     for rods_calc in rods_calcs:
         rods = models.Rod.objects.filter(rods_calc=rods_calc)
 
-        rods_calc.pk = None
-        rods_calc.element = element
-        rods_calc.save()
+        duplicate_with_related(rods_calc, element)
 
         for rod in rods:
-            rod.pk = None
-            rod.rods_calc = rods_calc
-            rod.save()
+            duplicate_with_related(rod, rods_calc)
 
     return redirect('calc:folder_detail', place_folder.pk)
 
@@ -278,9 +244,7 @@ def rods_calc_duplicate(request, pk):
     rods_calc.save()
 
     for rod in rods:
-        rod.pk = None
-        rod.rods_calc = rods_calc
-        rod.save()
+        duplicate_with_related(rod, rods_calc)
 
     return redirect('calc:element_detail', element.pk)
 
