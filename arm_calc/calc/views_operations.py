@@ -3,7 +3,6 @@ from django.shortcuts import redirect
 from . import models
 from .utils import duplicate_with_related
 
-
 # Site operations
 
 
