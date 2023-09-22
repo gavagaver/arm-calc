@@ -24,28 +24,34 @@
                 {{ rods_calc.title }}
               </h3>
               <p class="mb-0">
-                На этой странице представлена спецификация арматурных стержней и ведомость расхода стали.
+                На этой странице представлена спецификация арматурных стержней
               </p>
               <p class="mb-0">
-                Для повышения точности подсчет выполняется без округления. Но на странице представлены
+                и ведомость расхода стали для указанного армирования.
               </p>
               <p class="mb-0">
-                округленные промежуточные данные. Это вызывает расхождения при ручной проверке.
+                _
               </p>
               <p class="mb-0">
-                Например, итоговый вес может отличаться на 0,01 кг от суммы весов классов.
+                Данные можно выделить и скопировать,
               </p>
               <p class="mb-0">
-                В связи с этим, данные представлены с точностью до 3 знаков после запятой. 
+                они без проблем вставляются в таблицы Excel.
               </p>
               <p class="mb-0">
-                Чтобы внести изменения в расчет, нажмите "Редактировать армирование".
+                _
               </p>
               <p class="mb-0">
-                .
+                Расход дан на суммарное количество элементов,
               </p>
               <p class="mb-0">
-                .
+                указанное на странице редактирования армирования.
+              </p>
+              <p class="mb-0">
+                _
+              </p>
+              <p class="mb-0">
+                Чтобы внести изменения, нажмите "Редактировать армирование".
               </p>
             </div>
           </div>
@@ -130,8 +136,8 @@
                       <td class="text-nowrap">{{ rod.rod_class }}</td>
                       <td class="text-nowrap">{{ rod.length|floatformat:0 }}</td>
                       <td class="text-nowrap">{{ rod.quantity|multiply:rods_calc.quantity }}</td>
-                      <td class="text-nowrap">{{ rod.mass_of_single_rod|multiply:rods_calc.quantity |floatformat:3 }}</td>
-                      <td class="text-nowrap">{{ rod.mass_of_rods|multiply:rods_calc.quantity |floatformat:3 }}</td>
+                      <td class="text-nowrap">{{ rod.mass_of_single_rod|multiply:rods_calc.quantity |floatformat:2 }}</td>
+                      <td class="text-nowrap">{{ rod.mass_of_rods|multiply:rods_calc.quantity |floatformat:2 }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -167,7 +173,7 @@
                         <tr class="align-middle">
                           {% for rod_diameter in rod_diameters %}
                             {% if rod_diameter.rod_class == rod_class %}
-                              <td class="text-nowrap">{{ rod_diameter.total_mass|floatformat:3 }}</td>
+                              <td class="text-nowrap">{{ rod_diameter.total_mass|floatformat:2 }}</td>
                             {% endif %}
                           {% endfor %}
                         </tr>
@@ -175,14 +181,14 @@
                     </table>
                   </div>
                   <div class="card-header py-3 d-flex flex-between-center">
-                    <h5 class="mb-0">Всего: {{ rod_class.total_mass|floatformat:3 }} кг</h5>
+                    <h5 class="mb-0">Всего: {{ rod_class.total_mass|floatformat:2 }} кг</h5>
                   </div>
                 </div>
               </div>
               {% endfor %}
             </div>
             <div class="card-header py-3 d-flex flex-between-center">
-              <h4 class="mb-0">Всего на элемент: {{ rods_calc.total_mass|floatformat:3 }} кг</h4>
+              <h4 class="mb-0">Всего на элемент: {{ rods_calc.total_mass|floatformat:2 }} кг</h4>
             </div>
           </div>
         </div>
