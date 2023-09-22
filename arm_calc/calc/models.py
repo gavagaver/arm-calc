@@ -140,6 +140,9 @@ class RodClass(BaseModel):
         verbose_name='Всего, кг',
     )
 
+    class Meta:
+        ordering = ('title',)
+
 
 class RodDiameter(BaseModel):
     """
@@ -156,6 +159,9 @@ class RodDiameter(BaseModel):
         null=True,
         verbose_name='Всего, кг',
     )
+
+    class Meta:
+        ordering = ('title',)
 
 
 class Rod(PartModel):
@@ -292,3 +298,4 @@ class Rod(PartModel):
     class Meta:
         verbose_name = 'Стержень'
         verbose_name_plural = 'Стержни'
+        ordering = ('title',)
