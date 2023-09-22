@@ -23,7 +23,7 @@ MM_IN_M: int = 1000
 
 # Rounding
 
-NUM_OF_DECIMALS: int = 3
+NUM_OF_DECIMALS: int = 2
 NUM_OF_DECIMALS_OF_INTEGER: int = 0
 
 
