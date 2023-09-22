@@ -46,7 +46,9 @@ def site_duplicate(request, pk):
                         duplicate_with_related(rods_calc, element)
 
                         for rod in rods:
-                            duplicate_with_related(rod, rods_calc)
+                            rod.pk = None
+                            rod.rods_calc = rods_calc
+                            rod.save()
 
     return redirect('calc:profile', username=engineer.username)
 
@@ -96,7 +98,9 @@ def construction_duplicate(request, pk):
                     duplicate_with_related(rods_calc, element)
 
                     for rod in rods:
-                        duplicate_with_related(rod, rods_calc)
+                        rod.pk = None
+                        rod.rods_calc = rods_calc
+                        rod.save()
 
     return redirect('calc:site_detail', site.pk)
 
@@ -141,7 +145,9 @@ def version_duplicate(request, pk):
                 duplicate_with_related(rods_calc, element)
 
                 for rod in rods:
-                    duplicate_with_related(rod, rods_calc)
+                    rod.pk = None
+                    rod.rods_calc = rods_calc
+                    rod.save()
 
     return redirect('calc:construction_detail', construction.pk)
 
@@ -181,7 +187,9 @@ def folder_duplicate(request, pk):
             duplicate_with_related(rods_calc, element)
 
             for rod in rods:
-                duplicate_with_related(rod, rods_calc)
+                rod.pk = None
+                rod.rods_calc = rods_calc
+                rod.save()
 
     return redirect('calc:version_detail', version.pk)
 
@@ -215,7 +223,9 @@ def element_duplicate(request, pk):
         duplicate_with_related(rods_calc, element)
 
         for rod in rods:
-            duplicate_with_related(rod, rods_calc)
+            rod.pk = None
+            rod.rods_calc = rods_calc
+            rod.save()
 
     return redirect('calc:folder_detail', place_folder.pk)
 
@@ -243,7 +253,9 @@ def rods_calc_duplicate(request, pk):
     rods_calc.save()
 
     for rod in rods:
-        duplicate_with_related(rod, rods_calc)
+        rod.pk = None
+        rod.rods_calc = rods_calc
+        rod.save()
 
     return redirect('calc:element_detail', element.pk)
 
