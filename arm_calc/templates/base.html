@@ -116,6 +116,17 @@
     <script src="{% static 'vendors/list.js/list.min.js' %}"></script>
     <script src="{% static 'assets/js/theme.js' %}"></script>
 
+    <!--  Highlighting the text of the selected field  -->
+    <script>
+      var formFields = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
+
+      formFields.forEach(function(field) {
+          field.addEventListener('click', function() {
+              this.select();
+          });
+      });
+    </script>
+
   </body>
 
 </html>
