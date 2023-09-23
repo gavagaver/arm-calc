@@ -118,12 +118,12 @@
 
     <!--  Highlighting the text of the selected field  -->
     <script>
-      var formFields = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
-
+      var formFields = document.querySelectorAll('input[type="number"]');
+    
       formFields.forEach(function(field) {
-          field.addEventListener('click', function() {
-              this.select();
-          });
+        field.addEventListener('click', function() {
+          this.select();
+        });
       });
     </script>
 
