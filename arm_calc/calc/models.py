@@ -300,8 +300,8 @@ class Rod(PartModel):
         """
         self.mass_of_single_rod = round(
             (
-                    calc.MASS_OF_METER.get(self.diameter)
-                    * self.length / calc.MM_IN_M
+                calc.MASS_OF_METER.get(self.diameter)
+                * self.length / calc.MM_IN_M
             ),
             calc.NUM_OF_DECIMALS,
         )

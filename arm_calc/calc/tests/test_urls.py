@@ -1,8 +1,8 @@
+from calc.tests.pages import PAGES_AND_EXPECTED_RESPONSE_CODES
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.test import Client, TestCase
 
-from calc.tests.pages import PAGES_AND_EXPECTED_RESPONSE_CODES
 
 User = get_user_model()
 
