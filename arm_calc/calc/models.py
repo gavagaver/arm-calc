@@ -22,6 +22,9 @@ class Site(BaseModel):
         verbose_name_plural = 'Объекты'
         ordering = ('-update_date',)
 
+    def is_owner(self, user):
+        return self.engineer == user
+
 
 class Construction(ConstructionModel):
     """
@@ -40,6 +43,9 @@ class Construction(ConstructionModel):
         verbose_name_plural = 'Сооружения'
         ordering = ('-update_date',)
 
+    def is_owner(self, user):
+        return self.site.engineer == user
+
 
 class Version(BaseModel):
     """
@@ -57,6 +63,9 @@ class Version(BaseModel):
         verbose_name_plural = 'Версии'
         ordering = ('-update_date',)
 
+    def is_owner(self, user):
+        return self.construction.site.engineer == user
+
 
 class Folder(BaseModel):
     """
@@ -73,6 +82,9 @@ class Folder(BaseModel):
         verbose_name = 'Папка'
         verbose_name_plural = 'Папки'
         ordering = ('-update_date',)
+
+    def is_owner(self, user):
+        return self.version.construction.site.engineer == user
 
 
 class Element(BaseModel):
@@ -96,6 +108,9 @@ class Element(BaseModel):
         verbose_name = 'Элемент'
         verbose_name_plural = 'Элементы'
         ordering = ('title',)
+
+    def is_owner(self, user):
+        return self.engineer == user
 
 
 class RodsCalc(CalcModel):
@@ -122,6 +137,9 @@ class RodsCalc(CalcModel):
         verbose_name = 'Расчет армирования'
         verbose_name_plural = 'Расчеты армирования'
         ordering = ('-update_date',)
+
+    def is_owner(self, user):
+        return self.element.folder.version.construction.site.engineer == user
 
 
 class RodClass(BaseModel):
@@ -282,8 +300,8 @@ class Rod(PartModel):
         """
         self.mass_of_single_rod = round(
             (
-                calc.MASS_OF_METER.get(self.diameter)
-                * self.length / calc.MM_IN_M
+                    calc.MASS_OF_METER.get(self.diameter)
+                    * self.length / calc.MM_IN_M
             ),
             calc.NUM_OF_DECIMALS,
         )

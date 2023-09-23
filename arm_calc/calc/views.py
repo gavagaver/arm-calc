@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import (CreateView, DetailView, ListView,
@@ -17,7 +19,7 @@ class LandingView(TemplateView):
     template_name = 'calc/landing.html'
 
 
-class ProfileView(ListView):
+class ProfileView(UserPassesTestMixin, ListView):
     """
     A view that renders the profile page template and displays a list of sites
     associated with the logged-in engineer.
@@ -25,6 +27,16 @@ class ProfileView(ListView):
     template_name = 'calc/profile.html'
     model = models.Site
     context_object_name = 'sites'
+
+    def test_func(self):
+        username = self.kwargs['username']
+        return username == str(self.request.user)
+
+    def handle_no_permission(self):
+        raise PermissionDenied
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -52,6 +64,12 @@ class SiteDetailView(DetailView):
     template_name = 'calc/site/site_detail.html'
     model = models.Site
     context_object_name = 'site'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.is_owner(request.user):
+            return HttpResponseForbidden()
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -117,6 +135,12 @@ class ConstructionDetailView(DetailView):
     template_name = 'calc/construction/construction_detail.html'
     model = models.Construction
     context_object_name = 'construction'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.is_owner(request.user):
+            return HttpResponseForbidden()
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -188,6 +212,12 @@ class VersionDetailView(DetailView):
     model = models.Version
     context_object_name = 'version'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.is_owner(request.user):
+            return HttpResponseForbidden()
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         version_id = self.kwargs.get('pk')
@@ -256,6 +286,12 @@ class FolderDetailView(DetailView):
     template_name = 'calc/folder/folder_detail.html'
     model = models.Folder
     context_object_name = 'folder'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.is_owner(request.user):
+            return HttpResponseForbidden()
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -326,6 +362,12 @@ class ElementDetailView(DetailView):
     model = models.Element
     context_object_name = 'element'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.is_owner(request.user):
+            return HttpResponseForbidden()
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         element_id = self.kwargs.get('pk')
@@ -389,6 +431,12 @@ class RodsCalcInline:
     form_class = forms.RodsCalcForm
     model = models.RodsCalc
     template_name = 'calc/rods_calc/rods_calc_create.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.is_owner(request.user):
+            return HttpResponseForbidden()
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         named_formsets = self.get_named_formsets()
@@ -509,6 +557,7 @@ class RodsCalcCreateView(RodsCalcInline, CreateView):
     A view that renders the rods_calc create page template
     and handles the creation of a new rods_calc.
     """
+
     def get_context_data(self, **kwargs):
         context = super(RodsCalcCreateView, self).get_context_data(**kwargs)
         context['named_formsets'] = self.get_named_formsets()
@@ -535,6 +584,7 @@ class RodsCalcUpdateView(RodsCalcInline, UpdateView):
     A view that renders the rods_calc update page template
     and handles the updating of an existing rods_calc.
     """
+
     def get_context_data(self, **kwargs):
         context = super(RodsCalcUpdateView, self).get_context_data(**kwargs)
         context['named_formsets'] = self.get_named_formsets()
