@@ -304,22 +304,22 @@
                       </button>
                       <div class="mx-3 my-3">
                         <div class="row">
-                          <div class="col-2">
+                          <div class="col-6 col-md-2 mb-3">
                               ⌀{{ formss.instance.diameter }} <br> <small>мм</small>
                           </div>
-                          <div class="col-2">
+                          <div class="col-6 col-md-2 mb-3">
                               {{ formss.instance.rod_class }} <br> <small>класс</small>
                           </div>
-                          <div class="col-2">
+                          <div class="col-6 col-md-2 mb-3">
                             {{ formss.instance.length|floatformat:0 }} <br> <small>мм</small>
                           </div>
-                          <div class="col-2">
+                          <div class="col-6 col-md-2 mb-3">
                               {{ formss.instance.quantity }} <br> <small>шт</small>
                           </div>
-                          <div class="col-2">
+                          <div class="col-6 col-md-2 mb-3">
                               {{ formss.instance.mass_of_single_rod|floatformat:2 }} <br> <small>кг/шт</small>
                           </div>
-                          <div class="col-2">
+                          <div class="col-6 col-md-2 mb-3">
                               {{ formss.instance.mass_of_rods|floatformat:2 }} <br> <small>кг</small>
                           </div>
                         </div>
@@ -331,7 +331,7 @@
                         <div class="card-header">
                           {{ formss.id }}
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 col-md-6 mb-3">
                               <div class="form-floating">
                                 {{ formss.visible_fields.0 }}
                                 <label for="{{ formss.visible_fields.0.id_for_label }}">
@@ -342,7 +342,7 @@
                                 <span style="color: red">{{ error }}</span>
                               {% endfor %}
                             </div>
-                            <div class="col-2">
+                            <div class="col-12 col-md-2 mb-3">
                               <div class="form-floating">
                                 {{ formss.visible_fields.1 }}
                                 <label for="{{ formss.visible_fields.1.id_for_label }}">
@@ -353,7 +353,7 @@
                                 <span style="color: red">{{ error }}</span>
                               {% endfor %}
                             </div>
-                            <div class="col-2">
+                            <div class="col-12 col-md-2 mb-3">
                               <div class="form-floating">
                                 {{ formss.visible_fields.2 }}
                                 <label for="{{ formss.visible_fields.1.id_for_label }}">
@@ -364,7 +364,7 @@
                                 <span style="color: red">{{ error }}</span>
                               {% endfor %}
                             </div>
-                            <div class="col-2">
+                            <div class="col-12 col-md-2 mb-3">
                               {% if formss.instance.pk %}
                                 <div class="dropdown font-sans-serif d-inline-block btn-reveal-trigger float-end">
                                   <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal dropdown-caret-none" type="button" id="dropdown-0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
@@ -385,7 +385,7 @@
 
                         <div class="card-body">
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 col-md-6 mb-3">
                               <div class="row">
                                 <div class="col-12 mb-3">
                                   <div class="d-flex align-items-center">
@@ -477,11 +477,11 @@
                               </div>
                               </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6 mb-3">
                               <div class="row">
-                                <div class="col-4">
+                                <div class="col-4 d-none d-md-block">
                                 </div>
-                                <div class="col-8 mb-3">
+                                <div class="col-12 col-md-8 mb-3">
                                   <div class="d-flex align-items-center">
                                     <a class="nav-link pe-0 ps-2" id="navbarDropdownQuantity-{{ forloop.counter0 }}" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <h6>Количество стержней <i class="fas fa-question-circle"></i></h6>
@@ -497,9 +497,9 @@
                                 </div>
                               </div>
                               <div class="row">
-                                <div class="col-4">
+                                <div class="col-4 d-none d-md-block">
                                 </div>
-                                <div class="col-8 mb-3">
+                                <div class="col-12 col-md-8 mb-3">
                                   <div class="form-floating mb-3">
                                   {{ formss.visible_fields.9 }}
                                   <label for="{{ formss.visible_fields.9.id_for_label }}">
@@ -512,9 +512,9 @@
                               </div>
                               </div>
                               <div class="row">
-                                <div class="col-4">
+                                <div class="col-4 d-none d-md-block">
                                 </div>
-                                <div class="col-8 mb-3">
+                                <div class="col-12 col-md-8 mb-3">
                                 <div class="form-floating mb-3">
                                   {{ formss.visible_fields.10 }}
                                   <label for="{{ formss.visible_fields.10.id_for_label }}">
@@ -527,9 +527,9 @@
                               </div>
                               </div>
                               <div class="row">
-                              <div class="col-4">
+                              <div class="col-4 d-none d-md-block">
                               </div>
-                              <div class="col-8 mb-3">
+                              <div class="col-12 col-md-8 mb-3">
                                 <div class="form-floating mb-3">
                                   {{ formss.visible_fields.11 }}
                                   <label for="{{ formss.visible_fields.11.id_for_label }}">
