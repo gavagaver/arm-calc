@@ -616,7 +616,8 @@ class VolumesCalcInline:
         # calculate total volume of volumes_calc and save
         volumes = volumes_calc.volumes.all()
         volumes_calc.total_volume = round(
-            sum([vl.volume_of_volumes for vl in volumes]) * volumes_calc.quantity,
+            sum([vl.volume_of_volumes for vl in volumes])
+            * volumes_calc.quantity,
             calculation_settings.NUM_OF_DECIMALS,
         )
         volumes_calc.save()

@@ -436,4 +436,3 @@ class Volume(PartModel):
         verbose_name = 'Объем'
         verbose_name_plural = 'Объемы'
         ordering = ('create_date',)
-
