@@ -139,6 +139,53 @@ class RodAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-',
 
 
+class VolumesCalcAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for VolumesCalc model.
+    """
+    list_display = ('title', 'element', 'total_volume')
+    search_fields = ('title',)
+    list_filter = ('create_date',)
+    empty_value_display = '-пусто-',
+
+
+class VolumeAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for Volume model.
+    """
+    list_display = (
+        'pk',
+        'title',
+        'create_date',
+        'volumes_calc',
+        'length',
+        'width',
+        'height',
+        'quantity_a',
+        'quantity_b',
+        'quantity_c',
+        'quantity',
+        'volume_of_single_volume',
+        'volume_of_volumes',
+    )
+    search_fields = ('title',)
+    list_filter = ('create_date', 'volumes_calc',)
+    list_editable = (
+        'title',
+        'volumes_calc',
+        'length',
+        'width',
+        'height',
+        'quantity_a',
+        'quantity_b',
+        'quantity_c',
+        'quantity',
+        'volume_of_single_volume',
+        'volume_of_volumes',
+    )
+    empty_value_display = '-пусто-',
+
+
 admin.site.register(models.Site, SiteAdmin)
 admin.site.register(models.Construction, ConstructionAdmin)
 admin.site.register(models.Version, VersionAdmin)
@@ -148,3 +195,5 @@ admin.site.register(models.RodsCalc, RodsCalcAdmin)
 admin.site.register(models.RodClass, RodClassAdmin)
 admin.site.register(models.RodDiameter, RodDiameterAdmin)
 admin.site.register(models.Rod, RodAdmin)
+admin.site.register(models.VolumesCalc, VolumesCalcAdmin)
+admin.site.register(models.Volume, VolumeAdmin)
