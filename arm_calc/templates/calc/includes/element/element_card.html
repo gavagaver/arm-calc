@@ -14,9 +14,18 @@
       </div>
       <div class="d-flex">
         {% if element.rods_calcs.count %}
-          <span class="fas fa-cubes text-primary"></span>
+          <span class="fas fa-cube text-primary"></span>
         {% else %}
-          <span class="fas fa-cubes text-secondary"></span>
+          <span class="fas fa-cube text-secondary"></span>
+        {% endif %}
+        <p class="fs--1 ps-2 mb-0"><strong>{{ element.volumes_calcs.count }}</strong> {{ element.volumes_calcs.count|pluralize_ru:"расчет, расчета, расчетов" }} объемов</p>
+      </div>
+
+      <div class="d-flex">
+        {% if element.rods_calcs.count %}
+          <span class="fas fa-stream text-primary"></span>
+        {% else %}
+          <span class="fas fa-stream text-secondary"></span>
         {% endif %}
         <p class="fs--1 ps-2 mb-0"><strong>{{ element.rods_calcs.count }}</strong> {{ element.rods_calcs.count|pluralize_ru:"расчет, расчета, расчетов" }} армирования</p>
       </div>
