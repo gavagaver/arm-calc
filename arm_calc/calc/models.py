@@ -302,3 +302,138 @@ class Rod(PartModel):
         verbose_name = 'Стержень'
         verbose_name_plural = 'Стержни'
         ordering = ('title',)
+
+
+class VolumesCalc(CalcModel):
+    """
+    Model for representing a calculation of volume for an element.
+    """
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name='volumes_calcs',
+        verbose_name='Элемент',
+    )
+    total_volume = models.FloatField(
+        blank=True,
+        null=True,
+        verbose_name='Всего, м3',
+    )
+    quantity = models.PositiveSmallIntegerField(
+        default=1,
+        verbose_name='Количество элементов',
+    )
+
+    class Meta:
+        verbose_name = 'Расчет объема'
+        verbose_name_plural = 'Расчеты объемов'
+        ordering = ('-update_date',)
+
+
+class Volume(PartModel):
+    """
+    Model for representing a single volume.
+    """
+    volumes_calc = models.ForeignKey(
+        VolumesCalc,
+        on_delete=models.CASCADE,
+        related_name='volumes',
+        verbose_name='Расчет объема',
+    )
+    is_hole = models.BooleanField(
+        blank=True,
+        null=True,
+        default=False,
+        verbose_name='Отверстие',
+    )
+    length = models.PositiveIntegerField(
+        verbose_name='Длина, мм',
+    )
+    width = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Ширина, мм',
+    )
+    height = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Высота, мм',
+    )
+    quantity_a = models.PositiveIntegerField(
+        default=1,
+        blank=True,
+        null=True,
+        verbose_name='Множитель F, шт',
+    )
+    quantity_b = models.PositiveIntegerField(
+        default=1,
+        blank=True,
+        null=True,
+        verbose_name='Множитель G, шт',
+    )
+    quantity_c = models.PositiveIntegerField(
+        default=1,
+        blank=True,
+        null=True,
+        verbose_name='Множитель H, шт',
+    )
+    quantity = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Кол-во, шт',
+    )
+    volume_of_single_volume = models.FloatField(
+        blank=True,
+        null=True,
+        verbose_name='Объем ед., м3',
+    )
+    volume_of_volumes = models.FloatField(
+        blank=True,
+        null=True,
+        verbose_name='Объем общий, м3',
+    )
+
+    def save(self, *args, **kwargs):
+        self.calculate_fields()
+        self.calculate_volume_of_single_volume()
+        self.calculate_volume_of_volumes()
+        super(Volume, self).save(*args, **kwargs)
+
+    def calculate_fields(self):
+        """
+        Calculates the quantity of single volumes
+        based on quantities a, b, c.
+        """
+        quantity = self.quantity_a * self.quantity_b * self.quantity_c
+        self.quantity = round(quantity, calc.NUM_OF_DECIMALS_OF_INTEGER)
+
+    def calculate_volume_of_single_volume(self):
+        """
+        Calculates the volume of a single volume
+        based on its length, width and height.
+        """
+        sign = -1 if self.is_hole else 1
+        self.volume_of_single_volume = round(
+            (
+                self.length * self.width
+                * self.height / (calc.MM_IN_M ** 3)
+                * sign
+            ),
+            calc.NUM_OF_DECIMALS,
+        )
+
+    def calculate_volume_of_volumes(self):
+        """
+        Calculates the total volume of the single volumes
+        based on the volume of a single volume and its quantity.
+        """
+        self.volume_of_volumes = round(
+            self.volume_of_single_volume * self.quantity,
+            calc.NUM_OF_DECIMALS,
+        )
+
+    class Meta:
+        verbose_name = 'Объем'
+        verbose_name_plural = 'Объемы'
+        ordering = ('create_date',)
+
