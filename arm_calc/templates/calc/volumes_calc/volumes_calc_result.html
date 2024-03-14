@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% load user_filters %}
+
+{% block title %}
+  Результаты расчета объема "{{ volumes_calc.title }}"
+{% endblock %}
+
+{% block content %}
+  <div class="container" data-layout="container">
+    <div class="content">
+      {% include 'includes/topbar.html' %}
+
+        {% csrf_token %}
+        <div class="row g-lg-3 font-sans-serif">
+        <div class="col-lg-8">
+          <div class="card mb-3">
+            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../../../assets/img/icons/spot-illustrations/corner-4.png);">
+            </div>
+            <!--/.bg-holder-->
+
+            <div class="card-body z-index-1">
+              <h3>
+                {{ volumes_calc.title }}
+              </h3>
+              <p class="mb-0">
+                На этой странице представлен отчет подсчета объема
+              </p>
+              <p class="mb-0">
+                элемента и итоговый объем.
+              </p>
+              <p class="mb-0">
+                _
+              </p>
+              <p class="mb-0">
+                Данные можно выделить и скопировать,
+              </p>
+              <p class="mb-0">
+                они без проблем вставляются в таблицы Excel.
+              </p>
+              <p class="mb-0">
+                _
+              </p>
+              <p class="mb-0">
+                Расход дан на суммарное количество элементов,
+              </p>
+              <p class="mb-0">
+                указанное на странице редактирования расчета.
+              </p>
+              <p class="mb-0">
+                _
+              </p>
+              <p class="mb-0">
+                Чтобы внести изменения, нажмите "Редактировать расчет".
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-3">
+          <div class="sticky-sidebar top-navbar-height d-flex flex-column h-100">
+            <div class="card order-lg-0 order-1 h-100">
+              <div class="card-header py-2 d-flex flex-between-center">
+                <h5 class="mb-0">Результаты расчета объема</h5>
+              </div>
+              <div class="card-body bg-light">
+                <ul class="list-unstyled fs--1 mb-0">
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Объект: </span>
+                    <a class="link-primary" href="{% url 'calc:site_detail' volumes_calc.element.folder.version.construction.site.pk %}">
+                      <span class="fw-medium me-2">{{ volumes_calc.element.folder.version.construction.site.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Сооружение: </span>
+                    <a class="link-primary" href="{% url 'calc:construction_detail' volumes_calc.element.folder.version.construction.pk %}">
+                      <span class="fw-medium me-2">{{ volumes_calc.element.folder.version.construction.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Стадия: </span>
+                    <a class="link-primary" href="{% url 'calc:version_detail' volumes_calc.element.folder.version.pk %}">
+                      <span class="fw-medium me-2">{{ volumes_calc.element.folder.version.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Папка: </span>
+                    <a class="link-primary" href="{% url 'calc:folder_detail' volumes_calc.element.folder.pk %}">
+                      <span class="fw-medium me-2">{{ volumes_calc.element.folder.title }}</span>
+                    </a>
+                  </li>
+                  <li class="mb-2 hover-actions-trigger">
+                    <span class="ms-1">Элемент: </span>
+                    <a class="link-primary" href="{% url 'calc:element_detail' volumes_calc.element.pk %}">
+                      <span class="fw-medium me-2">{{ volumes_calc.element.title }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer py-2" id="course-publish-btn">
+                <div class="row flex-between-center g-0">
+                  <div class="col-auto">
+                    {% if volumes_calc.pk %}
+                      <a class="btn btn-link btn-sm text-primary fw-medium px-0" href="{% url 'calc:volumes_calc_update' volumes_calc.pk %}">
+                        <span class="fas fa-sync-alt me-1" data-fa-transform="shrink-3"></span>Редактировать расчет
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 mb-3">
+          <div class="card">
+            <div class="card-header py-3 d-flex flex-between-center">
+              <h5 class="mb-0">Отчет (объем на {{ volumes_calc.quantity }} шт.)</h5>
+            </div>
+            <div class="table-responsive scrollbar">
+              <table class="table table-hover table-striped overflow-hidden">
+                <thead>
+                  <tr>
+                    <th scope="col">Название</th>
+                    <th scope="col">Длина, мм</th>
+                    <th scope="col">Ширина, мм</th>
+                    <th scope="col">Высота, мм</th>
+                    <th scope="col">Кол-во, шт</th>
+                    <th scope="col">Объем ед., м3</th>
+                    <th scope="col">Объем общий, м3</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for volume in volumes %}
+                    <tr class="align-middle">
+                      <td class="text-nowrap">{{ volume.title }}</td>
+                      <td class="text-nowrap">{{ volume.length|floatformat:0 }}</td>
+                      <td class="text-nowrap">{{ volume.width|floatformat:0 }}</td>
+                      <td class="text-nowrap">{{ volume.height|floatformat:0 }}</td>
+                      <td class="text-nowrap">{{ volume.quantity|multiply:volumes_calc.quantity }}</td>
+                      <td class="text-nowrap">{{ volume.volume_of_single_volume|multiply:volumes_calc.quantity |floatformat:2 }}</td>
+                      <td class="text-nowrap">{{ volume.volume_of_volumes|multiply:volumes_calc.quantity |floatformat:2 }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-12 mb-3">
+          <div class="card">
+            <div class="card-header py-3 d-flex flex-between-center">
+              <h5 class="mb-0">Объем, м3 (объем на {{ volumes_calc.quantity }} шт.)</h5>
+            </div>
+            <div class="row g-3 mb-3">
+
+            </div>
+            <div class="card-header py-3 d-flex flex-between-center">
+              <h4 class="mb-0">Всего: {{ volumes_calc.total_volume|floatformat:2 }} м3</h4>
+            </div>
+          </div>
+        </div>
+
+
+
+      {% include 'includes/footer.html' %}
+    </div>
+  </div>
+{% endblock %}

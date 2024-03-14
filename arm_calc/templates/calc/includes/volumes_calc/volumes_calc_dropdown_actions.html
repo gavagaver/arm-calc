@@ -1,0 +1,8 @@
+<div class="dropdown font-sans-serif btn-reveal-trigger"><button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-weather-update" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><svg class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"></path></svg><!-- <span class="fas fa-ellipsis-h fs--2"></span> Font Awesome fontawesome.com --></button>
+  <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-weather-update">
+    <a class="dropdown-item" href="{% url 'calc:volumes_calc_update' volumes_calc.pk%}">Редактировать</a>
+    <a class="dropdown-item" href="{% url 'calc:volumes_calc_duplicate' volumes_calc.pk%}">Дублировать</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item text-danger" href="{% url 'calc:volumes_calc_delete' volumes_calc.pk%}">Удалить</a>
+  </div>
+</div>

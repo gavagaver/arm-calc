@@ -57,17 +57,6 @@
                   </div>
                 </div>
 
-                <div class="col-sm-6 col-md-5">
-                  <div class="d-flex position-relative">
-                    <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="fas fa-plus text-primary"></span></div>
-                    <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:rods_calc_create' element.pk %}">
-                        <h6 class="mb-0">Создать расчет армирования</h6>
-                      </a>
-                      <p class="mb-0 fs--2 text-500">Добавьте для текущего элемента расчет</p>
-                    </div>
-                  </div>
-                </div>
-
               </div>
             </div>
           </div>
@@ -82,15 +71,60 @@
         </div>
       </div>
       <div class="row g-3 mb-3">
+        <div class="card-header py-3 d-flex flex-between-center">
+          <h5 class="mb-0"><span class="fas fa-cube text-secondary"></span>   Объемы</h5>
+        </div>
+        {% for volumes_calc in volumes_calcs %}
+          <div class="col-xxl-6 col-lg-12">
+            {% include 'calc/includes/volumes_calc/volumes_calc_card.html' %}
+          </div>
+        {% endfor %}
+
+
+
+
+
+        <div class="col-12">
+          <div class="d-flex position-relative">
+            <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2 bg-white"><span class="fas fa-plus text-primary"></span></div>
+            <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:volumes_calc_create' element.pk %}">
+                <h6 class="mb-0">Создать расчет объема</h6>
+              </a>
+              <p class="mb-0 fs--2 text-500">Для подсчета объемов (например, бетона)</p>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <div class="card-header py-3 d-flex flex-between-center">
+          <h5 class="mb-0"><span class="fas fa-stream text-secondary"></span>   Армирование</h5>
+        </div>
         {% for rods_calc in rods_calcs %}
           <div class="col-xxl-6 col-lg-12">
             {% include 'calc/includes/rods_calc/rods_calc_card.html' %}
           </div>
-        {% empty %}
-          <div class="col-xxl-6 col-lg-12">
-            {% include 'includes/empty_block.html' %}
-          </div>
         {% endfor %}
+
+
+
+
+        <div class="col-12">
+
+          <div class="d-flex position-relative">
+            <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2 bg-white"><span class="fas fa-plus text-primary"></span></div>
+            <div class="flex-1"><a class="stretched-link text-800" href="{% url 'calc:rods_calc_create' element.pk %}">
+                <h6 class="mb-0">Создать расчет армирования</h6>
+              </a>
+              <p class="mb-0 fs--2 text-500">Для подсчета массы арматурных стержней</p>
+            </div>
+          </div>
+
+        </div>
+
+
+
 
       </div>
       {% include 'includes/footer.html' %}

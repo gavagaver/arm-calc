@@ -331,6 +331,8 @@ class ElementDetailView(DetailView):
         element_id = self.kwargs.get('pk')
         context['rods_calcs'] = models.RodsCalc.objects.filter(
             element=element_id)
+        context['volumes_calcs'] = models.VolumesCalc.objects.filter(
+            element=element_id)
         return context
 
 
@@ -576,5 +578,123 @@ class RodsCalcResultView(DetailView):
         context['rod_diameters'] = rod_diameters
         context['rods'] = models.Rod.objects.filter(
             rods_calc=rods_calc_id
+        )
+        return context
+
+
+class VolumesCalcInline:
+    form_class = forms.VolumesCalcForm
+    model = models.VolumesCalc
+    template_name = 'calc/volumes_calc/volumes_calc_create.html'
+
+    def form_valid(self, form):
+        named_formsets = self.get_named_formsets()
+
+        # formset validation. If not successful, then render the formset again
+        if not all((x.is_valid() for x in named_formsets.values())):
+            return self.render_to_response(self.get_context_data(form=form))
+
+        # set volumes_calc to which element it belongs
+        volumes_calc = form.save(commit=False)
+        try:
+            element_pk = self.kwargs['element_pk']
+        except KeyError:
+            element_pk = volumes_calc.element.pk
+        element = models.Element.objects.get(pk=element_pk)
+        volumes_calc.element = element
+        volumes_calc.save()
+        self.object = form.save()
+
+        # find specific save function for every formset or save
+        for name, formset in named_formsets.items():
+            formset_save_func = getattr(self, f'formset_{name}_valid', None)
+            if formset_save_func is not None:
+                formset_save_func(formset)
+            else:
+                formset.save()
+
+        # calculate total volume of volumes_calc and save
+        volumes = volumes_calc.volumes.all()
+        volumes_calc.total_volume = round(
+            sum([vl.volume_of_volumes for vl in volumes]) * volumes_calc.quantity,
+            calculation_settings.NUM_OF_DECIMALS,
+        )
+        volumes_calc.save()
+
+        return redirect('calc:volumes_calc_update', volumes_calc.pk)
+
+    def formset_volumes_valid(self, formset):
+        volumes = formset.save(commit=False)
+        for volume in volumes:
+            volume.volumes_calc = self.object
+            volume.save()
+
+
+class VolumesCalcCreateView(VolumesCalcInline, CreateView):
+    """
+    A view that renders the volumes_calc create page template
+    and handles the creation of a new volumes_calc.
+    """
+    def get_context_data(self, **kwargs):
+        context = super(VolumesCalcCreateView, self).get_context_data(**kwargs)
+        context['named_formsets'] = self.get_named_formsets()
+        element_pk = self.kwargs['element_pk']
+        context['element'] = models.Element.objects.get(pk=element_pk)
+        return context
+
+    def get_named_formsets(self):
+        if self.request.method == "GET":
+            return {
+                'volumes': forms.VolumeFormSet(prefix='volumes'),
+            }
+        return {
+            'volumes': forms.VolumeFormSet(
+                self.request.POST or None,
+                self.request.FILES or None,
+                prefix='volumes'
+            ),
+        }
+
+
+class VolumesCalcUpdateView(VolumesCalcInline, UpdateView):
+    """
+    A view that renders the volumes_calc update page template
+    and handles the updating of an existing volumes_calc.
+    """
+    def get_context_data(self, **kwargs):
+        context = super(VolumesCalcUpdateView, self).get_context_data(**kwargs)
+        context['named_formsets'] = self.get_named_formsets()
+        volumes_calc_pk = self.kwargs['pk']
+        volumes_calc = models.VolumesCalc.objects.get(pk=volumes_calc_pk)
+        context['volumes_calc'] = volumes_calc
+        context['element'] = volumes_calc.element
+        if self.__class__.__name__ == 'VolumesCalcUpdateView':
+            context['view_name'] = 'update'
+        return context
+
+    def get_named_formsets(self):
+        return {
+            'volumes': forms.VolumeFormSet(
+                self.request.POST or None,
+                self.request.FILES or None,
+                instance=self.object,
+                prefix='volumes'
+            ),
+        }
+
+
+class VolumesCalcResultView(DetailView):
+    """
+    A view that renders the results page of volumes_calc.
+    """
+    template_name = 'calc/volumes_calc/volumes_calc_result.html'
+    model = models.VolumesCalc
+    context_object_name = 'volumes_calc'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        volumes_calc_id = self.kwargs.get('pk')
+        context['volumes'] = models.Volume.objects.filter(
+            volumes_calc=volumes_calc_id
         )
         return context

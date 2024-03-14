@@ -290,3 +290,56 @@ def rod_delete(request, pk):
     rod = models.Rod.objects.get(id=pk)
     rod.delete()
     return redirect('calc:rods_calc_update', pk=rod.rods_calc.pk)
+
+
+# Volumes Calc operations
+
+def volumes_calc_duplicate(request, pk):
+    """
+    Duplicate a volumes_calc object and all of its related volumes.
+    """
+    volumes_calc = models.VolumesCalc.objects.get(pk=pk)
+    element = volumes_calc.element
+    volumes = models.Volume.objects.filter(volumes_calc=volumes_calc)
+
+    volumes_calc.pk = None
+    volumes_calc.save()
+
+    for volume in volumes:
+        volume.pk = None
+        volume.volumes_calc = volumes_calc
+        volume.save()
+
+    return redirect('calc:element_detail', element.pk)
+
+
+def volumes_calc_delete(request, pk):
+    """
+    Delete a volumes_calc object with the given pk.
+    """
+    volumes_calc = models.VolumesCalc.objects.get(id=pk)
+    volumes_calc.delete()
+    return redirect('calc:element_detail', pk=volumes_calc.element.pk)
+
+
+# Volume operations
+
+def volume_duplicate(request, pk):
+    """
+    Duplicate a volume object.
+    """
+    volume = models.Volume.objects.get(pk=pk)
+
+    volume.pk = None
+    volume.save()
+
+    return redirect('calc:volumes_calc_update', pk=volume.volumes_calc.pk)
+
+
+def volume_delete(request, pk):
+    """
+    Delete a volume object with the given pk.
+    """
+    volume = models.Volume.objects.get(id=pk)
+    volume.delete()
+    return redirect('calc:volumes_calc_update', pk=volume.volumes_calc.pk)

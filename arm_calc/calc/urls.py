@@ -175,6 +175,45 @@ urlpatterns_rods_calc = [
     ),
 ]
 
+urlpatterns_volumes_calc = [
+    path(
+        'element/<int:element_pk>/volumes-calc-create/',
+        views.VolumesCalcCreateView.as_view(),
+        name='volumes_calc_create',
+    ),
+    path(
+        'volumes_calc/<int:pk>/update/',
+        views.VolumesCalcUpdateView.as_view(),
+        name='volumes_calc_update',
+    ),
+    path(
+        'volumes_calc/<int:pk>/duplicate/',
+        views_operations.volumes_calc_duplicate,
+        name='volumes_calc_duplicate',
+    ),
+    path(
+        'volumes_calc/<int:pk>/delete/',
+        views_operations.volumes_calc_delete,
+        name='volumes_calc_delete',
+    ),
+    path(
+        'volumes_calc/<int:pk>/result/',
+        views.VolumesCalcResultView.as_view(),
+        name='volumes_calc_result',
+    ),
+
+    path(
+        'volume/<int:pk>/duplicate/',
+        views_operations.volume_duplicate,
+        name='volume_duplicate',
+    ),
+    path(
+        'volume/<int:pk>/delete/',
+        views_operations.volume_delete,
+        name='volume_delete',
+    ),
+]
+
 urlpatterns = (
     [
         path(
@@ -190,4 +229,5 @@ urlpatterns = (
     ]
     + urlpatterns_objects
     + urlpatterns_rods_calc
+    + urlpatterns_volumes_calc
 )

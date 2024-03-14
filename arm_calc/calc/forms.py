@@ -176,3 +176,88 @@ RodFormSet = inlineformset_factory(
     extra=0, can_delete=False,
     can_delete_extra=True
 )
+
+
+class VolumesCalcForm(forms.ModelForm):
+    """
+    Form for creating or editing a VolumesCalc object.
+    """
+
+    class Meta:
+        model = models.VolumesCalc
+        fields = ('title', 'quantity')
+        widgets = {
+            'title': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'quantity': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+        }
+
+
+class VolumeForm(forms.ModelForm):
+    """
+    Form for creating or editing a Volume object.
+    """
+
+    class Meta:
+        model = models.Volume
+        exclude = (
+            'quantity',
+            'volume_of_single_volume',
+            'volume_of_volumes',
+        )
+        widgets = {
+            'title': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'is_hole': forms.CheckboxInput(
+                attrs={
+                    'class': 'form-check-input'
+                }
+            ),
+            'length': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'width': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'height': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'quantity_a': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'quantity_b': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'quantity_c': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+        }
+
+
+VolumeFormSet = inlineformset_factory(
+    models.VolumesCalc, models.Volume, form=VolumeForm,
+    extra=0, can_delete=False,
+    can_delete_extra=True
+)
